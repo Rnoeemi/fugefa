@@ -49,8 +49,8 @@ class SiteThemeService
             'style_preset' => $stylePreset,
             'font_stylesheet' => SiteFonts::stylesheet($fontSans, $fontDisplay),
             'css_variables' => [
-                '--font-sans' => "'{$fontSans}', ui-sans-serif, system-ui, sans-serif",
-                '--font-display' => "'{$fontDisplay}', ui-serif, Georgia, serif",
+                '--font-sans' => SiteFonts::cssValue($fontSans),
+                '--font-display' => SiteFonts::cssValue($fontDisplay),
                 '--font-size-base' => $fontSizeBase,
                 '--line-height-base' => $lineHeight,
                 ...SiteStylePresets::tokenVariables($stylePreset),
@@ -88,8 +88,8 @@ class SiteThemeService
         $typeVariables = SiteTypography::cssVariables($settings->resolvedTypography(), $stylePreset);
 
         $variableLines = collect([
-            '--font-sans' => "'{$fontSans}', ui-sans-serif, system-ui, sans-serif",
-            '--font-display' => "'{$fontDisplay}', ui-serif, Georgia, serif",
+            '--font-sans' => SiteFonts::cssValue($fontSans),
+            '--font-display' => SiteFonts::cssValue($fontDisplay),
             '--font-size-base' => $fontSizeBase,
             '--line-height-base' => $lineHeight,
             ...SiteStylePresets::tokenVariables($stylePreset),

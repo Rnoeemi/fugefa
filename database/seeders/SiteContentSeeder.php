@@ -18,7 +18,7 @@ class SiteContentSeeder extends Seeder
             'notification_email' => 'info@example.com',
             'address' => '',
             'hero_image' => '',
-            'footer_text' => 'Építésziroda – szerkeszd a webhely tartalmát az admin felületen.',
+            'footer_text' => 'Innovatív építészeti megoldásokkal, precíz tervezéssel és megbízható szakmai háttérrel támogatjuk ügyfeleinket a koncepciótól a megvalósításig.',
         ]);
 
         $templates = [

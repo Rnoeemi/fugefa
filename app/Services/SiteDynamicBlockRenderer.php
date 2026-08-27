@@ -7,6 +7,7 @@ use App\Models\Accommodation;
 use App\Models\SiteSetting;
 use App\Models\Worker;
 use App\Support\GrapesJs\SiteContentIcons;
+use App\Support\GrapesJs\SiteRichAttr;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
@@ -600,6 +601,31 @@ class SiteDynamicBlockRenderer
             return $html;
         }
 
+        if ($kind === 'ba-gallery') {
+            $filled = [];
+            foreach ($items as $item) {
+                if (! is_array($item)) {
+                    continue;
+                }
+                $before = trim((string) ($item['image'] ?? $item['image_before'] ?? $item['media_url'] ?? ''));
+                $after = trim((string) ($item['image_after'] ?? ''));
+                if ($before !== '' || $after !== '') {
+                    $filled[] = $item;
+                }
+            }
+
+            if ($filled === []) {
+                return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--empty" data-ts-ba-slide aria-hidden="true"></figure>';
+            }
+
+            $html = '';
+            foreach (array_values($filled) as $index => $item) {
+                $html .= $this->renderBaGallerySlide($item, $index === 0);
+            }
+
+            return $html;
+        }
+
         return '';
     }
 
@@ -613,6 +639,48 @@ class SiteDynamicBlockRenderer
             .'<button type="button" class="ts-gallery__trigger" data-ts-gallery-src="'.$safeUrl.'" aria-label="'.$label.'">'
             .'<img src="'.$safeUrl.'" alt="'.$safeAlt.'" loading="lazy">'
             .'</button></figure>';
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function renderBaGallerySlide(array $item, bool $isActive = false): string
+    {
+        $before = trim((string) ($item['image'] ?? $item['image_before'] ?? $item['media_url'] ?? ''));
+        $after = trim((string) ($item['image_after'] ?? ''));
+        $alt = (string) ($item['alt'] ?? '');
+        $safeAlt = e($alt);
+        $zoomIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>';
+
+        if ($before !== '' && $after !== '') {
+            $label = $alt !== '' ? e('Nagyítás: '.$alt) : 'Nagyítás';
+
+            return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--compare" data-ts-ba-slide data-lightbox-type="compare" data-lightbox-before="'.e($before).'" data-lightbox-after="'.e($after).'" data-lightbox-alt="'.$safeAlt.'">'
+                .'<div class="ts-ba-gallery__compare" style="--split:50%">'
+                .'<div class="ts-ba-gallery__layer ts-ba-gallery__layer--after">'
+                .'<img src="'.e($after).'" alt="'.$safeAlt.'" loading="lazy">'
+                .'<span class="ts-ba-gallery__tag ts-ba-gallery__tag--after">Utána</span>'
+                .'</div>'
+                .'<div class="ts-ba-gallery__layer ts-ba-gallery__layer--before">'
+                .'<img src="'.e($before).'" alt="'.$safeAlt.'" loading="lazy">'
+                .'<span class="ts-ba-gallery__tag ts-ba-gallery__tag--before">Előtte</span>'
+                .'</div>'
+                .'<div class="ts-ba-gallery__handle" aria-hidden="true"><span class="ts-ba-gallery__knob">‹ ›</span></div>'
+                .'<input type="range" class="ts-ba-gallery__range" min="0" max="100" value="50" aria-label="Előtte és utána összehasonlítás">'
+                .'</div>'
+                .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="'.$label.'">'.$zoomIcon.'</button>'
+                .'</figure>';
+        }
+
+        $url = $before !== '' ? $before : $after;
+        $label = $alt !== '' ? e('Kép nagyítása: '.$alt) : 'Kép nagyítása';
+
+        return '<figure class="ts-ba-gallery__slide" data-ts-ba-slide data-lightbox-type="image" data-lightbox-src="'.e($url).'" data-lightbox-alt="'.$safeAlt.'">'
+            .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--fill" data-ts-ba-zoom aria-label="'.$label.'">'
+            .'<img class="ts-ba-gallery__img" src="'.e($url).'" alt="'.$safeAlt.'" loading="lazy">'
+            .'</button>'
+            .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="'.$label.'">'.$zoomIcon.'</button>'
+            .'</figure>';
     }
 
     /**
@@ -688,6 +756,7 @@ class SiteDynamicBlockRenderer
      */
     public function renderBlock(string $type, array $attrs = []): string
     {
+        $attrs = $this->decodeContentAttrs($attrs);
         $settings = SiteSetting::current();
         $visibility = $this->visibilityFlags($attrs);
         $accommodationBlocks = [
@@ -847,6 +916,23 @@ class SiteDynamicBlockRenderer
         }
 
         return Accommodation::query()->bookableOnline()->orderBy('sort_order')->orderBy('name')->first();
+    }
+
+    /**
+     * @param  array<string, mixed>  $attrs
+     * @return array<string, mixed>
+     */
+    protected function decodeContentAttrs(array $attrs): array
+    {
+        foreach (['title', 'text', 'button'] as $key) {
+            if (! isset($attrs[$key]) || ! is_string($attrs[$key])) {
+                continue;
+            }
+
+            $attrs[$key] = SiteRichAttr::decode($attrs[$key]);
+        }
+
+        return $attrs;
     }
 
     /**

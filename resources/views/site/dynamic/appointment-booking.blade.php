@@ -3,7 +3,7 @@
         <h2 class="ts-dyn-appointment__title" data-ts-text="title">{!! $title !!}</h2>
     @endif
     @if (($showText ?? true) && filled($text))
-        <p class="ts-dyn-appointment__text" data-ts-text="text">{!! $text !!}</p>
+        <div class="ts-dyn-appointment__text" data-ts-text="text">{!! $text !!}</div>
     @endif
 
     @if ($workers->isEmpty())

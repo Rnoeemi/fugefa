@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SiteContentSeeder::class, // e-mail sablonok + alap site settings
-            FugefaBaselineSeeder::class, // alap fejléc/lábléc + üres kezdőlap
+            FugefaBaselineSeeder::class, // alap fejléc/lábléc
+            FugefaPagesSeeder::class, // oldalépítő blokkok + lábléc, impresszum, adatkezelés, pályázat
             ExtendedDomainSeeder::class, // fizetési módok (inaktív stubok)
         ]);
     }

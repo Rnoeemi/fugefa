@@ -22,7 +22,7 @@ class FugefaBaselineSeeder extends Seeder
             'header_html' => SiteLayoutDefaults::headerHtml($brand),
             'footer_html' => SiteLayoutDefaults::footerHtml(
                 brandName: $brand,
-                footerText: 'Építésziroda – szerkeszd a webhely tartalmát az admin felületen.',
+                footerText: 'Innovatív építészeti megoldásokkal, precíz tervezéssel és megbízható szakmai háttérrel támogatjuk ügyfeleinket a koncepciótól a megvalósításig.',
             ),
             'header_css' => SiteLayoutDefaults::headerCss(),
             'footer_css' => SiteLayoutDefaults::footerCss(),

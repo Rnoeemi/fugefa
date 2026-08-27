@@ -2,7 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const navRoot = document.querySelector('[data-site-nav]');
 
     if (navRoot) {
+        const isBuilderHeader = navRoot.matches('[data-gjs-type="ts-header-bar"], [data-gjs-type="ts-header-simple"]');
         const onScroll = () => {
+            if (isBuilderHeader) {
+                navRoot.classList.remove('is-transparent');
+                navRoot.classList.add('is-solid');
+                return;
+            }
+
             const solid = window.scrollY > 40;
             navRoot.classList.toggle('is-solid', solid);
             navRoot.classList.toggle('is-transparent', !solid);
@@ -10,60 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
-
-        const mobileToggle = navRoot.querySelector('[data-nav-toggle]');
-        const mobilePanel = navRoot.querySelector('[data-nav-panel]');
-        const mobileOverlay = navRoot.querySelector('[data-nav-overlay]');
-
-        if (mobileToggle && mobilePanel) {
-            const panelClose = navRoot.querySelector('[data-nav-close]');
-            mobilePanel.removeAttribute('hidden');
-
-            const validMobileStyles = ['dropdown', 'drawer-left', 'drawer-right', 'fullscreen'];
-            const rawMenuStyle = navRoot.getAttribute('data-mobile-menu-style') || 'dropdown';
-            const menuStyle = validMobileStyles.find((s) => rawMenuStyle.startsWith(s)) || 'dropdown';
-            if (rawMenuStyle !== menuStyle) {
-                navRoot.setAttribute('data-mobile-menu-style', menuStyle);
-            }
-            const usesOverlay = menuStyle !== 'dropdown';
-
-            const setOpen = (open) => {
-                navRoot.classList.toggle('is-menu-open', open);
-                mobilePanel.classList.toggle('is-open', open);
-                mobilePanel.removeAttribute('hidden');
-                mobilePanel.setAttribute('aria-hidden', open ? 'false' : 'true');
-                mobileToggle.classList.toggle('is-open', open);
-                mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                mobileToggle.setAttribute('aria-label', open ? 'Menü bezárása' : 'Menü megnyitása');
-                document.body.classList.toggle('ts-nav-open', open && usesOverlay);
-
-                if (mobileOverlay) {
-                    mobileOverlay.classList.toggle('is-open', open && usesOverlay);
-                    mobileOverlay.hidden = !(open && usesOverlay);
-                    mobileOverlay.setAttribute('aria-hidden', open && usesOverlay ? 'false' : 'true');
-                }
-            };
-
-            setOpen(false);
-
-            mobileToggle.addEventListener('click', () => {
-                setOpen(!navRoot.classList.contains('is-menu-open'));
-            });
-
-            panelClose?.addEventListener('click', () => setOpen(false));
-            mobileOverlay?.addEventListener('click', () => setOpen(false));
-
-            mobilePanel.querySelectorAll('a[href]').forEach((link) => {
-                link.addEventListener('click', () => setOpen(false));
-            });
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && navRoot.classList.contains('is-menu-open')) {
-                    setOpen(false);
-                    mobileToggle.focus();
-                }
-            });
-        }
     }
 
     const revealItems = document.querySelectorAll('.reveal');

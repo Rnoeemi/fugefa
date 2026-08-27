@@ -43,6 +43,7 @@ class SiteFonts
                 'Plus Jakarta Sans' => 'plus-jakarta-sans:400,500,600,700',
                 'Figtree' => 'figtree:400,500,600,700',
                 'Work Sans' => 'work-sans:400,500,600,700',
+                'Jost' => 'jost:400,500,600,700',
             ],
             'Sans – barátságos / szállásos' => [
                 'Karla' => 'karla:400,500,600,700',

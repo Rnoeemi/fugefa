@@ -21,18 +21,24 @@
     </main>
 
     @include('site.partials.footer')
+    <script src="{{ asset('js/ts-nav.js') }}?v=3"></script>
     <script src="{{ asset('js/ts-hero-slider.js') }}?v=6"></script>
     <script src="{{ asset('js/ts-gallery.js') }}?v=2"></script>
+    <script src="{{ asset('js/ts-ba-gallery.js') }}?v=4"></script>
     <script src="{{ asset('js/ts-reveal.js') }}?v=1"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            window.TsNav?.init?.(document);
             window.TsHeroSlider?.init?.(document);
             window.TsGallery?.init?.(document);
+            window.TsBaGallery?.init?.(document);
             window.TsReveal?.init?.(document);
         });
         window.addEventListener('load', () => {
+            window.TsNav?.init?.(document);
             window.TsHeroSlider?.init?.(document);
             window.TsGallery?.init?.(document);
+            window.TsBaGallery?.init?.(document);
             window.TsReveal?.init?.(document);
         });
     </script>

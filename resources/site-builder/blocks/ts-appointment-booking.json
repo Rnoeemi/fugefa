@@ -29,7 +29,7 @@
             "key": "text",
             "attr": "data-text",
             "label": "Szöveg",
-            "type": "text",
+            "type": "rich",
             "default": "Válasszon munkatársat, és foglaljon időpontot online."
         },
         {

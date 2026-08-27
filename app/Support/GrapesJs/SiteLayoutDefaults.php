@@ -462,6 +462,16 @@ header.site-nav[data-site-nav] .ts-nav-toggle{
 header.site-nav[data-site-nav] .ts-menu-placeholder{
   border:1px dashed color-mix(in srgb,currentColor 50%,transparent)!important;
 }
+header.site-nav[data-site-nav] .ts-nav-panel{
+  background:var(--color-primary,#1e293b);
+  color:#fff;
+}
+header.site-nav[data-site-nav][data-mobile-menu-style="fullscreen"] .ts-nav-panel,
+header.site-nav[data-site-nav][data-mobile-menu-style="fullscreen"] .ts-nav-panel a,
+header.site-nav[data-site-nav][data-mobile-menu-style="fullscreen"] .ts-nav-panel__title,
+header.site-nav[data-site-nav][data-mobile-menu-style="fullscreen"] .ts-nav-panel__close{
+  color:#fff!important;
+}
 CSS;
     }
 
@@ -631,7 +641,7 @@ HTML;
         }
 
         if ($topbarPhone !== '') {
-            $html = self::hydrateTopbarLink($html, 'topbar_phone', 'tel', $topbarPhone);
+            $html = self::hydrateTopbarLink($html, 'topbar_phone', 'tel', $topbarPhone, self::formatTopbarPhone($topbarPhone));
         }
 
         if ($topbarEmail !== '') {
@@ -647,20 +657,52 @@ HTML;
             ) ?? $html;
         }
 
+        $html = self::setHeaderAttr($html, 'data-show-topbar-phone', $topbarPhone !== '' ? '1' : '0');
+        $html = self::setHeaderAttr($html, 'data-show-topbar-email', $topbarEmail !== '' ? '1' : '0');
+        $html = self::setHeaderAttr($html, 'data-show-topbar-address', $topbarAddress !== '' ? '1' : '0');
+
         return $html;
+    }
+
+    private static function setHeaderAttr(string $html, string $name, string $value): string
+    {
+        $pattern = '/(<header\b[^>]*\s)'.preg_quote($name, '/').'=(["\'])[^"\']*\2/i';
+        if (preg_match($pattern, $html)) {
+            return preg_replace($pattern, '$1'.$name.'="'.e($value).'"', $html, 1) ?? $html;
+        }
+
+        return preg_replace(
+            '/<header\b/i',
+            '<header '.$name.'="'.e($value).'"',
+            $html,
+            1
+        ) ?? $html;
     }
 
     /**
      * Topbar link szöveg + href frissítése (attribútum-sorrend független).
      */
-    private static function hydrateTopbarLink(string $html, string $key, string $scheme, string $displayValue): string
+    private static function formatTopbarPhone(string $phone): string
     {
-        $href = self::resolveBoundHref($displayValue, $scheme, $key);
+        $trimmed = trim($phone);
+        $digits = preg_replace('/\D+/', '', $trimmed) ?? '';
+
+        if (str_starts_with($trimmed, '+') && str_starts_with($digits, '36') && strlen($digits) === 11) {
+            return '+36 '.substr($digits, 2, 2).' '.substr($digits, 4, 3).' '.substr($digits, 7);
+        }
+
+        return $trimmed;
+    }
+
+    private static function hydrateTopbarLink(string $html, string $key, string $scheme, string $rawValue, ?string $label = null): string
+    {
+        $href = self::resolveBoundHref($rawValue, $scheme, $key);
+        $label ??= $rawValue;
         $pattern = '/(<a\b(?=[^>]*\bdata-ts-href="'.preg_quote($key, '/').'")[^>]*>)(.*?)(<\/a>)/is';
 
         return preg_replace_callback(
             $pattern,
-            static function (array $m) use ($displayValue, $href): string {
+            static function (array $m) use ($label, $href): string {
                 $openTag = $m[1];
                 if (preg_match('/(?<![\w-])href=(["\'])[^"\']*\1/i', $openTag)) {
                     $openTag = preg_replace('/(?<![\w-])href=(["\'])[^"\']*\1/i', 'href="'.e($href).'"', $openTag, 1) ?? $openTag;
@@ -668,7 +710,7 @@ HTML;
                     $openTag = preg_replace('/<a\b/i', '<a href="'.e($href).'"', $openTag, 1) ?? $openTag;
                 }
 
-                return $openTag.e($displayValue).$m[3];
+                return $openTag.e($label).$m[3];
             },
             $html,
             1
@@ -811,6 +853,13 @@ HTML;
         return <<<'CSS'
 .site-nav,.ts-header-simple{background:#fff;color:#3d3d3d;font-family:var(--font-sans,Karla,sans-serif);position:relative;z-index:40;border-bottom:1px solid #ececec}
 .site-nav.has-logo,.ts-header-simple.has-logo{background:#fff;color:#3d3d3d}
+.ts-nav-topbar{display:none;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent);font-size:.78rem}
+.site-nav[data-show-topbar="1"] .ts-nav-topbar{display:block}
+.ts-nav-topbar__inner{max-width:72rem;margin:0 auto;padding:.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.ts-nav-topbar__contact{display:flex;flex-wrap:wrap;align-items:center;gap:.85rem 1.25rem;opacity:.88}
+.ts-nav-topbar__item{color:inherit;text-decoration:none}
+.ts-nav-topbar__item:empty{display:none}
+a.ts-nav-topbar__item:hover{opacity:1;text-decoration:underline}
 .ts-nav-inner,.ts-header-simple__inner{max-width:72rem;margin:0 auto;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .ts-nav-bar{display:contents}
 .ts-nav-brand{display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-display,Literata,serif);font-size:1.5rem;color:inherit;text-decoration:none;min-width:0}
@@ -1122,7 +1171,7 @@ body.site-shell .ts-footer ~ .ts-layout .ts-image[data-href=""] .ts-image__link{
 body.site-shell .ts-footer ~ .ts-image img,
 body.site-shell .ts-footer ~ .ts-layout .ts-image img{
   max-width:16rem;max-height:5.5rem!important;width:auto;height:auto;
-  background:#fff;padding:.35rem;border-radius:.4rem;object-fit:contain
+  background:transparent;padding:0;border-radius:0;object-fit:contain
 }
 
 body.site-shell .ts-footer ~ .ts-spacer,

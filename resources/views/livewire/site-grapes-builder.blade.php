@@ -1204,6 +1204,50 @@
 
     const isVideoMediaUrl = (url) => /\.(mp4|webm|ogg)(\?|$)/i.test(String(url || ''));
 
+    const baGalleryZoomIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>';
+
+    const renderBaGallerySlide = (item) => {
+        const before = String(item?.image || item?.image_before || item?.media_url || '').trim();
+        const after = String(item?.image_after || '').trim();
+        const alt = String(item?.alt || '');
+
+        if (! before && ! after) {
+            return '';
+        }
+
+        if (before && after) {
+            const label = alt ? `Nagyítás: ${escapeHtml(alt)}` : 'Nagyítás';
+            return (
+                `<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--compare" data-ts-ba-slide data-lightbox-type="compare" data-lightbox-before="${escapeHtml(before)}" data-lightbox-after="${escapeHtml(after)}" data-lightbox-alt="${escapeHtml(alt)}">`
+                + `<div class="ts-ba-gallery__compare" style="--split:50%">`
+                + `<div class="ts-ba-gallery__layer ts-ba-gallery__layer--after">`
+                + `<img src="${escapeHtml(after)}" alt="${escapeHtml(alt)}" loading="lazy">`
+                + `<span class="ts-ba-gallery__tag ts-ba-gallery__tag--after">Utána</span>`
+                + `</div>`
+                + `<div class="ts-ba-gallery__layer ts-ba-gallery__layer--before">`
+                + `<img src="${escapeHtml(before)}" alt="${escapeHtml(alt)}" loading="lazy">`
+                + `<span class="ts-ba-gallery__tag ts-ba-gallery__tag--before">Előtte</span>`
+                + `</div>`
+                + `<div class="ts-ba-gallery__handle" aria-hidden="true"><span class="ts-ba-gallery__knob">‹ ›</span></div>`
+                + `<input type="range" class="ts-ba-gallery__range" min="0" max="100" value="50" aria-label="Előtte és utána összehasonlítás">`
+                + `</div>`
+                + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="${label}">${baGalleryZoomIcon}</button>`
+                + `</figure>`
+            );
+        }
+
+        const url = before || after;
+        const label = alt ? `Kép nagyítása: ${escapeHtml(alt)}` : 'Kép nagyítása';
+        return (
+            `<figure class="ts-ba-gallery__slide" data-ts-ba-slide data-lightbox-type="image" data-lightbox-src="${escapeHtml(url)}" data-lightbox-alt="${escapeHtml(alt)}">`
+            + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--fill" data-ts-ba-zoom aria-label="${label}">`
+            + `<img class="ts-ba-gallery__img" src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" loading="lazy">`
+            + `</button>`
+            + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="${label}">${baGalleryZoomIcon}</button>`
+            + `</figure>`
+        );
+    };
+
     const renderItemsHtml = (kind, items, options = {}) => {
         const list = Array.isArray(items) ? items : [];
         if (kind === 'testimonials') {
@@ -1298,6 +1342,17 @@
                 );
             }).join('');
         }
+        if (kind === 'ba-gallery') {
+            const filled = list.filter((item) => {
+                const before = String(item?.image || item?.image_before || item?.media_url || '').trim();
+                const after = String(item?.image_after || '').trim();
+                return Boolean(before || after);
+            });
+            if (! filled.length) {
+                return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--empty" data-ts-ba-slide aria-hidden="true"></figure>';
+            }
+            return filled.map((item) => renderBaGallerySlide(item)).join('');
+        }
         return '';
     };
 
@@ -1379,6 +1434,9 @@
         }
         if (el?.classList?.contains('ts-gallery')) {
             setTimeout(() => window.TsGallery?.initOne?.(el), 0);
+        }
+        if (el?.classList?.contains('ts-ba-gallery')) {
+            setTimeout(() => window.TsBaGallery?.initOne?.(el), 0);
         }
     };
 
@@ -2648,6 +2706,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             const doc = editor.Canvas?.getDocument?.();
             if (doc) window.TsHeroSlider?.init?.(doc);
             if (doc) window.TsGallery?.init?.(doc);
+            if (doc) window.TsBaGallery?.init?.(doc);
             if (doc) window.TsReveal?.init?.(doc, { forceVisible: true });
         }, 120);
     });
@@ -2657,6 +2716,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             const doc = editor.Canvas?.getDocument?.();
             if (doc) window.TsHeroSlider?.init?.(doc);
             if (doc) window.TsGallery?.init?.(doc);
+            if (doc) window.TsBaGallery?.init?.(doc);
             if (doc) window.TsReveal?.init?.(doc, { forceVisible: true });
         }, 80);
     });
@@ -4813,6 +4873,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                 || (type === 'ts-contact' && el?.classList?.contains?.('ts-contact'))
                 || (type === 'ts-map' && el?.classList?.contains?.('ts-map'))
                 || (type === 'ts-gallery' && el?.classList?.contains?.('ts-gallery'))
+                || (type === 'ts-ba-gallery' && el?.classList?.contains?.('ts-ba-gallery'))
                 || (type === 'ts-image' && el?.classList?.contains?.('ts-image')),
             model: {
                 defaults: {

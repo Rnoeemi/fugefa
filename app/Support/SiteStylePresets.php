@@ -1992,7 +1992,7 @@ section:not(.ts-hero-slider):has(> [data-ts-bg-overlay]:not(.ts-hero-slider__ove
 }
 
 section:not(.ts-hero-slider) > .ts-surface-overlay,
-section:not(.ts-hero-slider) > [data-ts-bg-overlay]:not(.ts-hero-slider__overlay) {
+section:not(.ts-hero-slider) > [data-ts-bg-overlay]:not(.ts-hero-slider__overlay):not(.ts-hero__overlay) {
   position: absolute !important;
   inset: 0 !important;
   z-index: 1 !important;
@@ -2000,10 +2000,28 @@ section:not(.ts-hero-slider) > [data-ts-bg-overlay]:not(.ts-hero-slider__overlay
   background: var(--ts-overlay-color, var(--color-primary)) !important;
 }
 
-section:not(.ts-hero-slider) > .ts-surface-overlay ~ :not(style),
-section:not(.ts-hero-slider) > [data-ts-bg-overlay]:not(.ts-hero-slider__overlay) ~ :not(style) {
+section:not(.ts-hero-slider) > .ts-surface-overlay ~ :not(style):not(.ts-hero__media):not(.ts-banner__media):not(.ts-bg-section__media),
+section:not(.ts-hero-slider) > [data-ts-bg-overlay]:not(.ts-hero-slider__overlay) ~ :not(style):not(.ts-hero__media):not(.ts-banner__media):not(.ts-bg-section__media) {
   position: relative !important;
   z-index: 2 !important;
+}
+
+.ts-hero > .ts-hero__media {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  pointer-events: none;
+}
+
+.ts-hero[data-layout="split"] > .ts-hero__media {
+  inset: auto !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  width: 50% !important;
 }
 
 /* Hero slider: full-bleed szekció; a Stíluskezelő paddingje → --ts-hero-pad-* (tartalomréteg) */

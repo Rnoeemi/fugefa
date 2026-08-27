@@ -1,0 +1,78 @@
+{
+    "id": "ts-ba-gallery",
+    "label": "Előtte-utána galéria",
+    "category": "content",
+    "icon": "compare",
+    "keywords": [
+        "galeria",
+        "elotte",
+        "utana",
+        "slider",
+        "osszehasonlitas",
+        "munkaink"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-ba-gallery",
+    "interactive": true,
+    "template": "ba-gallery.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "rich",
+            "default": "Munkáink",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Képek",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Képek",
+            "itemLabel": "elem",
+            "editLabel": "Képek szerkesztése",
+            "addLabel": "+ Új elem",
+            "hint": "Egy kép: sima galériakép. Második kép: húzható előtte–utána összehasonlítás. A nyilakkal lapozhat a sliderben.",
+            "itemFields": [
+                {
+                    "key": "image",
+                    "label": "Kép",
+                    "type": "media"
+                },
+                {
+                    "key": "image_after",
+                    "label": "Utána kép (opcionális)",
+                    "type": "media"
+                },
+                {
+                    "key": "alt",
+                    "label": "Alt szöveg (opcionális)",
+                    "type": "text"
+                }
+            ],
+            "default": [
+                {
+                    "image": "",
+                    "image_after": "",
+                    "alt": ""
+                },
+                {
+                    "image": "",
+                    "image_after": "",
+                    "alt": ""
+                },
+                {
+                    "image": "",
+                    "image_after": "",
+                    "alt": ""
+                }
+            ]
+        }
+    ]
+}
