@@ -1,0 +1,24 @@
+<section
+  class="ts-faq"
+  data-gjs-type="ts-faq"
+  data-gjs-name="GYIK"
+  data-title="{{title}}"
+  data-lead="{{lead}}"
+>
+  <div class="ts-faq__inner">
+    <h2 data-ts-text="title">{{title}}</h2>
+    <p class="ts-faq__lead" data-ts-text="lead">{{lead}}</p>
+    <div class="ts-faq__list" data-ts-items="items" data-ts-items-kind="faq"></div>
+  </div>
+</section>
+<style>
+.ts-faq{padding:4rem 1.5rem;background:var(--color-light);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-faq__inner{max-width:48rem;margin:0 auto}
+.ts-faq h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-faq__lead{margin:0 0 1.75rem;opacity:.75;line-height:1.6}
+.ts-faq__list{display:flex;flex-direction:column;gap:.75rem}
+.ts-faq__item{background:#fff;border:1px solid color-mix(in srgb, var(--color-text) 12%, transparent);padding:1.1rem 1.35rem;margin:0}
+.ts-faq__item summary{cursor:pointer;font-weight:600;list-style:none}
+.ts-faq__item summary::-webkit-details-marker{display:none}
+.ts-faq__item p{margin:.75rem 0 0;line-height:1.65;opacity:.8}
+</style>

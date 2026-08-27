@@ -1,0 +1,17 @@
+<section class="ts-video" data-gjs-type="ts-video" data-gjs-name="Videó" data-layout="{{layout}}" data-title="{{title}}" data-lead="{{lead}}" data-embed-url="{{embed_url}}">
+  <div class="ts-video__inner">
+    <h2 data-ts-text="title">{{title}}</h2>
+    <p class="ts-video__lead" data-ts-text="lead">{{lead}}</p>
+    <div class="ts-video__frame">
+      <iframe src="{{embed_url}}" title="{{title}}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+<style>
+.ts-video{padding:4rem 1.5rem;background:var(--color-primary);color:#fff;font-family:var(--font-sans,Karla,sans-serif)}
+.ts-video__inner{max-width:56rem;margin:0 auto}
+.ts-video h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-video__lead{margin:0 0 1.5rem;opacity:.75;line-height:1.6}
+.ts-video__frame{position:relative;aspect-ratio:16/9;background:var(--color-primary-mid);overflow:hidden}
+.ts-video__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+</style>

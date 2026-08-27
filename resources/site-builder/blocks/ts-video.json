@@ -1,0 +1,36 @@
+{
+    "id": "ts-video",
+    "label": "Videó / túra",
+    "category": "content",
+    "icon": "play",
+    "keywords": [
+        "video",
+        "youtube",
+        "tura"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "video.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Ismerje meg a helyet"
+        },
+        {
+            "key": "lead",
+            "label": "Bevezető",
+            "type": "text",
+            "default": "Rövid bemutató a szállásról és a környékről."
+        },
+        {
+            "key": "embed_url",
+            "label": "Embed URL",
+            "type": "media",
+            "default": "https://www.youtube.com/embed/VIDEO_ID"
+        }
+    ]
+}

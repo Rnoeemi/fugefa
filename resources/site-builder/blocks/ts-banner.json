@@ -1,0 +1,135 @@
+{
+    "id": "ts-banner",
+    "label": "Banner sáv",
+    "category": "general",
+    "icon": "megaphone",
+    "keywords": [
+        "banner",
+        "hatter",
+        "kep"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-banner",
+    "interactive": true,
+    "template": "banner.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Elrendezés",
+            "type": "layout",
+            "default": "left",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "left",
+                    "name": "Balra",
+                    "hint": "Szöveg balra, full-bleed háttér",
+                    "wire": "media-left"
+                },
+                {
+                    "id": "center",
+                    "name": "Középen",
+                    "hint": "Szöveg középre a háttéren",
+                    "wire": "media-center"
+                },
+                {
+                    "id": "split",
+                    "name": "Osztott",
+                    "hint": "Bal: sima háttér + szöveg, jobb: tiszta kép",
+                    "wire": "media-split"
+                }
+            ]
+        },
+        {
+            "key": "media_type",
+            "attr": "data-media-type",
+            "label": "Háttér típus",
+            "type": "select",
+            "default": "image",
+            "options": "media_types",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Háttér URL (kép/videó)",
+            "type": "media",
+            "default": "/images/site/hero.jpg",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay",
+            "attr": "data-overlay",
+            "label": "Overlay erősség",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "default": "0.55",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay_color",
+            "attr": "data-overlay-color",
+            "label": "Overlay szín (színtónus)",
+            "type": "color",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Kiemelt üzenet",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Rövid támogató szöveg a bannerhez.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "button_label",
+            "attr": "data-button-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Részletek",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_href",
+            "attr": "data-button-href",
+            "label": "Link",
+            "type": "text",
+            "default": "#",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_style",
+            "attr": "data-button-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        }
+    ]
+}

@@ -1,0 +1,192 @@
+{
+    "id": "ts-hero-slider",
+    "label": "Hero slider",
+    "category": "general",
+    "icon": "rectangle-group",
+    "keywords": [
+        "hero",
+        "slider",
+        "carousel",
+        "fade",
+        "slide"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-hero-slider",
+    "interactive": true,
+    "template": "hero-slider.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Elrendezés",
+            "type": "layout",
+            "default": "bottom",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "bottom",
+                    "name": "Alul balra",
+                    "hint": "Szöveg lent, full-bleed háttér",
+                    "wire": "hero-bottom"
+                },
+                {
+                    "id": "center",
+                    "name": "Középen",
+                    "hint": "Szöveg középre a háttéren",
+                    "wire": "hero-center"
+                },
+                {
+                    "id": "split",
+                    "name": "Osztott",
+                    "hint": "Bal: szöveg, jobb: kép (slide-onként)",
+                    "wire": "hero-split"
+                }
+            ]
+        },
+        {
+            "key": "transition",
+            "attr": "data-transition",
+            "label": "Átmenet",
+            "type": "select",
+            "default": "fade",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "fade",
+                    "name": "Áttűnés (fade)"
+                },
+                {
+                    "id": "slide",
+                    "name": "Csúszás (slide)"
+                }
+            ]
+        },
+        {
+            "key": "show_dots",
+            "attr": "data-show-dots",
+            "label": "Pontok megjelenítése",
+            "type": "checkbox",
+            "default": "1",
+            "group": "layout",
+            "groupLabel": "Elrendezés"
+        },
+        {
+            "key": "autoplay",
+            "attr": "data-autoplay",
+            "label": "Automatikus váltás (mp)",
+            "type": "select",
+            "default": "5",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                { "id": "0", "name": "Ki" },
+                { "id": "4", "name": "4 mp" },
+                { "id": "5", "name": "5 mp" },
+                { "id": "7", "name": "7 mp" },
+                { "id": "10", "name": "10 mp" }
+            ]
+        },
+        {
+            "key": "overlay",
+            "attr": "data-overlay",
+            "label": "Overlay erősség",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "default": "0.85",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay_color",
+            "attr": "data-overlay-color",
+            "label": "Overlay szín",
+            "type": "color",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Slide-ok",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Slide-ok",
+            "itemLabel": "slide",
+            "editLabel": "Slide-ok szerkesztése",
+            "addLabel": "+ Új slide",
+            "hint": "Itt adhat hozzá slide-okat, és slide-onként cserélheti a képet / szöveget.",
+            "itemFields": [
+                {
+                    "key": "media_url",
+                    "label": "Háttérkép / videó",
+                    "type": "media"
+                },
+                {
+                    "key": "eyebrow",
+                    "label": "Alcím",
+                    "type": "text"
+                },
+                {
+                    "key": "title",
+                    "label": "Cím",
+                    "type": "text"
+                },
+                {
+                    "key": "lead",
+                    "label": "Leírás",
+                    "type": "textarea"
+                },
+                {
+                    "key": "primary_label",
+                    "label": "Elsődleges gomb",
+                    "type": "text"
+                },
+                {
+                    "key": "primary_href",
+                    "label": "Elsődleges link",
+                    "type": "text"
+                },
+                {
+                    "key": "secondary_label",
+                    "label": "Másodlagos gomb",
+                    "type": "text"
+                },
+                {
+                    "key": "secondary_href",
+                    "label": "Másodlagos link",
+                    "type": "text"
+                }
+            ],
+            "default": [
+                {
+                    "media_url": "/images/site/hero.jpg",
+                    "eyebrow": "Vendégház",
+                    "title": "Pihenés a természetben",
+                    "lead": "Csendes környezet, kényelmes szállás és egyszerű online foglalás.",
+                    "primary_label": "Szabad helyek",
+                    "primary_href": "/szallasok",
+                    "secondary_label": "Kapcsolat",
+                    "secondary_href": "/kapcsolat"
+                },
+                {
+                    "media_url": "/images/site/hero.jpg",
+                    "eyebrow": "Foglalás",
+                    "title": "Érkezzen hozzánk",
+                    "lead": "Válassza ki a megfelelő szállást, és foglaljon pár lépésben.",
+                    "primary_label": "Foglalás",
+                    "primary_href": "/foglalas-2",
+                    "secondary_label": "Részletek",
+                    "secondary_href": "/szallasok"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+<section class="ts-steps" data-gjs-name="Hogyan foglalj">
+  <div class="ts-steps__inner">
+    <h2>{{title}}</h2>
+    <p class="ts-steps__lead">{{lead}}</p>
+    <ol class="ts-steps__grid">
+      <li><span>1</span><h3>{{step1_title}}</h3><p>{{step1_text}}</p></li>
+      <li><span>2</span><h3>{{step2_title}}</h3><p>{{step2_text}}</p></li>
+      <li><span>3</span><h3>{{step3_title}}</h3><p>{{step3_text}}</p></li>
+    </ol>
+  </div>
+</section>
+<style>
+.ts-steps{padding:var(--section-y) var(--section-x);background:var(--color-surface);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-steps__inner{max-width:72rem;margin:0 auto}
+.ts-steps h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-steps__lead{margin:0 0 2rem;max-width:40rem;opacity:.75;line-height:1.6}
+.ts-steps__grid{list-style:none;margin:0;padding:0;display:grid;gap:1.25rem;grid-template-columns:repeat(3,1fr)}
+.ts-steps__grid li{background:#fff;border:1px solid color-mix(in srgb, var(--color-text) 8%, transparent);padding:1.5rem}
+.ts-steps__grid span{display:inline-flex;width:2rem;height:2rem;align-items:center;justify-content:center;background:var(--btn-bg,var(--color-accent));color:#fff;font-size:.8rem;font-weight:700}
+.ts-steps__grid h3{margin:1rem 0 .5rem;font-size:1.1rem}
+.ts-steps__grid p{margin:0;line-height:1.6;opacity:.8}
+@media (max-width:800px){.ts-steps__grid{grid-template-columns:1fr}}
+</style>

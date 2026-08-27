@@ -1,0 +1,8 @@
+{
+    "label": "Fejléc / Lábléc",
+    "blocks": [
+        "ts-header-bar",
+        "ts-footer-full",
+        "ts-footer-minimal"
+    ]
+}

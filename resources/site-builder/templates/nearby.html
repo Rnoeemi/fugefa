@@ -1,0 +1,23 @@
+<section class="ts-nearby" data-gjs-name="Környék">
+  <div class="ts-nearby__inner">
+    <h2>{{title}}</h2>
+    <p class="ts-nearby__lead">{{lead}}</p>
+    <div class="ts-nearby__grid">
+      <article><h3>{{item1_title}}</h3><p>{{item1_text}}</p></article>
+      <article><h3>{{item2_title}}</h3><p>{{item2_text}}</p></article>
+      <article><h3>{{item3_title}}</h3><p>{{item3_text}}</p></article>
+      <article><h3>{{item4_title}}</h3><p>{{item4_text}}</p></article>
+    </div>
+  </div>
+</section>
+<style>
+.ts-nearby{padding:4rem 1.5rem;background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-nearby__inner{max-width:72rem;margin:0 auto}
+.ts-nearby h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-nearby__lead{margin:0 0 1.75rem;max-width:40rem;opacity:.75;line-height:1.6}
+.ts-nearby__grid{display:grid;gap:1rem;grid-template-columns:repeat(2,1fr)}
+.ts-nearby article{padding:1.25rem 0;border-top:1px solid color-mix(in srgb, var(--color-text) 10%, transparent)}
+.ts-nearby h3{margin:0 0 .4rem;font-size:1.05rem}
+.ts-nearby p{margin:0;line-height:1.6;opacity:.8}
+@media (max-width:700px){.ts-nearby__grid{grid-template-columns:1fr}}
+</style>

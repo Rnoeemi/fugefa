@@ -1,0 +1,12 @@
+{
+    "label": "Szállások",
+    "blocks": [
+        "ts-accommodations-cards",
+        "ts-accommodations-list",
+        "ts-accommodation-featured",
+        "ts-booking-cta",
+        "ts-availability-search",
+        "ts-accommodation-details",
+        "ts-accommodation-gallery"
+    ]
+}

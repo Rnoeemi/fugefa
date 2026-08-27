@@ -1,0 +1,276 @@
+/* Megjelenés oldal – stíluspreset moodboard kártyák (Filament-független) */
+
+.ssp-root {
+    display: block;
+    width: 100%;
+}
+
+.ssp-root [x-cloak] {
+    display: none !important;
+}
+
+.ssp-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0 0 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ssp-tab {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    margin: 0;
+    padding: 0.7rem 1rem 0.75rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: transparent;
+    color: #6b7280;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.ssp-tab:hover {
+    color: #111827;
+}
+
+.ssp-tab.is-active {
+    color: #111827;
+    border-bottom-color: #111827;
+}
+
+.ssp-tab:focus-visible {
+    outline: 2px solid #111827;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.ssp-cat-hint {
+    margin: 0 0 0.95rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #6b7280;
+    min-height: 1.1em;
+}
+
+.ssp-panel[hidden] {
+    display: none !important;
+}
+
+.ssp-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .ssp-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.ssp-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    overflow: hidden !important;
+    text-align: left !important;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    font: inherit !important;
+    color: inherit !important;
+    line-height: normal !important;
+}
+
+.ssp-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    border-color: #d1d5db;
+}
+
+.ssp-card.is-active {
+    border-color: var(--ssp-accent, #059669);
+    box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--ssp-accent, #059669) 35%, transparent),
+        0 12px 28px color-mix(in srgb, var(--ssp-primary, #111) 12%, transparent);
+}
+
+.ssp-preview {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.85rem;
+    min-height: 148px;
+    padding: 1.1rem 1.15rem;
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--ssp-light, #f3f4f6) 82%, white), var(--ssp-light, #f3f4f6));
+}
+
+.ssp-preview-sheet {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.85rem 0.9rem;
+    border-radius: var(--ssp-radius-card, 0.75rem);
+    background: #fff;
+    box-shadow: var(--ssp-shadow, none);
+    border: 1px solid color-mix(in srgb, var(--ssp-text, #111) 10%, transparent);
+}
+
+.ssp-preview-title {
+    font-family: var(--ssp-font-display, ui-serif, Georgia, serif);
+    font-size: 1.55rem;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--ssp-primary, #111);
+}
+
+.ssp-preview-line {
+    display: block;
+    width: 100%;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ssp-text, #111) 14%, transparent);
+}
+
+.ssp-preview-line.is-short {
+    width: 62%;
+}
+
+.ssp-preview-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--ssp-radius-btn, 0.5rem);
+    background: var(--ssp-accent, #059669);
+    color: #fff;
+    font-family: var(--ssp-font-sans, ui-sans-serif, system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ssp-swatches {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    flex: 0 0 auto;
+}
+
+.ssp-swatch {
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    flex: 0 0 auto;
+}
+
+.ssp-check {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    background: var(--ssp-accent, #059669);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+}
+
+.ssp-card.is-active .ssp-check {
+    display: inline-flex;
+}
+
+.ssp-check svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    display: block;
+}
+
+.ssp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1rem 1.1rem 1.15rem;
+    background: #fff;
+    border-top: 1px solid #f1f5f9;
+}
+
+.ssp-title {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #111827;
+    font-family: var(--ssp-font-display, ui-sans-serif, system-ui, sans-serif);
+}
+
+.ssp-desc {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #6b7280;
+    font-family: var(--ssp-font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+.ssp-meta {
+    margin: 0.15rem 0 0;
+    font-size: 0.7rem;
+    line-height: 1.35;
+    color: #9ca3af;
+    font-family: var(--ssp-font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+.ssp-active-label {
+    display: none;
+    margin: 0.15rem 0 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ssp-accent, #059669);
+    font-family: var(--ssp-font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+.ssp-card.is-active .ssp-active-label {
+    display: block;
+}
+
+.ssp-help {
+    margin: 0.9rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: #6b7280;
+}

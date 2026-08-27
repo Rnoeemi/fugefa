@@ -1,0 +1,36 @@
+<section
+  class="ts-gallery"
+  data-gjs-type="ts-gallery"
+  data-gjs-name="Képsáv"
+  data-layout="{{layout}}"
+  data-title="{{title}}"
+>
+  <div class="ts-gallery__inner">
+    <h2 class="ts-gallery__title" data-ts-text="title">{{title}}</h2>
+    <div class="ts-gallery__stage">
+      <button type="button" class="ts-gallery__nav ts-gallery__nav--prev" data-ts-gallery-prev aria-label="Előző kép" hidden>‹</button>
+      <div class="ts-gallery__grid" data-ts-items="items" data-ts-items-kind="gallery"></div>
+      <button type="button" class="ts-gallery__nav ts-gallery__nav--next" data-ts-gallery-next aria-label="Következő kép" hidden>›</button>
+    </div>
+  </div>
+</section>
+<style>
+.ts-gallery{padding:var(--section-y,4rem) max(var(--section-x),1.5rem);background:var(--color-surface);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif);box-sizing:border-box}
+.ts-gallery__inner{max-width:var(--content-max,72rem);margin:0 auto;width:100%;box-sizing:border-box}
+.ts-gallery h2,.ts-gallery__title{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 1.5rem}
+.ts-gallery__stage{position:relative}
+.ts-gallery__grid{display:grid;gap:.75rem;grid-template-columns:repeat(4,minmax(0,1fr))}
+.ts-gallery__item{margin:0;overflow:hidden;background:var(--color-muted);min-width:0}
+.ts-gallery__item--empty{background:color-mix(in srgb, var(--color-muted) 70%, #fff);aspect-ratio:4/3;min-height:120px}
+.ts-gallery__trigger{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in;font:inherit;color:inherit;text-align:inherit}
+.ts-gallery__trigger:focus-visible{outline:2px solid var(--color-accent,var(--color-primary));outline-offset:2px}
+.ts-gallery__item img{width:100%;height:100%;object-fit:cover;display:block}
+.ts-gallery[data-layout="grid"] .ts-gallery__item,.ts-gallery:not([data-layout]) .ts-gallery__item,.ts-gallery[data-layout="featured"] .ts-gallery__item{aspect-ratio:4/3}
+.ts-gallery__nav{display:none;position:absolute;top:50%;transform:translateY(-50%);z-index:3;padding:.15rem;border:0;background:none;box-shadow:none;color:inherit;opacity:.5;font-size:clamp(1.65rem,2.8vw,2.1rem);line-height:1;cursor:pointer;align-items:center;justify-content:center;transition:opacity .15s ease}
+.ts-gallery__nav:hover,.ts-gallery__nav:focus-visible{opacity:1}
+.ts-gallery__nav--prev{left:0}
+.ts-gallery__nav--next{right:0}
+.ts-gallery[data-layout="slide"] .ts-gallery__stage{padding-inline:1.5rem}
+@media (max-width:900px){.ts-gallery[data-layout="grid"] .ts-gallery__grid,.ts-gallery:not([data-layout]) .ts-gallery__grid,.ts-gallery[data-layout="featured"] .ts-gallery__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.ts-gallery[data-layout="grid"] .ts-gallery__grid,.ts-gallery:not([data-layout]) .ts-gallery__grid,.ts-gallery[data-layout="featured"] .ts-gallery__grid{grid-template-columns:1fr}}
+</style>

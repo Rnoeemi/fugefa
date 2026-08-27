@@ -1,0 +1,39 @@
+<section
+  class="ts-cta"
+  data-gjs-type="ts-cta"
+  data-gjs-name="CTA"
+  data-layout="{{layout}}"
+  data-overlay="{{overlay}}"
+  data-overlay-color="{{overlay_color}}"
+  data-title="{{title}}"
+  data-text="{{text}}"
+  data-button-label="{{button_label}}"
+  data-button-href="{{button_href}}"
+  data-button-style="{{button_style}}"
+>
+  <div class="ts-cta__overlay ts-surface-overlay" data-ts-bg-overlay style="opacity:{{overlay}}"></div>
+  <div class="ts-cta__inner">
+    <div class="ts-cta__copy">
+      <h2 class="ts-cta__title" data-ts-text="title">{{title}}</h2>
+      <p class="ts-cta__text" data-ts-text="text">{{text}}</p>
+    </div>
+    <a class="ts-btn ts-btn--primary" data-ts-btn="button_style" data-ts-text="button_label" data-ts-href="button_href" href="{{button_href}}">{{button_label}}</a>
+  </div>
+</section>
+<style>
+.ts-cta{position:relative;isolation:isolate;overflow:hidden;padding:var(--section-y,3rem) max(var(--section-x),1.5rem);background:var(--color-primary-mid);color:#fff;font-family:var(--font-sans,Karla,sans-serif);box-sizing:border-box}
+.ts-cta__overlay,.ts-surface-overlay{position:absolute;inset:0;z-index:1;background:var(--ts-overlay-color, var(--color-primary));pointer-events:none}
+.ts-cta__inner{position:relative;z-index:2;max-width:var(--content-max,72rem);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;width:100%;box-sizing:border-box}
+.ts-cta__title{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .35rem}
+.ts-cta__text{margin:0;opacity:.8;line-height:1.5}
+.ts-btn{display:inline-block;padding:.85rem 1.4rem;text-decoration:none;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+
+.ts-cta[data-layout="row"] .ts-cta__inner,
+.ts-cta:not([data-layout]) .ts-cta__inner{flex-direction:row;align-items:center;justify-content:space-between;text-align:left}
+.ts-cta[data-layout="center"] .ts-cta__inner{flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ts-cta[data-layout="stack"] .ts-cta__inner{flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:left}
+@media (max-width:640px){
+  .ts-cta[data-layout="row"] .ts-cta__inner,
+  .ts-cta:not([data-layout]) .ts-cta__inner{flex-direction:column;align-items:flex-start}
+}
+</style>

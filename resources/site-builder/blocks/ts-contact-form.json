@@ -1,0 +1,51 @@
+{
+    "id": "ts-contact-form",
+    "label": "Kapcsolat űrlap (élő)",
+    "category": "content",
+    "icon": "envelope",
+    "keywords": [
+        "kapcsolat",
+        "urlap",
+        "form",
+        "adatkezeles"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "contact-form",
+    "gjsType": "ts-contact-form",
+    "className": "ts-dyn-block ts-dyn-contact-form",
+    "params": [
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Kérdés esetén keressen bizalommal."
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Írjon nekünk"
+        },
+        {
+            "key": "button",
+            "attr": "data-button",
+            "label": "Gomb",
+            "type": "text",
+            "default": "Küldés"
+        },
+        {
+            "key": "privacy_href",
+            "attr": "data-privacy-href",
+            "label": "Adatkezelési tájékoztató link",
+            "type": "link",
+            "default": "/oldal/adatkezelesi-tajekoztato",
+            "group": "privacy",
+            "groupLabel": "Adatkezelés"
+        }
+    ]
+}

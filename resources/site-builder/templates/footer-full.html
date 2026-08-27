@@ -1,0 +1,51 @@
+<footer
+  class="ts-footer"
+  data-gjs-type="ts-footer-full"
+  data-gjs-name="Lábléc"
+  data-use-site-contact="{{use_site_contact}}"
+  data-brand="{{brand}}"
+  data-text="{{text}}"
+>
+  <div class="ts-footer__grid">
+    <div>
+      <p class="ts-footer__brand" data-ts-text="brand">{{brand}}</p>
+      <p class="ts-footer__text" data-ts-text="text">{{text}}</p>
+    </div>
+    <div>
+      <p class="ts-footer__label">Oldalak</p>
+      <ul class="ts-footer__list">
+        <li><a href="/szallasok">Szállások</a></li>
+        <li><a href="/foglalas-panel">Foglalás</a></li>
+        <li><a href="/kapcsolat">Kapcsolat</a></li>
+      </ul>
+    </div>
+    <div data-ts-footer-contact>
+      <p class="ts-footer__label">Elérhetőség</p>
+      <ul class="ts-footer__list" data-ts-site-contact>
+        <li data-ts-site-field="address" data-ts-text="address">Cím</li>
+        <li data-ts-site-field="phone">
+          Telefon:
+          <a data-ts-text="phone" data-ts-href="phone" data-ts-href-scheme="tel" href="#">Telefon</a>
+        </li>
+        <li data-ts-site-field="email">
+          E-mail:
+          <a data-ts-text="email" data-ts-href="email" data-ts-href-scheme="mailto" href="#">E-mail</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<style>
+.ts-footer{background:var(--color-primary);color:#fff;font-family:var(--font-sans,Karla,sans-serif);margin-top:auto}
+.ts-footer__grid{max-width:72rem;margin:0 auto;padding:3.5rem 1.5rem;display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.ts-footer__brand{font-family:var(--font-display,Literata,serif);font-size:1.75rem;margin:0 0 .75rem}
+.ts-footer__text{margin:0;opacity:.7;line-height:1.6;max-width:22rem;font-size:.9rem}
+.ts-footer__label{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5;margin:0 0 1rem;font-weight:600}
+.ts-footer__list{list-style:none;padding:0;margin:0;display:grid;gap:.5rem;font-size:.9rem;opacity:.85}
+.ts-footer__list a{color:inherit;text-decoration:none}
+.ts-footer__list [data-ts-site-field][hidden]{display:none!important}
+.ts-footer__copy{display:none!important}
+.ts-footer ~ .ts-layout{background:var(--color-primary);color:#fff;padding:0 1.5rem 2.5rem}
+.ts-footer ~ .ts-text{background:var(--color-primary);color:#fff;padding:0 1.5rem 2.5rem}
+.ts-footer ~ .ts-image{background:var(--color-primary);padding:0 1.5rem 2rem;margin:0}
+</style>

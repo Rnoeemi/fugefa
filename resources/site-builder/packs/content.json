@@ -1,0 +1,26 @@
+{
+    "label": "Előre gyártott",
+    "blocks": [
+        "ts-features",
+        "ts-icon-list",
+        "ts-cta",
+        "ts-text",
+        "ts-image",
+        "ts-quote",
+        "ts-contact",
+        "ts-gallery",
+        "ts-spacer",
+        "ts-amenities",
+        "ts-faq",
+        "ts-pricing-table",
+        "ts-how-to-book",
+        "ts-video",
+        "ts-checkin",
+        "ts-nearby",
+        "ts-social",
+        "ts-legal",
+        "ts-map",
+        "ts-contact-form",
+        "ts-site-map"
+    ]
+}

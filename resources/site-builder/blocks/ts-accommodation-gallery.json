@@ -1,0 +1,44 @@
+{
+    "id": "ts-accommodation-gallery",
+    "label": "Szállás galéria (élő)",
+    "category": "accommodations",
+    "icon": "photo",
+    "keywords": [
+        "galeria",
+        "kepek",
+        "elo"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "accommodation-gallery",
+    "gjsType": "ts-accommodation-gallery",
+    "className": "ts-dyn-block ts-dyn-gallery",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Galéria"
+        },
+        {
+            "key": "slug",
+            "attr": "data-slug",
+            "label": "Szállás",
+            "type": "select",
+            "default": "",
+            "options": "accommodations"
+        },
+        {
+            "key": "limit",
+            "attr": "data-limit",
+            "label": "Max. kép",
+            "type": "number",
+            "default": "8",
+            "min": 1,
+            "max": 24
+        }
+    ]
+}

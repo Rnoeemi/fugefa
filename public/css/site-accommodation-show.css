@@ -1,0 +1,410 @@
+/* Szállás egyedi oldal – asztali, majd tablet / telefon (Tailwind md / sm) */
+
+.acc-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(22rem, 52vh, 34rem);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  background: var(--color-primary, #0f2920);
+}
+
+.acc-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.acc-hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--color-primary, #0f2920) 88%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary, #0f2920) 55%, transparent) 42%,
+      color-mix(in srgb, var(--color-primary, #0f2920) 28%, transparent) 100%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-primary, #0f2920) 35%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary, #0f2920) 82%, transparent) 100%
+    );
+}
+
+.acc-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 7.5rem 2rem 3.25rem;
+  box-sizing: border-box;
+}
+
+.acc-hero__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #fff 62%, transparent);
+}
+
+.acc-hero__title {
+  margin: 0.85rem 0 0;
+  max-width: 18ch;
+  font-family: var(--font-display, Literata, serif);
+  font-size: clamp(2.35rem, 4.2vw, 3.55rem);
+  line-height: 1.08;
+  font-weight: 600;
+}
+
+.acc-hero__lead {
+  margin: 1rem 0 0;
+  max-width: 36rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, #fff 78%, transparent);
+}
+
+.acc-hero__meta {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.acc-hero__meta li {
+  margin: 0;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid color-mix(in srgb, #fff 22%, transparent);
+  background: color-mix(in srgb, #fff 8%, transparent);
+  backdrop-filter: blur(6px);
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, #fff 92%, transparent);
+}
+
+.acc-hero__actions {
+  margin-top: 1.75rem;
+}
+
+.acc-main__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.9fr);
+  gap: 3rem;
+  align-items: start;
+}
+
+.acc-copy__body {
+  margin-top: 1.25rem;
+  max-width: 42rem;
+  white-space: pre-line;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-text, #1c241f) 82%, transparent);
+}
+
+.acc-aside {
+  position: sticky;
+  top: 6.5rem;
+}
+
+.acc-aside__panel {
+  display: grid;
+  gap: 0;
+  border: 1px solid color-mix(in srgb, var(--color-text, #1c241f) 10%, transparent);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-light, #f4f5f2) 88%, #fff) 0%,
+      var(--color-light, #f4f5f2) 100%
+    );
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--color-primary, #0f2920) 8%, transparent);
+}
+
+.acc-aside__block {
+  padding: 1.35rem 1.4rem 1.45rem;
+}
+
+.acc-aside__block + .acc-aside__block {
+  border-top: 1px solid color-mix(in srgb, var(--color-text, #1c241f) 9%, transparent);
+}
+
+.acc-aside__block--price {
+  background: color-mix(in srgb, var(--color-primary, #0f2920) 92%, #000);
+  color: #fff;
+}
+
+.acc-aside__kicker,
+.acc-aside__heading {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.acc-aside__kicker {
+  color: color-mix(in srgb, #fff 58%, transparent);
+}
+
+.acc-aside__heading {
+  color: color-mix(in srgb, var(--color-text, #1c241f) 55%, transparent);
+  margin-bottom: 0.9rem;
+}
+
+.acc-aside__price {
+  margin: 0.7rem 0 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.45rem;
+}
+
+.acc-aside__price-amount {
+  font-family: var(--font-display, Literata, serif);
+  font-size: clamp(1.9rem, 2.4vw, 2.35rem);
+  line-height: 1;
+  font-weight: 600;
+}
+
+.acc-aside__price-unit {
+  font-size: 0.92rem;
+  opacity: 0.72;
+}
+
+.acc-aside__facts {
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.acc-aside__facts > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding-top: 0.55rem;
+  border-top: 1px solid color-mix(in srgb, #fff 14%, transparent);
+}
+
+.acc-aside__facts > div:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.acc-aside__facts dt {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.acc-aside__facts dd {
+  margin: 0;
+  text-align: right;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.acc-aside__amenities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.acc-aside__amenities li {
+  margin: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary-mid, #163a2e) 18%, transparent);
+  background: color-mix(in srgb, #fff 70%, var(--color-light, #f4f5f2));
+  font-size: 0.86rem;
+  line-height: 1.3;
+  color: var(--color-text, #1c241f);
+}
+
+.acc-aside__empty {
+  margin: 0;
+  font-size: 0.92rem;
+  color: color-mix(in srgb, var(--color-text, #1c241f) 58%, transparent);
+}
+
+.acc-aside__block--cta {
+  padding-top: 1.15rem;
+  padding-bottom: 1.25rem;
+}
+
+.acc-aside__cta {
+  width: 100%;
+}
+
+.acc-rooms {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-light, #f4f5f2) 70%, #fff) 0%,
+      var(--color-light, #f4f5f2) 100%
+    );
+  border-top: 1px solid color-mix(in srgb, var(--color-text, #1c241f) 7%, transparent);
+}
+
+.acc-rooms__header {
+  max-width: 40rem;
+  margin-bottom: 2.25rem;
+}
+
+.acc-rooms__eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text, #1c241f) 48%, transparent);
+}
+
+.acc-rooms__groups {
+  display: grid;
+  gap: 2.75rem;
+}
+
+.acc-room__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text, #1c241f) 10%, transparent);
+}
+
+.acc-room__title {
+  margin: 0;
+  font-family: var(--font-display, Literata, serif);
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  color: var(--color-primary-mid, #163a2e);
+}
+
+.acc-room__meta {
+  margin: 0;
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text, #1c241f) 55%, transparent);
+}
+
+.acc-room__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.acc-room__figure {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-primary, #0f2920) 12%, #fff);
+}
+
+.acc-room__trigger {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.acc-room__trigger img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.acc-room__trigger:hover img,
+.acc-room__trigger:focus-visible img {
+  transform: scale(1.04);
+  filter: brightness(1.05);
+}
+
+.acc-room__trigger:focus-visible {
+  outline: 2px solid var(--color-accent, #8d6b3e);
+  outline-offset: 2px;
+}
+
+/* Tablet – Tailwind md */
+@media (max-width: 1023px) {
+  .acc-hero__inner {
+    padding: 6.5rem 1.5rem 2.75rem;
+  }
+
+  .acc-main__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .acc-aside {
+    position: static;
+  }
+
+  .acc-room__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Telefon – Tailwind sm alatt */
+@media (max-width: 767px) {
+  .acc-hero {
+    min-height: clamp(20rem, 68vh, 28rem);
+  }
+
+  .acc-hero__inner {
+    padding: 5.75rem 1.15rem 2.25rem;
+  }
+
+  .acc-hero__title {
+    max-width: none;
+  }
+
+  .acc-hero__meta {
+    gap: 0.4rem;
+  }
+
+  .acc-hero__meta li {
+    font-size: 0.8rem;
+    padding: 0.38rem 0.7rem;
+  }
+
+  .acc-aside__block {
+    padding: 1.15rem 1.1rem 1.2rem;
+  }
+
+  .acc-room__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .acc-rooms__groups {
+    gap: 2rem;
+  }
+}

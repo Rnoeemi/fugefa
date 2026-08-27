@@ -1,0 +1,154 @@
+{
+    "categories": {
+        "layout": {
+            "label": "Szekciók",
+            "order": 10
+        },
+        "content": {
+            "label": "Előre gyártott",
+            "order": 20
+        },
+        "accommodations": {
+            "label": "Szállások",
+            "order": 30
+        },
+        "appointments": {
+            "label": "Időpontfoglaló",
+            "order": 35
+        },
+        "chrome": {
+            "label": "Fejléc / Lábléc",
+            "order": 40
+        },
+        "general": {
+            "label": "Általános",
+            "order": 15
+        }
+    },
+    "optionSets": {
+        "accommodation_types": [
+            {
+                "id": "all",
+                "name": "Összes foglalható"
+            },
+            {
+                "id": "guesthouse",
+                "name": "Vendégház"
+            },
+            {
+                "id": "room",
+                "name": "Szoba"
+            }
+        ],
+        "media_types": [
+            {
+                "id": "image",
+                "name": "Kép"
+            },
+            {
+                "id": "video",
+                "name": "Videó"
+            }
+        ],
+        "image_sides": [
+            {
+                "id": "right",
+                "name": "Kép jobbra"
+            },
+            {
+                "id": "left",
+                "name": "Kép balra"
+            }
+        ],
+        "section_widths": [
+            {
+                "id": "content",
+                "name": "Boxed (~1200px) – tartalom középen"
+            },
+            {
+                "id": "full",
+                "name": "Teljes szélesség – tartalom oldalszélig"
+            }
+        ],
+        "menu_breakpoints": [
+            {
+                "id": "phone",
+                "name": "Csak telefonon (≤767px)"
+            },
+            {
+                "id": "tablet",
+                "name": "Tablettől lefelé (≤1023px)"
+            }
+        ],
+        "logo_heights": [
+            {
+                "id": "28",
+                "name": "28px – nagyon kicsi"
+            },
+            {
+                "id": "32",
+                "name": "32px – kicsi"
+            },
+            {
+                "id": "40",
+                "name": "40px – alap"
+            },
+            {
+                "id": "48",
+                "name": "48px – közepes"
+            },
+            {
+                "id": "56",
+                "name": "56px – nagy"
+            },
+            {
+                "id": "72",
+                "name": "72px – extra"
+            },
+            {
+                "id": "96",
+                "name": "96px – hero"
+            }
+        ],
+        "logo_max_widths": [
+            {
+                "id": "120",
+                "name": "120px"
+            },
+            {
+                "id": "160",
+                "name": "160px"
+            },
+            {
+                "id": "180",
+                "name": "180px – alap"
+            },
+            {
+                "id": "220",
+                "name": "220px"
+            },
+            {
+                "id": "280",
+                "name": "280px"
+            },
+            {
+                "id": "360",
+                "name": "360px"
+            }
+        ],
+        "button_styles": [
+            {
+                "id": "primary",
+                "name": "Elsődleges"
+            },
+            {
+                "id": "secondary",
+                "name": "Másodlagos"
+            },
+            {
+                "id": "inverse",
+                "name": "Inverse"
+            }
+        ]
+    }
+}

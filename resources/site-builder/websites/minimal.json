@@ -1,0 +1,13 @@
+{
+    "label": "Minimál (példa)",
+    "packs": [
+        "layout",
+        "content",
+        "chrome"
+    ],
+    "blocks": [],
+    "exclude": [
+        "ts-gallery",
+        "ts-quote"
+    ]
+}

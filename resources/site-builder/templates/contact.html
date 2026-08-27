@@ -1,0 +1,33 @@
+<section
+  class="ts-contact"
+  data-gjs-type="ts-contact"
+  data-gjs-name="Kapcsolat"
+  data-title="{{title}}"
+  data-address="{{address}}"
+  data-phone="{{phone}}"
+  data-email="{{email}}"
+>
+  <div class="ts-contact__inner">
+    <h2 class="ts-contact__title" data-ts-text="title">{{title}}</h2>
+    <p class="ts-contact__row ts-contact__row--address" data-ts-show="address">
+      <span class="ts-contact__label">Cím:</span>
+      <span class="ts-contact__value" data-ts-text="address">{{address}}</span>
+    </p>
+    <p class="ts-contact__row ts-contact__row--phone" data-ts-show="phone">
+      <span class="ts-contact__label">Telefon:</span>
+      <a class="ts-contact__value" data-ts-text="phone" data-ts-href="phone" data-ts-href-scheme="tel" href="tel:{{phone}}">{{phone}}</a>
+    </p>
+    <p class="ts-contact__row ts-contact__row--email" data-ts-show="email">
+      <span class="ts-contact__label">Email:</span>
+      <a class="ts-contact__value" data-ts-text="email" data-ts-href="email" data-ts-href-scheme="mailto" href="mailto:{{email}}">{{email}}</a>
+    </p>
+  </div>
+</section>
+<style>
+.ts-contact{padding:4rem 1.5rem;background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-contact__inner{max-width:36rem;margin:0 auto;width:100%;box-sizing:border-box}
+.ts-contact__title{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 1rem}
+.ts-contact__row{margin:0 0 .65rem;line-height:1.6}
+.ts-contact__label{margin-right:.35rem;opacity:.7}
+.ts-contact__value,.ts-contact a{color:var(--color-accent)}
+</style>

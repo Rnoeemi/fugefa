@@ -1,0 +1,286 @@
+.bc {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.bc__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.bc__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--gray-950);
+}
+
+.bc__subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}
+
+.bc__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bc__select {
+    width: 14rem;
+    max-width: 100%;
+}
+
+.bc__frame {
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+}
+
+.bc__weekdays,
+.bc__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.bc__weekdays {
+    border-bottom: 1px solid var(--gray-200);
+    background: color-mix(in oklab, var(--gray-100) 85%, white);
+}
+
+.bc__weekday {
+    padding: 0.75rem 0.35rem;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+}
+
+.bc__day {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-height: 7.5rem;
+    min-width: 0;
+    padding: 0.5rem;
+    border-right: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+    background: #fff;
+}
+
+.bc__day:nth-child(7n) {
+    border-right: none;
+}
+
+.bc__day--muted {
+    background: color-mix(in oklab, var(--gray-50, #f9fafb) 90%, white);
+}
+
+.bc__day--today {
+    background: color-mix(in oklab, var(--primary-50, #ecfdf5) 70%, white);
+}
+
+.bc__day-num {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--gray-700);
+}
+
+.bc__day--muted .bc__day-num {
+    color: var(--gray-400);
+}
+
+.bc__day--today .bc__day-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: var(--primary-600, #059669);
+    color: #fff;
+}
+
+.bc__events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.bc__event {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 0.3rem;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.6875rem;
+    line-height: 1.25;
+    text-decoration: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: opacity 0.15s ease;
+}
+
+.bc__event:hover {
+    opacity: 0.85;
+}
+
+.bc__event-name {
+    font-weight: 600;
+}
+
+.bc__event-meta {
+    opacity: 0.8;
+}
+
+.bc__event--pending {
+    border-color: #fde68a;
+    background: #fef3c7;
+    color: #78350f;
+}
+
+.bc__event--confirmed {
+    border-color: #a7f3d0;
+    background: #d1fae5;
+    color: #064e3b;
+}
+
+.bc__event--checked_in {
+    border-color: #bae6fd;
+    background: #e0f2fe;
+    color: #0c4a6e;
+}
+
+.bc__event--default {
+    border-color: var(--gray-200);
+    background: var(--gray-100);
+    color: var(--gray-800);
+}
+
+.bc__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+.bc__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.bc__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 999px;
+}
+
+.bc__dot--pending {
+    background: #f59e0b;
+}
+
+.bc__dot--confirmed {
+    background: #10b981;
+}
+
+.bc__dot--checked_in {
+    background: #0ea5e9;
+}
+
+@media (max-width: 640px) {
+    .bc__day {
+        min-height: 5.5rem;
+        padding: 0.35rem;
+    }
+
+    .bc__event-meta {
+        display: none;
+    }
+
+    .bc__select {
+        width: 100%;
+    }
+}
+
+.dark .bc__title {
+    color: #fff;
+}
+
+.dark .bc__subtitle,
+.dark .bc__legend,
+.dark .bc__weekday {
+    color: var(--gray-400);
+}
+
+.dark .bc__frame {
+    border-color: rgb(255 255 255 / 10%);
+    background: var(--gray-900, #111827);
+    box-shadow: none;
+}
+
+.dark .bc__weekdays {
+    border-bottom-color: rgb(255 255 255 / 10%);
+    background: rgb(255 255 255 / 4%);
+}
+
+.dark .bc__day {
+    border-right-color: rgb(255 255 255 / 6%);
+    border-bottom-color: rgb(255 255 255 / 6%);
+    background: transparent;
+}
+
+.dark .bc__day--muted {
+    background: rgb(255 255 255 / 2%);
+}
+
+.dark .bc__day--today {
+    background: color-mix(in oklab, var(--primary-400, #34d399) 12%, transparent);
+}
+
+.dark .bc__day-num {
+    color: var(--gray-200);
+}
+
+.dark .bc__day--muted .bc__day-num {
+    color: var(--gray-500);
+}
+
+.dark .bc__event--pending {
+    border-color: rgb(245 158 11 / 35%);
+    background: rgb(245 158 11 / 18%);
+    color: #fcd34d;
+}
+
+.dark .bc__event--confirmed {
+    border-color: rgb(16 185 129 / 35%);
+    background: rgb(16 185 129 / 18%);
+    color: #6ee7b7;
+}
+
+.dark .bc__event--checked_in {
+    border-color: rgb(14 165 233 / 35%);
+    background: rgb(14 165 233 / 18%);
+    color: #7dd3fc;
+}
+
+.dark .bc__event--default {
+    border-color: rgb(255 255 255 / 12%);
+    background: rgb(255 255 255 / 8%);
+    color: var(--gray-200);
+}

@@ -1,0 +1,66 @@
+{
+    "id": "ts-how-to-book",
+    "label": "Hogyan foglalj",
+    "category": "content",
+    "icon": "queue-list",
+    "keywords": [
+        "foglalas",
+        "lepesek",
+        "howto"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "how-to-book.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Foglalás 3 lépésben"
+        },
+        {
+            "key": "lead",
+            "label": "Bevezető",
+            "type": "text",
+            "default": "Gyors, átlátható folyamat – visszaigazolással."
+        },
+        {
+            "key": "step1_title",
+            "label": "1. cím",
+            "type": "text",
+            "default": "Válasszon szállást"
+        },
+        {
+            "key": "step1_text",
+            "label": "1. szöveg",
+            "type": "text",
+            "default": "Vendégház vagy szoba – ahogy az útja kívánja."
+        },
+        {
+            "key": "step2_title",
+            "label": "2. cím",
+            "type": "text",
+            "default": "Jelölje ki az időpontot"
+        },
+        {
+            "key": "step2_text",
+            "label": "2. szöveg",
+            "type": "text",
+            "default": "Nézze meg a szabad napokat, adja meg a vendégszámot."
+        },
+        {
+            "key": "step3_title",
+            "label": "3. cím",
+            "type": "text",
+            "default": "Küldje el a foglalást"
+        },
+        {
+            "key": "step3_text",
+            "label": "3. szöveg",
+            "type": "text",
+            "default": "Visszaigazolást küldünk, és várjuk Önt."
+        }
+    ]
+}

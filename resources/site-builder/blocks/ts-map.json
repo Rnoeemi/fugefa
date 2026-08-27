@@ -1,0 +1,56 @@
+{
+    "id": "ts-map",
+    "label": "Térkép (egyedi embed)",
+    "category": "content",
+    "icon": "map-pin",
+    "keywords": [
+        "terkep",
+        "map",
+        "helyszin"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-map",
+    "interactive": true,
+    "template": "map.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Hol talál minket",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "address",
+            "attr": "data-address",
+            "label": "Cím / helyszín",
+            "type": "text",
+            "default": "1234 Mintaút, Tüsifalu, Fő utca 12.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "note",
+            "attr": "data-note",
+            "label": "Megjegyzés",
+            "type": "text",
+            "default": "Parkolás a ház előtt.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "embed_url",
+            "attr": "data-embed-url",
+            "label": "Google Maps embed URL",
+            "type": "media",
+            "default": "https://maps.google.com/maps?q=Budapest&t=&z=13&ie=UTF8&iwloc=&output=embed",
+            "group": "background",
+            "groupLabel": "Térkép"
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "id": "ts-logo-row",
+    "label": "Logó / partner sor",
+    "category": "general",
+    "icon": "rectangle-group",
+    "keywords": [
+        "logo",
+        "partner",
+        "brand"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-logo-row",
+    "interactive": true,
+    "template": "logo-row.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Partnereink"
+        },
+        {
+            "key": "logo1",
+            "attr": "data-logo1",
+            "label": "Logo 1 URL",
+            "type": "media",
+            "default": ""
+        },
+        {
+            "key": "logo2",
+            "attr": "data-logo2",
+            "label": "Logo 2 URL",
+            "type": "media",
+            "default": ""
+        },
+        {
+            "key": "logo3",
+            "attr": "data-logo3",
+            "label": "Logo 3 URL",
+            "type": "media",
+            "default": ""
+        },
+        {
+            "key": "logo4",
+            "attr": "data-logo4",
+            "label": "Logo 4 URL",
+            "type": "media",
+            "default": ""
+        }
+    ]
+}

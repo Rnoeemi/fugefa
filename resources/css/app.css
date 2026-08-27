@@ -1,0 +1,171 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Karla', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Literata', ui-serif, Georgia, serif;
+    /* Klasszikus site tokenek → globális színek (Megjelenés / site-theme.css) */
+    --color-pine: var(--color-primary-mid, #163a2e);
+    --color-pine-deep: var(--color-primary, #0f2920);
+    --color-moss: var(--color-primary-mid, #2f6b52);
+    --color-fern: color-mix(in srgb, var(--color-primary-mid, #2f6b52) 65%, white);
+    --color-sand: var(--color-surface, #e8e4db);
+    --color-mist: var(--color-light, #f4f5f2);
+    --color-ink: var(--color-text, #1c241f);
+    --color-brass: var(--color-accent, #8d6b3e);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-mist text-ink antialiased;
+        font-family: var(--font-sans);
+    }
+
+    ::selection {
+        background: color-mix(in oklab, var(--color-fern) 35%, white);
+    }
+}
+
+@layer components {
+    .font-display {
+        font-family: var(--font-display);
+    }
+
+    .site-shell {
+        @apply min-h-screen flex flex-col;
+    }
+
+    .site-nav {
+        @apply fixed inset-x-0 top-0 z-50 transition duration-300;
+    }
+
+    .site-nav.is-solid {
+        @apply bg-pine-deep/95 text-white shadow-lg backdrop-blur-md;
+    }
+
+    .site-nav.is-transparent {
+        @apply bg-gradient-to-b from-black/55 to-transparent text-white;
+    }
+
+    .nav-link {
+        @apply text-sm tracking-wide uppercase opacity-90 transition hover:opacity-100;
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-sm bg-brass px-6 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white transition;
+        @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass;
+    }
+
+    .btn-primary:hover {
+        background: color-mix(in srgb, var(--color-brass) 82%, black);
+    }
+
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-sm border border-white/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white transition;
+        @apply hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+    }
+
+    .btn-dark {
+        @apply inline-flex items-center justify-center gap-2 rounded-sm bg-pine px-6 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white transition;
+        @apply hover:bg-pine-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pine;
+    }
+
+    .section {
+        @apply px-5 py-16 md:px-8 md:py-24;
+    }
+
+    .section-narrow {
+        @apply mx-auto w-full max-w-6xl;
+    }
+
+    .section-title {
+        @apply font-display text-3xl leading-tight text-pine md:text-4xl;
+    }
+
+    .section-lead {
+        @apply mt-4 max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg;
+    }
+
+    .hero {
+        @apply relative flex min-h-[100svh] items-end overflow-hidden;
+        background:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, var(--color-primary) 25%, transparent) 0%,
+                color-mix(in srgb, var(--color-primary) 78%, transparent) 72%,
+                color-mix(in srgb, var(--color-primary) 92%, transparent) 100%
+            ),
+            radial-gradient(
+                ellipse at 20% 20%,
+                color-mix(in srgb, var(--color-primary-mid) 35%, transparent),
+                transparent 50%
+            ),
+            linear-gradient(
+                135deg,
+                var(--color-primary-mid) 0%,
+                var(--color-primary) 45%,
+                color-mix(in srgb, var(--color-primary) 80%, white) 100%
+            );
+    }
+
+    .hero-grain {
+        @apply pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-soft-light;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    .amenity-row {
+        @apply flex flex-wrap gap-x-8 gap-y-4 border-y border-pine/10 py-6 text-sm text-ink/80;
+    }
+
+    .field {
+        @apply w-full rounded-sm border border-pine/15 bg-white px-4 py-3 text-ink outline-none transition;
+        @apply focus:border-moss focus:ring-2 focus:ring-moss/20;
+    }
+
+    .field-label {
+        @apply mb-1.5 block text-sm font-medium text-pine;
+    }
+
+    .cal-grid {
+        @apply grid grid-cols-7 gap-1 text-center text-sm;
+    }
+
+    .cal-day {
+        @apply flex aspect-square items-center justify-center rounded-sm transition;
+    }
+
+    .cal-day.is-muted {
+        @apply text-ink/30;
+    }
+
+    .cal-day.is-occupied {
+        @apply bg-pine/15 text-pine/40 line-through;
+    }
+
+    .cal-day.is-available {
+        @apply cursor-pointer hover:bg-fern/20;
+    }
+
+    .cal-day.is-selected,
+    .cal-day.is-in-range {
+        @apply bg-pine text-white;
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "label": "Tüsiszállás",
+    "packs": [
+        "layout",
+        "general",
+        "content",
+        "accommodations",
+        "appointments",
+        "chrome"
+    ],
+    "blocks": [],
+    "exclude": []
+}

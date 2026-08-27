@@ -1,0 +1,21 @@
+<section class="ts-checkin" data-gjs-name="Check-in / out">
+  <div class="ts-checkin__inner">
+    <h2>{{title}}</h2>
+    <div class="ts-checkin__grid">
+      <article><h3>Érkezés</h3><p class="ts-checkin__time">{{checkin}}</p><p>{{checkin_note}}</p></article>
+      <article><h3>Távozás</h3><p class="ts-checkin__time">{{checkout}}</p><p>{{checkout_note}}</p></article>
+      <article><h3>Egyéb</h3><p class="ts-checkin__time">{{extra_label}}</p><p>{{extra_note}}</p></article>
+    </div>
+  </div>
+</section>
+<style>
+.ts-checkin{padding:3.5rem 1.5rem;background:var(--color-primary-mid);color:#fff;font-family:var(--font-sans,Karla,sans-serif)}
+.ts-checkin__inner{max-width:72rem;margin:0 auto}
+.ts-checkin h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 1.5rem;color:#fff}
+.ts-checkin__grid{display:grid;gap:1rem;grid-template-columns:repeat(3,1fr)}
+.ts-checkin article{background:#fff;color:var(--color-text);border:1px solid color-mix(in srgb, var(--color-text) 12%, transparent);padding:1.25rem}
+.ts-checkin h3{margin:0;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--color-text)}
+.ts-checkin__time{font-family:var(--font-display,Literata,serif);font-size:1.75rem;margin:.5rem 0;color:var(--color-text)}
+.ts-checkin p{margin:0;opacity:.8;line-height:1.5;font-size:.95rem;color:var(--color-text)}
+@media (max-width:800px){.ts-checkin__grid{grid-template-columns:1fr}}
+</style>

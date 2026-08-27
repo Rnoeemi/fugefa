@@ -1,0 +1,44 @@
+{
+    "id": "ts-accommodations-cards",
+    "label": "Szállás kártyák (élő)",
+    "category": "accommodations",
+    "icon": "home",
+    "keywords": [
+        "szallas",
+        "kartya",
+        "elo"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "accommodations-cards",
+    "gjsType": "ts-accommodations-cards",
+    "className": "ts-dyn-block ts-dyn-cards",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Szállásaink"
+        },
+        {
+            "key": "limit",
+            "attr": "data-limit",
+            "label": "Max. darab",
+            "type": "number",
+            "default": "6",
+            "min": 1,
+            "max": 24
+        },
+        {
+            "key": "type",
+            "attr": "data-type",
+            "label": "Típus",
+            "type": "select",
+            "default": "all",
+            "options": "accommodation_types"
+        }
+    ]
+}

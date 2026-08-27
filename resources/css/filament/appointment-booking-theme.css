@@ -1,0 +1,187 @@
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+@import '../app.css';
+
+@source '../../../app/Filament/Appointment/**/*';
+@source '../../../resources/views/filament/appointment/**/*';
+
+/* Időpontfoglaló panel – webhely / szerkesztő témához igazítva */
+.fi-body {
+    background: var(--color-mist) !important;
+    font-family: var(--font-sans) !important;
+}
+
+.fi-simple-main-ctn,
+.fi-main-ctn {
+    background: transparent !important;
+}
+
+.fi-simple-main,
+.fi-main {
+    max-width: 72rem !important;
+    padding-inline: 1.25rem !important;
+    padding-block: 2rem !important;
+}
+
+@media (min-width: 768px) {
+    .fi-simple-main,
+    .fi-main {
+        padding-inline: 2rem !important;
+        padding-block: 2.5rem !important;
+    }
+}
+
+.fi-page-header {
+    display: none !important;
+}
+
+.fi-section {
+    border-radius: 0.125rem !important;
+    border-color: color-mix(in oklab, var(--color-pine) 12%, transparent) !important;
+    background: white !important;
+}
+
+.fi-section-header-heading,
+.fi-fo-field-wrp-label {
+    color: var(--color-pine) !important;
+}
+
+.fi-btn-primary {
+    background-color: var(--color-brass) !important;
+    border-color: var(--color-brass) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.75rem !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: #7a5c35 !important;
+    border-color: #7a5c35 !important;
+}
+
+.appointment-booking-hero {
+    width: 100%;
+    background: var(--color-pine-deep);
+    color: white;
+    padding: 7rem 0 3rem;
+}
+
+@media (min-width: 768px) {
+    .appointment-booking-hero {
+        padding-top: 8rem;
+    }
+}
+
+.appointment-booking-hero-inner {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .appointment-booking-hero-inner {
+        padding-inline: 2rem;
+    }
+}
+
+.appointment-worker-bio {
+    border: 1px solid color-mix(in oklab, var(--color-pine) 12%, transparent);
+    background: color-mix(in oklab, var(--color-mist) 80%, white);
+    padding: 1.25rem 1.35rem;
+}
+
+.appointment-worker-bio__role {
+    margin: 0;
+    font-size: .7rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--color-brass);
+    font-weight: 600;
+}
+
+.appointment-worker-bio__name {
+    margin: .35rem 0 .75rem;
+    font-family: var(--font-display), Literata, serif;
+    font-size: 1.5rem;
+    color: var(--color-pine);
+}
+
+.appointment-worker-bio__text {
+    margin: 0;
+    line-height: 1.65;
+    color: color-mix(in oklab, var(--color-pine) 80%, black);
+    font-size: .95rem;
+}
+
+.appointment-package-card {
+    border: 1px solid color-mix(in oklab, var(--color-pine) 12%, transparent);
+    background: white;
+    padding: 1rem 1.15rem;
+}
+
+.appointment-package-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem 1.25rem;
+    align-items: baseline;
+    color: var(--color-pine);
+    font-size: .9rem;
+}
+
+.appointment-package-card p {
+    margin: .75rem 0 0;
+    line-height: 1.55;
+    opacity: .8;
+    font-size: .92rem;
+}
+
+.appointment-slot-grid__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: .75rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-pine) 70%, black);
+}
+
+.appointment-slot-grid__legend i {
+    display: inline-block;
+    width: .75rem;
+    height: .75rem;
+    margin-right: .4rem;
+    vertical-align: -1px;
+    border-radius: 2px;
+}
+
+.appointment-slot-grid__legend .is-outside { background: #d6d3d1; }
+.appointment-slot-grid__legend .is-booked { background: #dc2626; }
+.appointment-slot-grid__legend .is-available { background: #16a34a; }
+.appointment-slot-grid__legend .is-selected { background: #2563eb; }
+
+.appointment-slot-grid__rows {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+    gap: .4rem;
+}
+
+.appointment-slot {
+    appearance: none;
+    border: 0;
+    border-radius: 2px;
+    min-height: 2.5rem;
+    padding: .35rem .25rem;
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+}
+
+.appointment-slot--outside { background: #d6d3d1; color: #57534e; }
+.appointment-slot--booked { background: #dc2626; }
+.appointment-slot--available { background: #16a34a; cursor: pointer; }
+.appointment-slot--available:hover { background: #15803d; }
+.appointment-slot--selected { background: #2563eb; box-shadow: inset 0 0 0 2px #1d4ed8; }
+.appointment-slot.is-disabled { cursor: default; opacity: .95; }
+.appointment-slot-grid__empty { margin: 0; opacity: .7; font-size: .9rem; }

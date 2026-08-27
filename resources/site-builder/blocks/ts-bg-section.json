@@ -1,0 +1,144 @@
+{
+    "id": "ts-bg-section",
+    "label": "Háttérképes szekció",
+    "category": "general",
+    "icon": "photo",
+    "keywords": [
+        "hatter",
+        "szekcio",
+        "kep"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-bg-section",
+    "interactive": true,
+    "template": "bg-section.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Elrendezés",
+            "type": "layout",
+            "default": "left",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "left",
+                    "name": "Balra",
+                    "hint": "Szöveg balra, full-bleed háttér",
+                    "wire": "media-left"
+                },
+                {
+                    "id": "center",
+                    "name": "Középen",
+                    "hint": "Szöveg középre a háttéren",
+                    "wire": "media-center"
+                },
+                {
+                    "id": "split",
+                    "name": "Osztott",
+                    "hint": "Bal: sima háttér + szöveg, jobb: tiszta kép",
+                    "wire": "media-split"
+                }
+            ]
+        },
+        {
+            "key": "media_type",
+            "attr": "data-media-type",
+            "label": "Háttér típus",
+            "type": "select",
+            "default": "image",
+            "options": "media_types",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Háttér URL (kép/videó)",
+            "type": "media",
+            "default": "/images/site/hero.jpg",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay",
+            "attr": "data-overlay",
+            "label": "Overlay erősség",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "default": "0.55",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay_color",
+            "attr": "data-overlay-color",
+            "label": "Overlay szín (színtónus)",
+            "type": "color",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "eyebrow",
+            "attr": "data-eyebrow",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Szekció",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Általános tartalmi blokk",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "body",
+            "attr": "data-body",
+            "label": "Szöveg",
+            "type": "textarea",
+            "default": "Szerkeszthető háttérképpel vagy videóval – bármely webhelyhez.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "button_label",
+            "attr": "data-button-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Tovább",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_href",
+            "attr": "data-button-href",
+            "label": "Link",
+            "type": "text",
+            "default": "#",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_style",
+            "attr": "data-button-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        }
+    ]
+}

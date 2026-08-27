@@ -1,0 +1,22 @@
+{
+    "id": "ts-layout-3col",
+    "label": "3 oszlop",
+    "category": "layout",
+    "icon": "columns-3",
+    "keywords": [
+        "layout",
+        "oszlop",
+        "3",
+        "szekció",
+        "section"
+    ],
+    "scopes": [
+        "page",
+        "footer"
+    ],
+    "type": "static",
+    "template": "layout-3col.html",
+    "interactive": true,
+    "container": true,
+    "params": []
+}

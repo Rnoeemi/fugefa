@@ -1,0 +1,25 @@
+<section class="ts-pricing" data-gjs-name="Ártábla">
+  <div class="ts-pricing__inner">
+    <h2>{{title}}</h2>
+    <p class="ts-pricing__lead">{{lead}}</p>
+    <div class="ts-pricing__table">
+      <div class="ts-pricing__row ts-pricing__head"><span>Időszak</span><span>Ár / éj</span><span>Megjegyzés</span></div>
+      <div class="ts-pricing__row"><span>{{row1_period}}</span><span>{{row1_price}}</span><span>{{row1_note}}</span></div>
+      <div class="ts-pricing__row"><span>{{row2_period}}</span><span>{{row2_price}}</span><span>{{row2_note}}</span></div>
+      <div class="ts-pricing__row"><span>{{row3_period}}</span><span>{{row3_price}}</span><span>{{row3_note}}</span></div>
+    </div>
+    <p class="ts-pricing__foot">{{footer}}</p>
+  </div>
+</section>
+<style>
+.ts-pricing{padding:4rem 1.5rem;background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-pricing__inner{max-width:56rem;margin:0 auto}
+.ts-pricing h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-pricing__lead{margin:0 0 1.75rem;opacity:.75;line-height:1.6}
+.ts-pricing__table{border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent)}
+.ts-pricing__row{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:1rem;padding:1rem 1.15rem;border-top:1px solid color-mix(in srgb, var(--color-text) 8%, transparent)}
+.ts-pricing__row:first-child{border-top:0}
+.ts-pricing__head{background:var(--color-light);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:.7}
+.ts-pricing__foot{margin:1rem 0 0;font-size:.85rem;opacity:.65}
+@media (max-width:700px){.ts-pricing__row{grid-template-columns:1fr}}
+</style>

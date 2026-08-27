@@ -1,0 +1,90 @@
+{
+    "id": "ts-pricing-table",
+    "label": "Árak / szezonok",
+    "category": "content",
+    "icon": "banknotes",
+    "keywords": [
+        "ar",
+        "szezon",
+        "tarif"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "pricing-table.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Áraink"
+        },
+        {
+            "key": "lead",
+            "label": "Bevezető",
+            "type": "text",
+            "default": "Tájékoztató jellegű szezonális árak. A pontos díjat a foglaláskor látja."
+        },
+        {
+            "key": "row1_period",
+            "label": "1. időszak",
+            "type": "text",
+            "default": "Előszezon"
+        },
+        {
+            "key": "row1_price",
+            "label": "1. ár",
+            "type": "text",
+            "default": "25 000 Ft"
+        },
+        {
+            "key": "row1_note",
+            "label": "1. megj.",
+            "type": "text",
+            "default": "Min. 2 éjszaka"
+        },
+        {
+            "key": "row2_period",
+            "label": "2. időszak",
+            "type": "text",
+            "default": "Főszezon"
+        },
+        {
+            "key": "row2_price",
+            "label": "2. ár",
+            "type": "text",
+            "default": "35 000 Ft"
+        },
+        {
+            "key": "row2_note",
+            "label": "2. megj.",
+            "type": "text",
+            "default": "Min. 3 éjszaka"
+        },
+        {
+            "key": "row3_period",
+            "label": "3. időszak",
+            "type": "text",
+            "default": "Utószezon"
+        },
+        {
+            "key": "row3_price",
+            "label": "3. ár",
+            "type": "text",
+            "default": "28 000 Ft"
+        },
+        {
+            "key": "row3_note",
+            "label": "3. megj.",
+            "type": "text",
+            "default": "Min. 2 éjszaka"
+        },
+        {
+            "key": "footer",
+            "label": "Lábjegyzet",
+            "type": "text",
+            "default": "Az árak az IFA-t nem tartalmazzák."
+        }
+    ]
+}

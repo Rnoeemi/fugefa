@@ -1,0 +1,46 @@
+{
+    "id": "ts-footer-full",
+    "label": "Teljes lábléc",
+    "category": "chrome",
+    "icon": "rectangle-group",
+    "keywords": [
+        "footer",
+        "lablec"
+    ],
+    "scopes": [
+        "footer"
+    ],
+    "type": "static",
+    "gjsType": "ts-footer-full",
+    "interactive": true,
+    "template": "footer-full.html",
+    "params": [
+        {
+            "key": "use_site_contact",
+            "attr": "data-use-site-contact",
+            "label": "Elérhetőség a weboldal beállításokból",
+            "type": "checkbox",
+            "default": "1",
+            "group": "contact",
+            "groupLabel": "Elérhetőség"
+        },
+        {
+            "key": "brand",
+            "attr": "data-brand",
+            "label": "Márkanév",
+            "type": "text",
+            "default": "Tüsiszállás",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Leírás",
+            "type": "textarea",
+            "default": "Vendégház és szobák nyugodt környezetben.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        }
+    ]
+}

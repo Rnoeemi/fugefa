@@ -1,0 +1,67 @@
+{
+    "id": "ts-amenities",
+    "label": "Szolgáltatás-csík",
+    "category": "content",
+    "icon": "check-badge",
+    "keywords": [
+        "amenity",
+        "wifi",
+        "parkolo",
+        "szolgaltatas"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "amenities.html",
+    "params": [
+        {
+            "key": "eyebrow",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Kényelem"
+        },
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Amit nálunk megtalál"
+        },
+        {
+            "key": "item1",
+            "label": "1.",
+            "type": "text",
+            "default": "Ingyenes Wi‑Fi"
+        },
+        {
+            "key": "item2",
+            "label": "2.",
+            "type": "text",
+            "default": "Parkoló"
+        },
+        {
+            "key": "item3",
+            "label": "3.",
+            "type": "text",
+            "default": "Felszerelt konyha"
+        },
+        {
+            "key": "item4",
+            "label": "4.",
+            "type": "text",
+            "default": "Klímás szobák"
+        },
+        {
+            "key": "item5",
+            "label": "5.",
+            "type": "text",
+            "default": "Kerti pihenő"
+        },
+        {
+            "key": "item6",
+            "label": "6.",
+            "type": "text",
+            "default": "Törölköző, ágynemű"
+        }
+    ]
+}

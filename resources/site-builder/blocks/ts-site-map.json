@@ -1,0 +1,42 @@
+{
+    "id": "ts-site-map",
+    "label": "Helyszín (élő beállítások)",
+    "category": "content",
+    "icon": "map-pin",
+    "keywords": [
+        "terkep",
+        "cim",
+        "helyszin",
+        "elo"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "site-map",
+    "gjsType": "ts-site-map",
+    "className": "ts-dyn-block ts-dyn-map",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Helyszín"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Megjegyzés",
+            "type": "text",
+            "default": "Várjuk szeretettel."
+        },
+        {
+            "key": "embed_url",
+            "attr": "data-embed-url",
+            "label": "Maps embed URL",
+            "type": "media",
+            "default": "https://maps.google.com/maps?q=Budapest&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        }
+    ]
+}

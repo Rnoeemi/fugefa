@@ -1,0 +1,11 @@
+{
+    "label": "Fügefa építésziroda",
+    "packs": [
+        "layout",
+        "general",
+        "content",
+        "chrome"
+    ],
+    "blocks": [],
+    "exclude": []
+}

@@ -1,0 +1,50 @@
+.szuro{
+  padding:0!important;
+ transform: translateY(-50px);
+ margin-left:0 !important;
+  margin-right:0 !important;
+ 
+}
+
+.ts-layout__col > section.szuro{
+   padding-left:0 !important;
+  padding-right:0 !important;
+}
+
+.ts-icon-item{
+  background-color: #ffffff8f;
+  backdrop-filter: blur(2px);
+  box-shadow: 1px 0 10px #00000030 !important;
+  border: 1px solid #ffffff2b !important;
+}
+
+h2{
+  margin-bottom:30px !important;
+  
+}
+
+.footer a {
+  color:white
+}
+
+
+.ts-dyn-search__form, .ts-dyn-contact-form__form {
+  box-shadow: 0 0 10px #00000075 !important;
+}
+
+.ts-dyn-contact-form__form{
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(1px);
+}
+
+.ts-dyn-contact-form__form label{
+  color:#cd531e;
+  opacity:1!important;
+}
+
+.bg-gradient{
+ background: linear-gradient(160deg, #ffe6b3 50%,  rgba(255, 112, 67) 100%)!important;
+
+
+
+}

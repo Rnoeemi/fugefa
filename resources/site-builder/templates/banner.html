@@ -1,0 +1,56 @@
+<section
+  class="ts-banner"
+  data-gjs-type="ts-banner"
+  data-gjs-name="Banner"
+  data-layout="{{layout}}"
+  data-media-type="{{media_type}}"
+  data-media-url="{{media_url}}"
+  data-overlay="{{overlay}}"
+  data-overlay-color="{{overlay_color}}"
+  data-title="{{title}}"
+  data-text="{{text}}"
+  data-button-label="{{button_label}}"
+  data-button-href="{{button_href}}"
+  data-button-style="{{button_style}}"
+>
+  <div class="ts-banner__media" aria-hidden="true">
+    <img class="ts-banner__img" data-ts-bg-image src="{{media_url}}" alt="">
+    <video class="ts-banner__video" data-ts-bg-video autoplay muted loop playsinline>
+      <source data-ts-bg-source src="{{media_url}}" type="video/mp4">
+    </video>
+  </div>
+  <div class="ts-banner__overlay" data-ts-bg-overlay style="opacity:{{overlay}}"></div>
+  <div class="ts-banner__inner">
+    <h2 data-ts-text="title">{{title}}</h2>
+    <p data-ts-text="text">{{text}}</p>
+    <a class="ts-btn ts-btn--primary" data-ts-btn="button_style" data-ts-text="button_label" data-ts-href="button_href" href="{{button_href}}">{{button_label}}</a>
+  </div>
+</section>
+<style>
+.ts-banner{position:relative;isolation:isolate;overflow:hidden;min-height:280px;display:flex;align-items:center;padding:3.5rem 1.5rem;color:#fff;font-family:var(--font-sans,Karla,sans-serif);background:var(--color-primary-mid)}
+.ts-banner__media{position:absolute;inset:0;z-index:0}
+.ts-banner__img,.ts-banner__video{width:100%;height:100%;object-fit:cover;display:none}
+.ts-banner[data-media-type="image"] .ts-banner__img{display:block}
+.ts-banner[data-media-type="video"] .ts-banner__video{display:block}
+.ts-banner__overlay{position:absolute;inset:0;z-index:1;background:var(--ts-overlay-color, var(--color-primary));pointer-events:none}
+.ts-banner__inner{position:relative;z-index:2;max-width:var(--content-max,72rem);width:100%;margin:0 auto;box-sizing:border-box}
+.ts-banner h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-banner p{margin:0 0 1.25rem;max-width:36rem;opacity:.85;line-height:1.6}
+.ts-btn{display:inline-block;padding:.8rem 1.25rem;background:var(--btn-bg,var(--color-accent));color:var(--btn-fg,#fff);text-decoration:none;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+
+.ts-banner[data-layout="left"],
+.ts-banner:not([data-layout]){align-items:center;text-align:left}
+.ts-banner[data-layout="center"]{align-items:center;text-align:center}
+.ts-banner[data-layout="center"] .ts-banner__inner{display:flex;flex-direction:column;align-items:center}
+.ts-banner[data-layout="center"] p{margin-left:auto;margin-right:auto}
+
+.ts-banner[data-layout="split"]{align-items:center;background:var(--ts-overlay-color, var(--color-primary))}
+.ts-banner[data-layout="split"] .ts-banner__media{inset:auto;top:0;right:0;bottom:0;left:50%;width:50%}
+.ts-banner[data-layout="split"] .ts-banner__overlay{opacity:0;background:none}
+.ts-banner[data-layout="split"] .ts-banner__inner{padding-right:max(1.25rem,50%);box-sizing:border-box}
+@media (max-width:800px){
+  .ts-banner[data-layout="split"] .ts-banner__media{inset:0;width:auto;left:0}
+  .ts-banner[data-layout="split"] .ts-banner__overlay{opacity:var(--ts-banner-overlay-opacity,.55);background:var(--ts-overlay-color, var(--color-primary))}
+  .ts-banner[data-layout="split"] .ts-banner__inner{padding-right:0}
+}
+</style>

@@ -1,0 +1,41 @@
+<section
+  class="ts-split"
+  data-gjs-type="ts-split"
+  data-gjs-name="Szöveg + kép"
+  data-layout="{{layout}}"
+  data-media-url="{{media_url}}"
+  data-eyebrow="{{eyebrow}}"
+  data-title="{{title}}"
+  data-body="{{body}}"
+  data-button-label="{{button_label}}"
+  data-button-href="{{button_href}}"
+  data-button-style="{{button_style}}"
+>
+  <div class="ts-split__inner">
+    <div class="ts-split__copy">
+      <p class="ts-split__eyebrow" data-ts-text="eyebrow">{{eyebrow}}</p>
+      <h2 data-ts-text="title">{{title}}</h2>
+      <p data-ts-text="body">{{body}}</p>
+      <a class="ts-btn ts-btn--primary" data-ts-btn="button_style" data-ts-text="button_label" data-ts-href="button_href" href="{{button_href}}">{{button_label}}</a>
+    </div>
+    <div class="ts-split__media">
+      <img data-ts-bg-image src="{{media_url}}" alt="">
+    </div>
+  </div>
+</section>
+<style>
+.ts-split{padding:4rem 1.5rem;background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-split__inner{max-width:72rem;margin:0 auto;display:grid;gap:2rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center}
+.ts-split__copy{order:1}
+.ts-split__media{order:2;overflow:hidden;background:var(--color-muted);aspect-ratio:4/3}
+.ts-split[data-layout="image-left"] .ts-split__copy,.ts-split[data-image-side="left"] .ts-split__copy{order:2}
+.ts-split[data-layout="image-left"] .ts-split__media,.ts-split[data-image-side="left"] .ts-split__media{order:1}
+.ts-split[data-layout="stacked"] .ts-split__inner{grid-template-columns:1fr}
+.ts-split[data-layout="stacked"] .ts-split__media{order:-1;max-width:40rem}
+.ts-split__eyebrow{margin:0;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;opacity:.55;font-weight:600}
+.ts-split h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:.75rem 0}
+.ts-split p{margin:0 0 1.25rem;line-height:1.65;opacity:.85}
+.ts-split__media img{width:100%;height:100%;object-fit:cover;display:block}
+.ts-btn{display:inline-block;padding:.8rem 1.25rem;background:var(--btn-bg,var(--color-accent));color:var(--btn-fg,#fff);text-decoration:none;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+@media (max-width:860px){.ts-split__inner{grid-template-columns:1fr}.ts-split__copy,.ts-split__media,.ts-split[data-layout="image-left"] .ts-split__copy,.ts-split[data-layout="image-left"] .ts-split__media,.ts-split[data-image-side="left"] .ts-split__copy,.ts-split[data-image-side="left"] .ts-split__media{order:initial}}
+</style>

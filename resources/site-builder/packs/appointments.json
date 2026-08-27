@@ -1,0 +1,6 @@
+{
+    "label": "Időpontfoglaló",
+    "blocks": [
+        "ts-appointment-booking"
+    ]
+}

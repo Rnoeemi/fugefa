@@ -1,0 +1,54 @@
+{
+    "id": "ts-social",
+    "label": "Közösségi linkek",
+    "category": "content",
+    "icon": "share",
+    "keywords": [
+        "instagram",
+        "facebook",
+        "social"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "social.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Kövessen minket"
+        },
+        {
+            "key": "lead",
+            "label": "Bevezető",
+            "type": "text",
+            "default": "Friss hangulatképek és tippek a közösségi oldalakon."
+        },
+        {
+            "key": "instagram_url",
+            "label": "Instagram URL",
+            "type": "text",
+            "default": "https://instagram.com/"
+        },
+        {
+            "key": "facebook_url",
+            "label": "Facebook URL",
+            "type": "text",
+            "default": "https://facebook.com/"
+        },
+        {
+            "key": "other_label",
+            "label": "Egyéb felirat",
+            "type": "text",
+            "default": "Web"
+        },
+        {
+            "key": "other_url",
+            "label": "Egyéb URL",
+            "type": "text",
+            "default": "/"
+        }
+    ]
+}

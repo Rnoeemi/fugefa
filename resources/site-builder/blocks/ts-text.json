@@ -1,0 +1,30 @@
+{
+    "id": "ts-text",
+    "label": "Szöveges szekció",
+    "category": "content",
+    "icon": "document-text",
+    "keywords": [
+        "szoveg",
+        "rolunk"
+    ],
+    "scopes": [
+        "page",
+        "footer"
+    ],
+    "type": "static",
+    "template": "text.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Rólunk"
+        },
+        {
+            "key": "body",
+            "label": "Szöveg",
+            "type": "textarea",
+            "default": "Írja ide a szálláshely történetét, a környék élményeit vagy a házirendet."
+        }
+    ]
+}

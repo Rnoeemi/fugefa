@@ -1,0 +1,30 @@
+<section
+  class="ts-map"
+  data-gjs-type="ts-map"
+  data-gjs-name="Térkép"
+  data-title="{{title}}"
+  data-address="{{address}}"
+  data-note="{{note}}"
+  data-embed-url="{{embed_url}}"
+>
+  <div class="ts-map__inner">
+    <div class="ts-map__copy">
+      <h2 class="ts-map__title" data-ts-text="title">{{title}}</h2>
+      <p class="ts-map__address" data-ts-text="address">{{address}}</p>
+      <p class="ts-map__note" data-ts-text="note">{{note}}</p>
+    </div>
+    <div class="ts-map__frame">
+      <iframe src="{{embed_url}}" title="Térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+<style>
+.ts-map{padding:4rem 1.5rem;background:var(--color-surface);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-map__inner{max-width:var(--content-max,72rem);margin:0 auto;display:grid;gap:1.5rem;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);align-items:stretch;width:100%;box-sizing:border-box}
+.ts-map h2,.ts-map__title{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 .75rem}
+.ts-map p,.ts-map__address{margin:0;line-height:1.6}
+.ts-map__note{margin-top:1rem!important;opacity:.7;font-size:.95rem}
+.ts-map__frame{min-height:280px;background:var(--color-muted);overflow:hidden}
+.ts-map__frame iframe{width:100%;height:100%;min-height:280px;border:0;display:block}
+@media (max-width:900px){.ts-map__inner{grid-template-columns:1fr}}
+</style>

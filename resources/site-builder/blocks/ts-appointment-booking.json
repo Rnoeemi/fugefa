@@ -1,0 +1,50 @@
+{
+    "id": "ts-appointment-booking",
+    "label": "Időpontfoglaló",
+    "category": "appointments",
+    "module": "appointment",
+    "icon": "calendar",
+    "keywords": [
+        "idopont",
+        "munkatars",
+        "foglalas",
+        "appointment"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "appointment-booking",
+    "gjsType": "ts-appointment-booking",
+    "className": "ts-dyn-block ts-dyn-appointment",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Időpontfoglalás"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Válasszon munkatársat, és foglaljon időpontot online."
+        },
+        {
+            "key": "button",
+            "attr": "data-button",
+            "label": "Gomb",
+            "type": "text",
+            "default": "Időpont foglalása"
+        },
+        {
+            "key": "limit",
+            "attr": "data-limit",
+            "label": "Max. munkatárs",
+            "type": "text",
+            "default": "12"
+        }
+    ]
+}

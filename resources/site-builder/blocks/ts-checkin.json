@@ -1,0 +1,60 @@
+{
+    "id": "ts-checkin",
+    "label": "Check-in / out",
+    "category": "content",
+    "icon": "clock",
+    "keywords": [
+        "erkezes",
+        "tavozas",
+        "checkin"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "checkin.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Érkezés és távozás"
+        },
+        {
+            "key": "checkin",
+            "label": "Érkezés",
+            "type": "text",
+            "default": "15:00"
+        },
+        {
+            "key": "checkin_note",
+            "label": "Érkezés megj.",
+            "type": "text",
+            "default": "Korábbi érkezés egyeztetés alapján."
+        },
+        {
+            "key": "checkout",
+            "label": "Távozás",
+            "type": "text",
+            "default": "10:00"
+        },
+        {
+            "key": "checkout_note",
+            "label": "Távozás megj.",
+            "type": "text",
+            "default": "Későbbi távozás egyeztetés alapján."
+        },
+        {
+            "key": "extra_label",
+            "label": "Egyéb címke",
+            "type": "text",
+            "default": "Recepció"
+        },
+        {
+            "key": "extra_note",
+            "label": "Egyéb szöveg",
+            "type": "text",
+            "default": "Telefonon elérhetőek vagyunk érkezéskor."
+        }
+    ]
+}

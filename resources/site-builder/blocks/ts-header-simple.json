@@ -1,0 +1,59 @@
+{
+    "id": "ts-header-simple",
+    "label": "Egyszerű fejléc",
+    "category": "chrome",
+    "icon": "bars-3-bottom-left",
+    "keywords": [
+        "header",
+        "egyszeru",
+        "logo",
+        "hamburger"
+    ],
+    "scopes": [
+        "header"
+    ],
+    "type": "static",
+    "gjsType": "ts-header-simple",
+    "interactive": true,
+    "template": "header-simple.html",
+    "params": [
+        {
+            "key": "brand",
+            "attr": "data-brand",
+            "label": "Márkanév",
+            "type": "text",
+            "default": "Tüsiszállás"
+        },
+        {
+            "key": "logo_url",
+            "attr": "data-logo-url",
+            "label": "Logó",
+            "type": "media",
+            "default": ""
+        },
+        {
+            "key": "logo_height",
+            "attr": "data-logo-height",
+            "label": "Logó magasság",
+            "type": "select",
+            "default": "40",
+            "options": "logo_heights"
+        },
+        {
+            "key": "logo_max_width",
+            "attr": "data-logo-max-width",
+            "label": "Logó max. szélesség",
+            "type": "select",
+            "default": "180",
+            "options": "logo_max_widths"
+        },
+        {
+            "key": "menu_breakpoint",
+            "attr": "data-menu-breakpoint",
+            "label": "Hamburger menü",
+            "type": "select",
+            "default": "phone",
+            "options": "menu_breakpoints"
+        }
+    ]
+}

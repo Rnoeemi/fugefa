@@ -1,0 +1,22 @@
+{
+    "id": "ts-layout-1col",
+    "label": "1 oszlop",
+    "category": "layout",
+    "icon": "square",
+    "keywords": [
+        "layout",
+        "oszlop",
+        "1",
+        "szekció",
+        "section"
+    ],
+    "scopes": [
+        "page",
+        "footer"
+    ],
+    "type": "static",
+    "template": "layout-1col.html",
+    "interactive": true,
+    "container": true,
+    "params": []
+}

@@ -1,0 +1,395 @@
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+@import '../app.css';
+
+@source '../../../app/Filament/Guest/**/*';
+@source '../../../resources/views/filament/guest/**/*';
+
+/* Vendég foglaló panel – webhelyhez igazítva */
+.fi-body {
+    background: var(--color-mist) !important;
+    font-family: var(--font-sans) !important;
+}
+
+.fi-simple-main-ctn,
+.fi-main-ctn {
+    background: transparent !important;
+}
+
+.fi-simple-main,
+.fi-main {
+    max-width: 72rem !important;
+    padding-inline: 1.25rem !important;
+    padding-block: 2rem !important;
+}
+
+@media (min-width: 768px) {
+    .fi-simple-main,
+    .fi-main {
+        padding-inline: 2rem !important;
+        padding-block: 2.5rem !important;
+    }
+}
+
+.fi-page-header {
+    display: none !important;
+}
+
+.fi-section {
+    border-radius: 0.125rem !important;
+    border-color: color-mix(in oklab, var(--color-pine) 12%, transparent) !important;
+    background: white !important;
+}
+
+.fi-section-header-heading,
+.fi-wi-stats-overview-stat-label,
+.fi-fo-field-wrp-label {
+    color: var(--color-pine) !important;
+}
+
+.fi-btn-primary {
+    background-color: var(--color-brass) !important;
+    border-color: var(--color-brass) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.75rem !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: #7a5c35 !important;
+    border-color: #7a5c35 !important;
+}
+
+.guest-booking-hero {
+    width: 100%;
+    background: var(--color-pine-deep);
+    color: white;
+    padding: 7rem 0 3rem;
+}
+
+@media (min-width: 768px) {
+    .guest-booking-hero {
+        padding-top: 8rem;
+    }
+}
+
+.guest-booking-hero-inner {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .guest-booking-hero-inner {
+        padding-inline: 2rem;
+    }
+}
+
+.guest-occupied-list {
+    display: grid;
+    gap: 0.35rem;
+    max-height: 14rem;
+    overflow: auto;
+    font-size: 0.875rem;
+    color: color-mix(in oklab, var(--color-ink) 70%, transparent);
+}
+
+.guest-occupied-list li {
+    padding: 0.35rem 0.5rem;
+    background: var(--color-mist);
+    border: 1px solid color-mix(in oklab, var(--color-pine) 10%, transparent);
+}
+
+.guest-quote-box {
+    border: 1px solid color-mix(in oklab, var(--color-pine) 12%, transparent);
+    background: var(--color-mist);
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.guest-booking-calendar {
+    display: grid;
+    gap: 1rem;
+}
+
+.guest-booking-calendar__selection {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.guest-booking-calendar__selection-item {
+    border: 1px solid color-mix(in oklab, var(--color-pine) 12%, transparent);
+    background: var(--color-mist);
+    padding: 0.75rem 1rem;
+}
+
+.guest-booking-calendar__selection-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-ink) 55%, transparent);
+}
+
+.guest-booking-calendar__selection-value {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    color: var(--color-pine);
+}
+
+.guest-booking-calendar__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: color-mix(in oklab, var(--color-ink) 70%, transparent);
+}
+
+.guest-booking-calendar__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.guest-booking-calendar__legend-item::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.125rem;
+    border: 1px solid color-mix(in oklab, var(--color-pine) 15%, transparent);
+}
+
+.guest-booking-calendar__legend-item.is-past::before {
+    background: #d1d5db;
+}
+
+.guest-booking-calendar__legend-item.is-free::before {
+    background: #86efac;
+}
+
+.guest-booking-calendar__legend-item.is-turnover-out::before {
+    background: linear-gradient(135deg, #86efac 0 50%, #fca5a5 50% 100%);
+}
+
+.guest-booking-calendar__legend-item.is-turnover-in::before {
+    background: linear-gradient(135deg, #fca5a5 0 50%, #86efac 50% 100%);
+}
+
+.guest-booking-calendar__legend-item.is-occupied::before {
+    background: #f87171;
+}
+
+.guest-booking-calendar__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.guest-booking-calendar__nav-btn {
+    border: 1px solid color-mix(in oklab, var(--color-pine) 15%, transparent);
+    background: white;
+    color: var(--color-pine);
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.guest-booking-calendar__month {
+    font-family: var(--font-display, Literata, serif);
+    font-size: 1.15rem;
+    color: var(--color-pine);
+    text-transform: capitalize;
+}
+
+.guest-booking-calendar__weekdays,
+.guest-booking-calendar__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.35rem;
+    text-align: center;
+}
+
+.guest-booking-calendar__weekdays {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+}
+
+.guest-booking-calendar__day {
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in oklab, var(--color-pine) 10%, transparent);
+    background: white;
+    color: var(--color-pine);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.guest-booking-calendar__day.is-empty {
+    border-color: transparent;
+    background: transparent;
+    pointer-events: none;
+}
+
+.guest-booking-calendar__day.is-past {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.guest-booking-calendar__day.is-free {
+    background: #bbf7d0;
+    color: #14532d;
+}
+
+.guest-booking-calendar__day.is-turnover-out {
+    background: linear-gradient(135deg, #86efac 0 50%, #fca5a5 50% 100%);
+    color: #14532d;
+}
+
+.guest-booking-calendar__day.is-turnover-in {
+    background: linear-gradient(135deg, #fca5a5 0 50%, #86efac 50% 100%);
+    color: #7f1d1d;
+}
+
+.guest-booking-calendar__day.is-occupied,
+.guest-booking-calendar__day.is-collision {
+    background: #f87171;
+    color: #7f1d1d;
+    cursor: not-allowed;
+}
+
+.guest-booking-calendar__day.is-selected {
+    background: #bfdbfe !important;
+    color: #1e3a8a !important;
+    box-shadow: inset 0 0 0 2px #60a5fa;
+    font-weight: 700;
+}
+
+.guest-booking-calendar__day.is-in-range {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+}
+
+.guest-booking-calendar__day:disabled {
+    opacity: 0.95;
+    cursor: not-allowed;
+}
+
+.guest-booking-calendar__day:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px color-mix(in oklab, var(--color-pine) 12%, transparent);
+}
+
+.guest-booking-calendar__hint {
+    font-size: 0.875rem;
+    color: color-mix(in oklab, var(--color-ink) 60%, transparent);
+}
+
+.guest-doc-card {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-pine) 14%, transparent);
+    background: var(--color-mist);
+    padding: 0.85rem;
+}
+
+.guest-doc-card .fi-fo-field-wrp,
+.guest-doc-card .fi-sc-component,
+.guest-doc-card .fi-fo-file-upload,
+.guest-doc-card .fi-fo-file-upload-input-ctn {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+.guest-doc-card .filepond--root {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin-bottom: 0 !important;
+    background: white !important;
+    border: 1px dashed color-mix(in oklab, var(--color-pine) 30%, transparent) !important;
+    border-radius: 0.25rem !important;
+    min-height: 8.5rem !important;
+    height: auto !important;
+}
+
+.guest-doc-card .filepond--panel-root {
+    background-color: white !important;
+}
+
+.guest-doc-card .filepond--drop-label {
+    min-height: 8.5rem !important;
+    height: 8.5rem !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.guest-doc-card .filepond--drop-label label,
+.guest-doc-card .filepond--label-action {
+    cursor: pointer !important;
+    color: color-mix(in oklab, var(--color-ink) 75%, transparent) !important;
+    font-size: 0.875rem !important;
+}
+
+.guest-doc-card .filepond--browser.filepond--browser {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.01 !important;
+    pointer-events: auto !important;
+}
+
+.guest-doc-card .filepond--list-scroller {
+    margin: 0 !important;
+}
+
+.guest-doc-card .filepond--item {
+    width: 100% !important;
+    margin: 0.25rem 0 !important;
+}
+
+.guest-doc-status {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+.guest-doc-status.is-idle {
+    color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+}
+
+.guest-doc-status.is-pending {
+    color: #92400e;
+}
+
+.guest-doc-status.is-ok {
+    color: #166534;
+}
+
+.guest-doc-status.is-error {
+    color: #b91c1c;
+}
+
+.fi-fo-repeater-item,
+.fi-fo-repeater-item-content,
+.fi-section-content,
+.fi-sc,
+.fi-grid {
+    overflow: visible !important;
+}
+
+.site-nav {
+    z-index: 40;
+}
+

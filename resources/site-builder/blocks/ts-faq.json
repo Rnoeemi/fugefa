@@ -1,0 +1,74 @@
+{
+    "id": "ts-faq",
+    "label": "GYIK / FAQ",
+    "category": "content",
+    "icon": "question-mark",
+    "keywords": [
+        "faq",
+        "gyik",
+        "kerdes"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-faq",
+    "interactive": true,
+    "template": "faq.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "rich",
+            "default": "Gyakori kérdések"
+        },
+        {
+            "key": "lead",
+            "attr": "data-lead",
+            "label": "Bevezető",
+            "type": "rich",
+            "default": "Érkezés, házirend és foglalás – röviden."
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Kérdések és válaszok",
+            "type": "items",
+            "itemLabel": "kérdés",
+            "editLabel": "Tartalmak szerkesztése",
+            "addLabel": "+ Új kérdés",
+            "hint": "Itt szerkesztheti a kérdéseket és válaszokat, és újakat is hozzáadhat.",
+            "itemFields": [
+                {
+                    "key": "q",
+                    "label": "Kérdés",
+                    "type": "text"
+                },
+                {
+                    "key": "a",
+                    "label": "Válasz",
+                    "type": "textarea"
+                }
+            ],
+            "default": [
+                {
+                    "q": "Mikor lehet megérkezni?",
+                    "a": "Az érkezés általában 15:00-tól lehetséges. Ettől eltérő időpontot előre egyeztetünk."
+                },
+                {
+                    "q": "Van parkoló?",
+                    "a": "Igen, ingyenes parkolási lehetőség biztosítva van a vendégeknek."
+                },
+                {
+                    "q": "Hogyan mondhatom le a foglalást?",
+                    "a": "A lemondási feltételeket a visszaigazoló e-mail tartalmazza. Kérdés esetén keressen minket telefonon vagy e-mailben."
+                },
+                {
+                    "q": "Vihetek háziállatot?",
+                    "a": "Háziállat fogadását előzetes egyeztetés alapján tudjuk biztosítani."
+                }
+            ]
+        }
+    ]
+}

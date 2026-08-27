@@ -1,0 +1,24 @@
+{
+    "id": "ts-spacer",
+    "label": "Térköz",
+    "category": "content",
+    "icon": "arrows-up-down",
+    "keywords": [
+        "spacer",
+        "terkoz"
+    ],
+    "scopes": [
+        "page",
+        "footer"
+    ],
+    "type": "static",
+    "template": "spacer.html",
+    "params": [
+        {
+            "key": "height",
+            "label": "Magasság (px)",
+            "type": "number",
+            "default": "64"
+        }
+    ]
+}

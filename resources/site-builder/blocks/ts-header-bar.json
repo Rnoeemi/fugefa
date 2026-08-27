@@ -1,0 +1,289 @@
+{
+    "id": "ts-header-bar",
+    "label": "Fejléc",
+    "category": "chrome",
+    "icon": "bars-3",
+    "keywords": [
+        "header",
+        "fejlec",
+        "logo",
+        "hamburger",
+        "topbar",
+        "menu"
+    ],
+    "scopes": [
+        "header"
+    ],
+    "type": "static",
+    "gjsType": "ts-header-bar",
+    "interactive": true,
+    "template": "header-bar.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Gyors elrendezés",
+            "type": "layout",
+            "default": "standard",
+            "group": "layout",
+            "groupLabel": "Gyors elrendezés",
+            "options": [
+                {
+                    "id": "standard",
+                    "name": "Klasszikus",
+                    "hint": "Logó balra, menü jobbra",
+                    "wire": "header-standard"
+                },
+                {
+                    "id": "brand-center",
+                    "name": "Logó középen",
+                    "hint": "Logó felül, menü alatta (asztalon); mobilon logó és hamburger egy sorban",
+                    "wire": "header-brand-center"
+                },
+                {
+                    "id": "minimal",
+                    "name": "Minimál",
+                    "hint": "Asztali menü rejtve, hamburger minden méretben",
+                    "wire": "header-minimal"
+                }
+            ]
+        },
+        {
+            "key": "brand",
+            "attr": "data-brand",
+            "label": "Márkanév",
+            "type": "text",
+            "default": "Tüsiszállás",
+            "group": "brand",
+            "groupLabel": "Márka és logó"
+        },
+        {
+            "key": "logo_url",
+            "attr": "data-logo-url",
+            "label": "Logó",
+            "type": "media",
+            "default": "",
+            "group": "brand",
+            "groupLabel": "Márka és logó"
+        },
+        {
+            "key": "logo_height",
+            "attr": "data-logo-height",
+            "label": "Logó magasság",
+            "type": "select",
+            "default": "40",
+            "options": "logo_heights",
+            "group": "brand",
+            "groupLabel": "Márka és logó"
+        },
+        {
+            "key": "logo_max_width",
+            "attr": "data-logo-max-width",
+            "label": "Logó max. szélesség",
+            "type": "select",
+            "default": "180",
+            "options": "logo_max_widths",
+            "group": "brand",
+            "groupLabel": "Márka és logó"
+        },
+        {
+            "key": "brand_align",
+            "attr": "data-brand-align",
+            "label": "Logó pozíció",
+            "type": "select",
+            "default": "left",
+            "group": "main-bar",
+            "groupLabel": "Fő sáv",
+            "options": [
+                { "id": "left", "name": "Balra" },
+                { "id": "center", "name": "Középen" }
+            ]
+        },
+        {
+            "key": "desktop_menu",
+            "attr": "data-desktop-menu",
+            "label": "Asztali menü",
+            "type": "select",
+            "default": "visible",
+            "group": "main-bar",
+            "groupLabel": "Fő sáv",
+            "options": [
+                { "id": "visible", "name": "Látható" },
+                { "id": "hidden", "name": "Rejtett (minimál)" }
+            ]
+        },
+        {
+            "key": "menu_align",
+            "attr": "data-menu-align",
+            "label": "Menü igazítás (asztal)",
+            "type": "select",
+            "default": "right",
+            "group": "main-bar",
+            "groupLabel": "Fő sáv",
+            "options": [
+                { "id": "right", "name": "Jobbra" },
+                { "id": "left", "name": "Balra (logó után)" }
+            ]
+        },
+        {
+            "key": "menu_breakpoint",
+            "attr": "data-menu-breakpoint",
+            "label": "Hamburger menü",
+            "type": "select",
+            "default": "phone",
+            "options": "menu_breakpoints",
+            "group": "menu",
+            "groupLabel": "Mobil menü"
+        },
+        {
+            "key": "mobile_menu_style",
+            "attr": "data-mobile-menu-style",
+            "label": "Mobil menü stílus",
+            "type": "select",
+            "default": "dropdown",
+            "group": "menu",
+            "groupLabel": "Mobil menü",
+            "options": [
+                { "id": "dropdown", "name": "Legördülő lista" },
+                { "id": "drawer-left", "name": "Balról becsúszó" },
+                { "id": "drawer-right", "name": "Jobbról becsúszó" },
+                { "id": "fullscreen", "name": "Teljes képernyős" }
+            ]
+        },
+        {
+            "key": "cta_label",
+            "attr": "data-cta-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Foglalás",
+            "group": "btn-cta",
+            "groupLabel": "CTA gomb"
+        },
+        {
+            "key": "cta_href",
+            "attr": "data-cta-href",
+            "label": "Link",
+            "type": "text",
+            "default": "/foglalas-panel",
+            "group": "btn-cta",
+            "groupLabel": "CTA gomb"
+        },
+        {
+            "key": "show_topbar",
+            "attr": "data-show-topbar",
+            "label": "Felső sáv megjelenítése",
+            "type": "checkbox",
+            "default": "0",
+            "group": "topbar",
+            "groupLabel": "Felső sáv"
+        },
+        {
+            "key": "use_site_contact",
+            "attr": "data-use-site-contact",
+            "label": "Site beállításokból (telefon, email, cím)",
+            "type": "checkbox",
+            "default": "1",
+            "group": "topbar",
+            "groupLabel": "Felső sáv"
+        },
+        {
+            "key": "topbar_phone",
+            "attr": "data-topbar-phone",
+            "label": "Telefon",
+            "type": "text",
+            "default": "",
+            "group": "topbar-contact",
+            "groupLabel": "Felső sáv – elérhetőség"
+        },
+        {
+            "key": "topbar_email",
+            "attr": "data-topbar-email",
+            "label": "E-mail",
+            "type": "text",
+            "default": "",
+            "group": "topbar-contact",
+            "groupLabel": "Felső sáv – elérhetőség"
+        },
+        {
+            "key": "topbar_address",
+            "attr": "data-topbar-address",
+            "label": "Cím (rövid)",
+            "type": "text",
+            "default": "",
+            "group": "topbar-contact",
+            "groupLabel": "Felső sáv – elérhetőség"
+        },
+        {
+            "key": "show_social_facebook",
+            "attr": "data-show-social-facebook",
+            "label": "Facebook megjelenítése",
+            "type": "checkbox",
+            "default": "0",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "social_facebook_url",
+            "attr": "data-social-facebook-url",
+            "label": "Facebook URL",
+            "type": "text",
+            "default": "",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "show_social_instagram",
+            "attr": "data-show-social-instagram",
+            "label": "Instagram megjelenítése",
+            "type": "checkbox",
+            "default": "0",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "social_instagram_url",
+            "attr": "data-social-instagram-url",
+            "label": "Instagram URL",
+            "type": "text",
+            "default": "",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "show_social_tiktok",
+            "attr": "data-show-social-tiktok",
+            "label": "TikTok megjelenítése",
+            "type": "checkbox",
+            "default": "0",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "social_tiktok_url",
+            "attr": "data-social-tiktok-url",
+            "label": "TikTok URL",
+            "type": "text",
+            "default": "",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "show_social_linkedin",
+            "attr": "data-show-social-linkedin",
+            "label": "LinkedIn megjelenítése",
+            "type": "checkbox",
+            "default": "0",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        },
+        {
+            "key": "social_linkedin_url",
+            "attr": "data-social-linkedin-url",
+            "label": "LinkedIn URL",
+            "type": "text",
+            "default": "",
+            "group": "topbar-social",
+            "groupLabel": "Felső sáv – közösségi"
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "id": "ts-quote",
+    "label": "Vendégvélemények",
+    "category": "content",
+    "icon": "chat-bubble",
+    "keywords": [
+        "velemeny",
+        "quote",
+        "testimonial"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-quote",
+    "interactive": true,
+    "template": "quote.html",
+    "params": [
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Vélemények",
+            "type": "items",
+            "itemLabel": "vélemény",
+            "editLabel": "Tartalmak szerkesztése",
+            "addLabel": "+ Új vélemény",
+            "hint": "Itt szerkesztheti a véleményeket, és újakat is hozzáadhat.",
+            "itemFields": [
+                {
+                    "key": "quote",
+                    "label": "Idézet",
+                    "type": "textarea"
+                },
+                {
+                    "key": "cite",
+                    "label": "Forrás",
+                    "type": "text"
+                }
+            ],
+            "default": [
+                {
+                    "quote": "Csodás hétvégét töltöttünk itt – csend, természet és kedves fogadtatás.",
+                    "cite": "Elégedett vendég"
+                },
+                {
+                    "quote": "Tiszta szobák, nyugodt környezet, könnyű online foglalás.",
+                    "cite": "Családos vendég"
+                },
+                {
+                    "quote": "Pontosan olyan volt, ahogy a képeken láttuk. Szívesen visszatérünk.",
+                    "cite": "Ismétlő vendég"
+                }
+            ]
+        }
+    ]
+}

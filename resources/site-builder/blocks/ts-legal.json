@@ -1,0 +1,35 @@
+{
+    "id": "ts-legal",
+    "label": "Jogi / házirend szöveg",
+    "category": "content",
+    "icon": "scale",
+    "keywords": [
+        "aszf",
+        "hazirend",
+        "cookie",
+        "jogi"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-legal",
+    "interactive": true,
+    "template": "legal.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "rich",
+            "default": "Házirend és tudnivalók"
+        },
+        {
+            "key": "body",
+            "attr": "data-body",
+            "label": "Tartalom",
+            "type": "rich",
+            "default": "<p>Kérjük, érkezéskor és távozáskor tartsa be a megadott időpontokat, és ügyeljen a szállás rendjére.</p><p>A csendes órákat este 22:00 után kérjük betartani. Dohányzás csak a kijelölt helyen engedélyezett.</p><p>A személyes adatok kezeléséről az Adatvédelmi tájékoztatóban olvashat.</p>"
+        }
+    ]
+}

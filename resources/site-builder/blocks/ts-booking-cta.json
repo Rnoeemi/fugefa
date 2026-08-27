@@ -1,0 +1,41 @@
+{
+    "id": "ts-booking-cta",
+    "label": "Foglalás CTA (élő)",
+    "category": "accommodations",
+    "icon": "calendar",
+    "keywords": [
+        "foglalas",
+        "cta",
+        "elo"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "booking-cta",
+    "gjsType": "ts-booking-cta",
+    "className": "ts-dyn-block ts-dyn-booking-cta",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Foglaljon online"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Nézze meg a szabad időpontokat, és indítsa el a foglalást."
+        },
+        {
+            "key": "button",
+            "attr": "data-button",
+            "label": "Gomb felirat",
+            "type": "text",
+            "default": "Szállások"
+        }
+    ]
+}

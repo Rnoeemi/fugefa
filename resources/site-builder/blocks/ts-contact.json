@@ -1,0 +1,55 @@
+{
+    "id": "ts-contact",
+    "label": "Kapcsolat blokk",
+    "category": "content",
+    "icon": "phone",
+    "keywords": [
+        "kapcsolat",
+        "contact"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-contact",
+    "interactive": true,
+    "template": "contact.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Kapcsolat",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "address",
+            "attr": "data-address",
+            "label": "Cím szöveg",
+            "type": "text",
+            "default": "1234 Példaváros, Erdő utca 1.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "phone",
+            "attr": "data-phone",
+            "label": "Telefon",
+            "type": "text",
+            "default": "+36 1 234 5678",
+            "group": "contact-details",
+            "groupLabel": "Elérhetőségek"
+        },
+        {
+            "key": "email",
+            "attr": "data-email",
+            "label": "Email",
+            "type": "text",
+            "default": "info@example.com",
+            "group": "contact-details",
+            "groupLabel": "Elérhetőségek"
+        }
+    ]
+}

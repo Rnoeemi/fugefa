@@ -1,0 +1,71 @@
+{
+    "id": "ts-gallery",
+    "label": "Képsáv",
+    "category": "content",
+    "icon": "photo",
+    "keywords": [
+        "galeria",
+        "kep",
+        "kepsav"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-gallery",
+    "interactive": true,
+    "template": "gallery.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "rich",
+            "default": "Hangulatképek",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Képek",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Képek",
+            "itemLabel": "kép",
+            "editLabel": "Képek szerkesztése",
+            "addLabel": "+ Új kép",
+            "hint": "Itt adhat hozzá képeket, húzással vagy ↑ ↓ gombokkal állíthatja a sorrendet.",
+            "itemFields": [
+                {
+                    "key": "image",
+                    "label": "Kép",
+                    "type": "media"
+                },
+                {
+                    "key": "alt",
+                    "label": "Alt szöveg (opcionális)",
+                    "type": "text"
+                }
+            ],
+            "default": [
+                {
+                    "image": "",
+                    "alt": ""
+                },
+                {
+                    "image": "",
+                    "alt": ""
+                },
+                {
+                    "image": "",
+                    "alt": ""
+                },
+                {
+                    "image": "",
+                    "alt": ""
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "label": "Layout",
+    "blocks": [
+        "ts-layout-1col",
+        "ts-layout-2col",
+        "ts-layout-3col"
+    ]
+}

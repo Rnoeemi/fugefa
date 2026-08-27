@@ -1,0 +1,23 @@
+{
+    "id": "ts-footer-minimal",
+    "label": "Minimál lábléc",
+    "category": "chrome",
+    "icon": "minus",
+    "keywords": [
+        "footer",
+        "minimal"
+    ],
+    "scopes": [
+        "footer"
+    ],
+    "type": "static",
+    "template": "footer-minimal.html",
+    "params": [
+        {
+            "key": "brand",
+            "label": "Márkanév",
+            "type": "text",
+            "default": "Tüsiszállás"
+        }
+    ]
+}

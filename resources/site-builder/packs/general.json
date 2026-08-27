@@ -1,0 +1,13 @@
+{
+    "label": "Általános",
+    "blocks": [
+        "ts-hero",
+        "ts-hero-slider",
+        "ts-banner",
+        "ts-bg-section",
+        "ts-split",
+        "ts-stats",
+        "ts-logo-row",
+        "ts-buttons"
+    ]
+}

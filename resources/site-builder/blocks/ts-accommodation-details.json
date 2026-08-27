@@ -1,0 +1,36 @@
+{
+    "id": "ts-accommodation-details",
+    "label": "Szállás részletek (élő)",
+    "category": "accommodations",
+    "icon": "information-circle",
+    "keywords": [
+        "reszletek",
+        "leiras",
+        "ar",
+        "amenities"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "accommodation-details",
+    "gjsType": "ts-accommodation-details",
+    "className": "ts-dyn-block ts-dyn-details",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Részletek"
+        },
+        {
+            "key": "slug",
+            "attr": "data-slug",
+            "label": "Szállás",
+            "type": "select",
+            "default": "",
+            "options": "accommodations"
+        }
+    ]
+}

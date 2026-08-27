@@ -1,0 +1,19 @@
+<figure
+  class="ts-image"
+  data-gjs-type="ts-image"
+  data-gjs-name="Kép"
+  data-media-url="{{media_url}}"
+  data-alt="{{alt}}"
+  data-href="{{href}}"
+>
+  <a class="ts-image__link" data-ts-href="href" href="{{href}}">
+    <img data-ts-bg-image src="{{media_url}}" alt="{{alt}}" loading="lazy">
+  </a>
+</figure>
+<style>
+.ts-image{margin:0;padding:1rem 0;max-width:100%}
+.ts-image__link{display:block;text-decoration:none;color:inherit}
+.ts-image:not([data-href]) .ts-image__link,
+.ts-image[data-href=""] .ts-image__link{pointer-events:none;cursor:default}
+.ts-image img{display:block;width:100%;height:auto;max-height:16rem;object-fit:contain;border-radius:var(--radius-control,.55rem)}
+</style>

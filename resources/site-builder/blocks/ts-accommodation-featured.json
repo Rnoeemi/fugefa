@@ -1,0 +1,35 @@
+{
+    "id": "ts-accommodation-featured",
+    "label": "Kiemelt szállás (élő)",
+    "category": "accommodations",
+    "icon": "star",
+    "keywords": [
+        "kiemelt",
+        "featured",
+        "elo"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "accommodation-featured",
+    "gjsType": "ts-accommodation-featured",
+    "className": "ts-dyn-block ts-dyn-featured",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Címke",
+            "type": "text",
+            "default": "Kiemelt szállás"
+        },
+        {
+            "key": "slug",
+            "attr": "data-slug",
+            "label": "Szállás",
+            "type": "select",
+            "default": "",
+            "options": "accommodations"
+        }
+    ]
+}

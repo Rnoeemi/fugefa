@@ -1,0 +1,94 @@
+{
+    "id": "ts-cta",
+    "label": "CTA sáv",
+    "category": "content",
+    "icon": "megaphone",
+    "keywords": [
+        "cta",
+        "felhivas"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-cta",
+    "interactive": true,
+    "template": "cta.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Elrendezés",
+            "type": "layout",
+            "default": "row",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "row",
+                    "name": "Felirat + gomb sorban",
+                    "hint": "Szöveg balra, gomb jobbra",
+                    "wire": "cta-row"
+                },
+                {
+                    "id": "center",
+                    "name": "CTA középen",
+                    "hint": "Szöveg és gomb középre, egymás alatt",
+                    "wire": "cta-center"
+                },
+                {
+                    "id": "stack",
+                    "name": "CTA egymás alatt",
+                    "hint": "Szöveg és gomb balra, egymás alatt",
+                    "wire": "cta-stack"
+                }
+            ]
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Foglaljon most",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Válassza ki a szállást, és indítsa el a foglalást online.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "button_label",
+            "attr": "data-button-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Szabad helyek",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_href",
+            "attr": "data-button-href",
+            "label": "Link",
+            "type": "text",
+            "default": "/szallasok",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_style",
+            "attr": "data-button-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        }
+    ]
+}

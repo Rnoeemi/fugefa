@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('resource_permissions', function (Blueprint $table) {
+            $table->id();
+            $table->string('role');
+            $table->string('resource');
+            $table->boolean('can_view')->default(false);
+            $table->boolean('can_edit')->default(false);
+            $table->boolean('can_add')->default(false);
+            $table->boolean('can_remove')->default(false);
+            $table->timestamps();
+
+            $table->unique(['role', 'resource']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('resource_permissions');
+    }
+};

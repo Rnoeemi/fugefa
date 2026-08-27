@@ -1,0 +1,49 @@
+{
+    "id": "ts-image",
+    "label": "Kép",
+    "category": "content",
+    "icon": "photo",
+    "keywords": [
+        "kep",
+        "image",
+        "media",
+        "logo"
+    ],
+    "scopes": [
+        "page",
+        "footer"
+    ],
+    "type": "static",
+    "gjsType": "ts-image",
+    "interactive": true,
+    "template": "image.html",
+    "params": [
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Kép",
+            "type": "media",
+            "default": "/images/site/hero.jpg",
+            "group": "media",
+            "groupLabel": "Média"
+        },
+        {
+            "key": "alt",
+            "attr": "data-alt",
+            "label": "Alt szöveg",
+            "type": "text",
+            "default": "",
+            "group": "media",
+            "groupLabel": "Média"
+        },
+        {
+            "key": "href",
+            "attr": "data-href",
+            "label": "Link",
+            "type": "link",
+            "default": "",
+            "group": "media",
+            "groupLabel": "Média"
+        }
+    ]
+}

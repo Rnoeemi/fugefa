@@ -1,0 +1,38 @@
+<section
+  class="ts-stats"
+  data-gjs-type="ts-stats"
+  data-gjs-name="Statisztika"
+  data-media-url="{{media_url}}"
+  data-overlay="{{overlay}}"
+  data-overlay-color="{{overlay_color}}"
+  data-title="{{title}}"
+  data-stat1-value="{{stat1_value}}"
+  data-stat1-label="{{stat1_label}}"
+  data-stat2-value="{{stat2_value}}"
+  data-stat2-label="{{stat2_label}}"
+  data-stat3-value="{{stat3_value}}"
+  data-stat3-label="{{stat3_label}}"
+>
+  <div class="ts-stats__bg" data-ts-bg-style style="background-image:url('{{media_url}}')"></div>
+  <div class="ts-stats__overlay" data-ts-bg-overlay style="opacity:{{overlay}}"></div>
+  <div class="ts-stats__inner">
+    <h2 data-ts-text="title">{{title}}</h2>
+    <div class="ts-stats__grid">
+      <article><strong data-ts-text="stat1_value">{{stat1_value}}</strong><span data-ts-text="stat1_label">{{stat1_label}}</span></article>
+      <article><strong data-ts-text="stat2_value">{{stat2_value}}</strong><span data-ts-text="stat2_label">{{stat2_label}}</span></article>
+      <article><strong data-ts-text="stat3_value">{{stat3_value}}</strong><span data-ts-text="stat3_label">{{stat3_label}}</span></article>
+    </div>
+  </div>
+</section>
+<style>
+.ts-stats{position:relative;isolation:isolate;overflow:hidden;padding:4rem 1.5rem;color:#fff;font-family:var(--font-sans,Karla,sans-serif);background:var(--color-primary-mid)}
+.ts-stats__bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+.ts-stats__overlay{position:absolute;inset:0;z-index:1;background:var(--ts-overlay-color, var(--color-primary));pointer-events:none}
+.ts-stats__inner{position:relative;z-index:2;max-width:72rem;margin:0 auto;text-align:center}
+.ts-stats h2{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 2rem}
+.ts-stats__grid{display:grid;gap:1.25rem;grid-template-columns:repeat(3,1fr)}
+.ts-stats article{padding:1.25rem;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.12);color:#fff}
+.ts-stats strong{display:block;font-family:var(--font-display,Literata,serif);font-size:clamp(2rem,4vw,2.75rem);margin-bottom:.35rem;color:inherit}
+.ts-stats span{font-size:.9rem;opacity:.8;color:inherit}
+@media (max-width:700px){.ts-stats__grid{grid-template-columns:1fr}}
+</style>

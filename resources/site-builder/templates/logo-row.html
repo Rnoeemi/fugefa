@@ -1,0 +1,28 @@
+<section
+  class="ts-logo-row"
+  data-gjs-type="ts-logo-row"
+  data-gjs-name="Logó sor"
+  data-title="{{title}}"
+  data-logo1="{{logo1}}"
+  data-logo2="{{logo2}}"
+  data-logo3="{{logo3}}"
+  data-logo4="{{logo4}}"
+>
+  <div class="ts-logo-row__inner">
+    <h2 data-ts-text="title">{{title}}</h2>
+    <div class="ts-logo-row__grid">
+      <div class="ts-logo-row__item" data-ts-bg-style data-ts-src-from="logo1" style="background-image:url('{{logo1}}')"></div>
+      <div class="ts-logo-row__item" data-ts-bg-style data-ts-src-from="logo2" style="background-image:url('{{logo2}}')"></div>
+      <div class="ts-logo-row__item" data-ts-bg-style data-ts-src-from="logo3" style="background-image:url('{{logo3}}')"></div>
+      <div class="ts-logo-row__item" data-ts-bg-style data-ts-src-from="logo4" style="background-image:url('{{logo4}}')"></div>
+    </div>
+  </div>
+</section>
+<style>
+.ts-logo-row{padding:3rem 1.5rem;background:var(--color-light);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif);text-align:center}
+.ts-logo-row__inner{max-width:72rem;margin:0 auto}
+.ts-logo-row h2{font-family:var(--font-display,Literata,serif);font-size:1.5rem;margin:0 0 1.5rem}
+.ts-logo-row__grid{display:grid;gap:1rem;grid-template-columns:repeat(4,1fr);align-items:center}
+.ts-logo-row__item{min-height:64px;background:#fff center/contain no-repeat;border:1px solid color-mix(in srgb, var(--color-text) 8%, transparent)}
+@media (max-width:700px){.ts-logo-row__grid{grid-template-columns:repeat(2,1fr)}}
+</style>

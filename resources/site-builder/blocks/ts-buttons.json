@@ -1,0 +1,85 @@
+{
+    "id": "ts-buttons",
+    "label": "Gombok",
+    "category": "general",
+    "icon": "bars-3",
+    "keywords": [
+        "gomb",
+        "cta",
+        "button"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-buttons",
+    "interactive": true,
+    "template": "buttons.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Következő lépés",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "primary_label",
+            "attr": "data-primary-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Fő gomb",
+            "group": "btn-primary",
+            "groupLabel": "1. gomb"
+        },
+        {
+            "key": "primary_href",
+            "attr": "data-primary-href",
+            "label": "Link",
+            "type": "text",
+            "default": "#",
+            "group": "btn-primary",
+            "groupLabel": "1. gomb"
+        },
+        {
+            "key": "primary_style",
+            "attr": "data-primary-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-primary",
+            "groupLabel": "1. gomb"
+        },
+        {
+            "key": "secondary_label",
+            "attr": "data-secondary-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Második gomb",
+            "group": "btn-secondary",
+            "groupLabel": "2. gomb"
+        },
+        {
+            "key": "secondary_href",
+            "attr": "data-secondary-href",
+            "label": "Link",
+            "type": "text",
+            "default": "#",
+            "group": "btn-secondary",
+            "groupLabel": "2. gomb"
+        },
+        {
+            "key": "secondary_style",
+            "attr": "data-secondary-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "secondary",
+            "options": "button_styles",
+            "group": "btn-secondary",
+            "groupLabel": "2. gomb"
+        }
+    ]
+}

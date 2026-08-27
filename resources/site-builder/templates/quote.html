@@ -1,0 +1,27 @@
+<section
+  class="ts-quote"
+  data-gjs-type="ts-quote"
+  data-gjs-name="Vendégvélemények"
+  data-layout="{{layout}}"
+>
+  <div class="ts-quote__viewport">
+    <div class="ts-quote__track" data-ts-items="items" data-ts-items-kind="testimonials"></div>
+  </div>
+</section>
+<style>
+.ts-quote{padding:4rem 1.5rem;background:var(--color-primary);color:#fff;font-family:var(--font-sans,Karla,sans-serif);overflow:hidden}
+.ts-quote__viewport{max-width:72rem;margin:0 auto;overflow:hidden}
+.ts-quote__track{display:flex;gap:1.5rem;width:max-content;animation:ts-quote-marquee 45s linear infinite}
+.ts-quote__track:hover{animation-play-state:paused}
+.ts-quote__card{flex:0 0 min(88vw,36rem);text-align:center;padding:0 1rem}
+.ts-quote__card p{font-family:var(--font-display,Literata,serif);font-size:clamp(1.25rem,2.6vw,1.75rem);line-height:1.45;margin:0 0 1rem}
+.ts-quote__card cite{opacity:.65;font-style:normal;font-size:.9rem}
+@keyframes ts-quote-marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .ts-quote__track{animation:none;flex-wrap:wrap;width:auto;justify-content:center}
+  .ts-quote__card{flex-basis:100%}
+}
+</style>

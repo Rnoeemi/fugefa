@@ -1,0 +1,78 @@
+{
+    "id": "ts-nearby",
+    "label": "Környék / tippek",
+    "category": "content",
+    "icon": "map",
+    "keywords": [
+        "kornyek",
+        "program",
+        "tipp"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "template": "nearby.html",
+    "params": [
+        {
+            "key": "title",
+            "label": "Cím",
+            "type": "text",
+            "default": "A környéken"
+        },
+        {
+            "key": "lead",
+            "label": "Bevezető",
+            "type": "text",
+            "default": "Tippek kiránduláshoz, étkezéshez és kikapcsolódáshoz."
+        },
+        {
+            "key": "item1_title",
+            "label": "1. cím",
+            "type": "text",
+            "default": "Kirándulás"
+        },
+        {
+            "key": "item1_text",
+            "label": "1. szöveg",
+            "type": "text",
+            "default": "Jelzett túraútvonalak néhány perc sétára."
+        },
+        {
+            "key": "item2_title",
+            "label": "2. cím",
+            "type": "text",
+            "default": "Éttermek"
+        },
+        {
+            "key": "item2_text",
+            "label": "2. szöveg",
+            "type": "text",
+            "default": "Helyi konyha a közeli falvakban."
+        },
+        {
+            "key": "item3_title",
+            "label": "3. cím",
+            "type": "text",
+            "default": "Pihenés"
+        },
+        {
+            "key": "item3_text",
+            "label": "3. szöveg",
+            "type": "text",
+            "default": "Kerti pihenő és csendes környezet."
+        },
+        {
+            "key": "item4_title",
+            "label": "4. cím",
+            "type": "text",
+            "default": "Családi program"
+        },
+        {
+            "key": "item4_text",
+            "label": "4. szöveg",
+            "type": "text",
+            "default": "Játszótér és könnyű séták a környéken."
+        }
+    ]
+}

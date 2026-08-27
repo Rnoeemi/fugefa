@@ -1,0 +1,109 @@
+{
+    "id": "ts-icon-list",
+    "label": "Ikonlista",
+    "category": "content",
+    "icon": "list-bullet",
+    "keywords": [
+        "ikon",
+        "icon",
+        "lista",
+        "elony",
+        "szolgaltatas"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-icon-list",
+    "interactive": true,
+    "template": "icon-list.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Szolgáltatások",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "lead",
+            "attr": "data-lead",
+            "label": "Bevezető",
+            "type": "textarea",
+            "default": "A legfontosabb tudnivalók egy helyen.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "columns",
+            "attr": "data-columns",
+            "label": "Oszlopszám",
+            "type": "select",
+            "default": "3",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "2",
+                    "name": "2 oszlop"
+                },
+                {
+                    "id": "3",
+                    "name": "3 oszlop"
+                },
+                {
+                    "id": "4",
+                    "name": "4 oszlop"
+                }
+            ]
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Kártyák",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Kártyák tartalmának szerkesztése",
+            "itemLabel": "kártya",
+            "editLabel": "Kártyák szerkesztése",
+            "addLabel": "+ Új kártya",
+            "hint": "Itt adhat hozzá kártyákat, és kártyánként állíthatja az ikont / képet, a címet és a szöveget.",
+            "itemFields": [
+                {
+                    "key": "icon",
+                    "label": "Ikon vagy kép",
+                    "type": "icon"
+                },
+                {
+                    "key": "title",
+                    "label": "Cím",
+                    "type": "text"
+                },
+                {
+                    "key": "text",
+                    "label": "Szöveg",
+                    "type": "textarea"
+                }
+            ],
+            "default": [
+                {
+                    "icon": "wifi",
+                    "title": "Ingyenes Wi‑Fi",
+                    "text": "Gyors internet a szállás egész területén."
+                },
+                {
+                    "icon": "parking",
+                    "title": "Parkoló",
+                    "text": "Ingyenes parkolás a vendégeknek."
+                },
+                {
+                    "icon": "coffee",
+                    "title": "Reggeli",
+                    "text": "Friss reggeli kérésre."
+                }
+            ]
+        }
+    ]
+}

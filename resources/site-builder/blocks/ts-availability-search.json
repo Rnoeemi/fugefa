@@ -1,0 +1,50 @@
+{
+    "id": "ts-availability-search",
+    "label": "Szabad hely kereső",
+    "category": "accommodations",
+    "icon": "magnifying-glass",
+    "keywords": [
+        "kereso",
+        "datum",
+        "foglalas",
+        "availability"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "dynamic",
+    "dynamicKey": "availability-search",
+    "gjsType": "ts-availability-search",
+    "className": "ts-dyn-block ts-dyn-search",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Szabad helyek"
+        },
+        {
+            "key": "text",
+            "attr": "data-text",
+            "label": "Szöveg",
+            "type": "text",
+            "default": "Adja meg az időpontot, és indítsa el a foglalást."
+        },
+        {
+            "key": "button",
+            "attr": "data-button",
+            "label": "Gomb",
+            "type": "text",
+            "default": "Keresés"
+        },
+        {
+            "key": "slug",
+            "attr": "data-slug",
+            "label": "Alapértelmezett szállás",
+            "type": "select",
+            "default": "",
+            "options": "accommodations"
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+{
+    "id": "ts-features",
+    "label": "Előnyök / kártyák",
+    "category": "content",
+    "icon": "squares-2x2",
+    "keywords": [
+        "elony",
+        "features",
+        "miert",
+        "kartya",
+        "oszlop"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-features",
+    "interactive": true,
+    "template": "features.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Miért nálunk?",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "columns",
+            "attr": "data-columns",
+            "label": "Oszlopszám",
+            "type": "select",
+            "default": "3",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "2",
+                    "name": "2 oszlop"
+                },
+                {
+                    "id": "3",
+                    "name": "3 oszlop"
+                },
+                {
+                    "id": "4",
+                    "name": "4 oszlop"
+                }
+            ]
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Tartalom",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Kártyák",
+            "itemLabel": "kártya",
+            "editLabel": "Tartalmak szerkesztése",
+            "addLabel": "+ Új kártya",
+            "hint": "Itt szerkesztheti a kártyák ikonját és szövegét, és újakat is hozzáadhat.",
+            "itemFields": [
+                {
+                    "key": "icon",
+                    "label": "Ikon vagy kép",
+                    "type": "icon"
+                },
+                {
+                    "key": "title",
+                    "label": "Cím",
+                    "type": "text"
+                },
+                {
+                    "key": "text",
+                    "label": "Szöveg",
+                    "type": "textarea"
+                }
+            ],
+            "default": [
+                {
+                    "icon": "tree",
+                    "title": "Csendes környezet",
+                    "text": "Természetközeli pihenés, távol a város zajától."
+                },
+                {
+                    "icon": "calendar",
+                    "title": "Online foglalás",
+                    "text": "Nézze meg a szabad időpontokat, és foglaljon pár kattintással."
+                },
+                {
+                    "icon": "heart",
+                    "title": "Vendégközpontú",
+                    "text": "Rugalmas fogadás, személyes odafigyelés minden tartózkodásnál."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,113 @@
+{
+    "id": "ts-stats",
+    "label": "Számok / statisztika",
+    "category": "general",
+    "icon": "queue-list",
+    "keywords": [
+        "stat",
+        "szam",
+        "metric"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-stats",
+    "interactive": true,
+    "template": "stats.html",
+    "params": [
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Háttérkép (opcionális)",
+            "type": "media",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay",
+            "attr": "data-overlay",
+            "label": "Overlay erősség",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "default": "0.7",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay_color",
+            "attr": "data-overlay-color",
+            "label": "Overlay szín",
+            "type": "color",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Számokban",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "stat1_value",
+            "attr": "data-stat1-value",
+            "label": "Érték",
+            "type": "text",
+            "default": "120+",
+            "group": "stat-1",
+            "groupLabel": "1. adat"
+        },
+        {
+            "key": "stat1_label",
+            "attr": "data-stat1-label",
+            "label": "Címke",
+            "type": "text",
+            "default": "Vendég évente",
+            "group": "stat-1",
+            "groupLabel": "1. adat"
+        },
+        {
+            "key": "stat2_value",
+            "attr": "data-stat2-value",
+            "label": "Érték",
+            "type": "text",
+            "default": "4.9",
+            "group": "stat-2",
+            "groupLabel": "2. adat"
+        },
+        {
+            "key": "stat2_label",
+            "attr": "data-stat2-label",
+            "label": "Címke",
+            "type": "text",
+            "default": "Értékelés",
+            "group": "stat-2",
+            "groupLabel": "2. adat"
+        },
+        {
+            "key": "stat3_value",
+            "attr": "data-stat3-value",
+            "label": "Érték",
+            "type": "text",
+            "default": "15",
+            "group": "stat-3",
+            "groupLabel": "3. adat"
+        },
+        {
+            "key": "stat3_label",
+            "attr": "data-stat3-label",
+            "label": "Címke",
+            "type": "text",
+            "default": "Év tapasztalat",
+            "group": "stat-3",
+            "groupLabel": "3. adat"
+        }
+    ]
+}

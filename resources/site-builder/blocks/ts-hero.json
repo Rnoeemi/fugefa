@@ -1,0 +1,174 @@
+{
+    "id": "ts-hero",
+    "label": "Hero szekció",
+    "category": "general",
+    "icon": "sparkles",
+    "keywords": [
+        "hero",
+        "banner",
+        "cim",
+        "video",
+        "kep"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-hero",
+    "interactive": true,
+    "template": "hero.html",
+    "params": [
+        {
+            "key": "layout",
+            "attr": "data-layout",
+            "label": "Elrendezés",
+            "type": "layout",
+            "default": "bottom",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "bottom",
+                    "name": "Alul balra",
+                    "hint": "Szöveg lent, full-bleed háttér",
+                    "wire": "hero-bottom"
+                },
+                {
+                    "id": "center",
+                    "name": "Középen",
+                    "hint": "Szöveg középre igazítva a háttéren",
+                    "wire": "hero-center"
+                },
+                {
+                    "id": "split",
+                    "name": "Osztott",
+                    "hint": "Bal: sima háttér + szöveg, jobb: tiszta kép",
+                    "wire": "hero-split"
+                }
+            ]
+        },
+        {
+            "key": "media_type",
+            "attr": "data-media-type",
+            "label": "Háttér típus",
+            "type": "select",
+            "default": "image",
+            "options": "media_types",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Háttérkép / videó",
+            "type": "media",
+            "default": "/images/site/hero.jpg",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay",
+            "attr": "data-overlay",
+            "label": "Overlay erősség",
+            "type": "number",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "default": "0.85",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "overlay_color",
+            "attr": "data-overlay-color",
+            "label": "Overlay szín",
+            "type": "color",
+            "default": "",
+            "group": "background",
+            "groupLabel": "Háttér és overlay"
+        },
+        {
+            "key": "eyebrow",
+            "attr": "data-eyebrow",
+            "label": "Alcím",
+            "type": "text",
+            "default": "Tüsiszállás",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Pihenés a természet közelében",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "lead",
+            "attr": "data-lead",
+            "label": "Leírás",
+            "type": "textarea",
+            "default": "Vendégházak és szobák nyugodt környezetben – foglaljon online percek alatt.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "primary_label",
+            "attr": "data-primary-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Szállások",
+            "group": "btn-primary",
+            "groupLabel": "Elsődleges gomb"
+        },
+        {
+            "key": "primary_href",
+            "attr": "data-primary-href",
+            "label": "Link",
+            "type": "text",
+            "default": "/szallasok",
+            "group": "btn-primary",
+            "groupLabel": "Elsődleges gomb"
+        },
+        {
+            "key": "primary_style",
+            "attr": "data-primary-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-primary",
+            "groupLabel": "Elsődleges gomb"
+        },
+        {
+            "key": "secondary_label",
+            "attr": "data-secondary-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Kapcsolat",
+            "group": "btn-secondary",
+            "groupLabel": "Másodlagos gomb"
+        },
+        {
+            "key": "secondary_href",
+            "attr": "data-secondary-href",
+            "label": "Link",
+            "type": "text",
+            "default": "/kapcsolat",
+            "group": "btn-secondary",
+            "groupLabel": "Másodlagos gomb"
+        },
+        {
+            "key": "secondary_style",
+            "attr": "data-secondary-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "inverse",
+            "options": "button_styles",
+            "group": "btn-secondary",
+            "groupLabel": "Másodlagos gomb"
+        }
+    ]
+}

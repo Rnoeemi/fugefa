@@ -1,0 +1,84 @@
+{
+    "id": "ts-split",
+    "label": "Szöveg + kép",
+    "category": "general",
+    "icon": "columns-2",
+    "keywords": [
+        "split",
+        "kep",
+        "szoveg"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-split",
+    "interactive": true,
+    "template": "split.html",
+    "params": [
+        {
+            "key": "media_url",
+            "attr": "data-media-url",
+            "label": "Kép URL",
+            "type": "media",
+            "default": "/images/site/hero.jpg",
+            "group": "background",
+            "groupLabel": "Kép"
+        },
+        {
+            "key": "eyebrow",
+            "attr": "data-eyebrow",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Bemutatkozás",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Cím",
+            "type": "text",
+            "default": "Kétoszlopos tartalom",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "body",
+            "attr": "data-body",
+            "label": "Szöveg",
+            "type": "textarea",
+            "default": "Bal oldalon szöveg, jobb oldalon cserélhető kép.",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "button_label",
+            "attr": "data-button-label",
+            "label": "Felirat",
+            "type": "text",
+            "default": "Tudjon meg többet",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_href",
+            "attr": "data-button-href",
+            "label": "Link",
+            "type": "text",
+            "default": "#",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        },
+        {
+            "key": "button_style",
+            "attr": "data-button-style",
+            "label": "Megjelenés",
+            "type": "select",
+            "default": "primary",
+            "options": "button_styles",
+            "group": "btn-main",
+            "groupLabel": "Gomb"
+        }
+    ]
+}
