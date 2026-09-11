@@ -7,6 +7,7 @@ use App\Enums\BookingStatus;
 use App\Enums\GuestStatus;
 use App\Enums\PaymentProvider;
 use App\Enums\PaymentStatus;
+use App\Filament\Concerns\UsesSiteShellBody;
 use App\Models\Accommodation;
 use App\Models\Booking;
 use App\Models\Guest;
@@ -57,6 +58,7 @@ class GuestBookingPage extends Page
 {
     use CanUseDatabaseTransactions;
     use InteractsWithFormActions;
+    use UsesSiteShellBody;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CalendarDays;
 

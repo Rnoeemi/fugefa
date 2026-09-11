@@ -2,6 +2,7 @@
 
 namespace App\Filament\Appointment\Pages;
 
+use App\Filament\Concerns\UsesSiteShellBody;
 use App\Models\Worker;
 use App\Models\WorkerPackage;
 use App\Services\AppointmentBookingService;
@@ -39,6 +40,7 @@ class AppointmentBookingPage extends Page
 {
     use CanUseDatabaseTransactions;
     use InteractsWithFormActions;
+    use UsesSiteShellBody;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CalendarDays;
 

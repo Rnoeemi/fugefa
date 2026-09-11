@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="@yield('meta_description', ($siteSettings->site_name ?? 'Tüsiszállás').' – vendégház, szoba és pihenés nyugodt környezetben. Online foglalás.')">
-    <title>@yield('title', $siteSettings->site_name ?? 'Tüsiszállás')</title>
+    <meta name="description" content="@yield('meta_description', ($siteSettings->site_name ?? 'Fügefa építésziroda').' – építészmérnöki tervezés Baja és környékén.')">
+    <title>@yield('title', $siteSettings->site_name ?? 'Fügefa építésziroda')</title>
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @include('site.partials.theme-fonts')
@@ -24,7 +24,8 @@
     <script src="{{ asset('js/ts-nav.js') }}?v=3"></script>
     <script src="{{ asset('js/ts-hero-slider.js') }}?v=6"></script>
     <script src="{{ asset('js/ts-gallery.js') }}?v=2"></script>
-    <script src="{{ asset('js/ts-ba-gallery.js') }}?v=4"></script>
+    <script src="{{ asset('js/ts-ba-gallery.js') }}?v=7"></script>
+    <script src="{{ asset('js/ts-flipcards.js') }}?v=1"></script>
     <script src="{{ asset('js/ts-reveal.js') }}?v=1"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -32,6 +33,7 @@
             window.TsHeroSlider?.init?.(document);
             window.TsGallery?.init?.(document);
             window.TsBaGallery?.init?.(document);
+            window.TsFlipcards?.init?.(document);
             window.TsReveal?.init?.(document);
         });
         window.addEventListener('load', () => {
@@ -39,6 +41,7 @@
             window.TsHeroSlider?.init?.(document);
             window.TsGallery?.init?.(document);
             window.TsBaGallery?.init?.(document);
+            window.TsFlipcards?.init?.(document);
             window.TsReveal?.init?.(document);
         });
     </script>

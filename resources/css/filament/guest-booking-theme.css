@@ -1,5 +1,6 @@
 @import '../../../vendor/filament/filament/resources/css/theme.css';
 @import '../app.css';
+@import './site-chrome-panel.css';
 
 @source '../../../app/Filament/Guest/**/*';
 @source '../../../resources/views/filament/guest/**/*';
@@ -61,8 +62,10 @@
 
 .guest-booking-hero {
     width: 100%;
-    background: var(--color-pine-deep);
-    color: white;
+    background: #fff;
+    color: #111;
+    border-top: 2px solid #111;
+    border-bottom: 2px solid #111;
     padding: 7rem 0 3rem;
 }
 

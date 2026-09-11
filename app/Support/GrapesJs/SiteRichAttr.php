@@ -51,10 +51,166 @@ final class SiteRichAttr
     }
 
     /**
+     * ts-text: data-body egyszer kerüljön a data-ts-text="body" elembe (ne legyen dupla orphan bekezdés).
+     */
+    public static function repairTextSections(string $html): string
+    {
+        if ($html === '' || (! str_contains($html, 'ts-text') && ! str_contains($html, 'data-ts-text="body"'))) {
+            return $html;
+        }
+
+        try {
+            $dom = new \DOMDocument('1.0', 'UTF-8');
+            $previous = libxml_use_internal_errors(true);
+            $wrapped = '<div id="ts-rich-root">'.$html.'</div>';
+            $dom->loadHTML('<?xml encoding="UTF-8">'.$wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+
+            $xpath = new \DOMXPath($dom);
+            $sections = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " ts-text ")]');
+            if ($sections === false) {
+                return $html;
+            }
+
+            $changed = false;
+            foreach ($sections as $section) {
+                if (! $section instanceof \DOMElement) {
+                    continue;
+                }
+
+                $bodyRaw = $section->getAttribute('data-body');
+                $bodyHtml = self::decode(html_entity_decode($bodyRaw, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+                if (trim(strip_tags($bodyHtml)) === '' && $bodyHtml === '') {
+                    continue;
+                }
+
+                $bodyNodes = $xpath->query('.//*[@data-ts-text="body"]', $section);
+                $bodyEl = null;
+                if ($bodyNodes !== false) {
+                    foreach ($bodyNodes as $node) {
+                        if ($node instanceof \DOMElement) {
+                            $bodyEl = $node;
+                            break;
+                        }
+                    }
+                }
+
+                $inner = null;
+                foreach ($section->childNodes as $child) {
+                    if ($child instanceof \DOMElement && str_contains(' '.$child->getAttribute('class').' ', ' ts-text__inner ')) {
+                        $inner = $child;
+                        break;
+                    }
+                }
+                if (! $inner instanceof \DOMElement) {
+                    continue;
+                }
+
+                // Upgrade <p data-ts-text="body"> → <div> so nested <p> from rich text is valid.
+                if ($bodyEl instanceof \DOMElement && strtolower($bodyEl->tagName) === 'p') {
+                    $div = $dom->createElement('div');
+                    foreach (iterator_to_array($bodyEl->attributes ?? []) as $attr) {
+                        if ($attr instanceof \DOMAttr) {
+                            $div->setAttribute($attr->name, $attr->value);
+                        }
+                    }
+                    $classes = trim($div->getAttribute('class').' ts-text__body');
+                    $div->setAttribute('class', preg_replace('/\s+/', ' ', $classes) ?? 'ts-text__body');
+                    $div->setAttribute('data-ts-text', 'body');
+                    $bodyEl->parentNode?->replaceChild($div, $bodyEl);
+                    $bodyEl = $div;
+                    $changed = true;
+                }
+
+                if (! $bodyEl instanceof \DOMElement) {
+                    $bodyEl = $dom->createElement('div');
+                    $bodyEl->setAttribute('class', 'ts-text__body');
+                    $bodyEl->setAttribute('data-ts-text', 'body');
+                    $inner->appendChild($bodyEl);
+                    $changed = true;
+                } elseif (! str_contains(' '.$bodyEl->getAttribute('class').' ', ' ts-text__body ')) {
+                    $bodyEl->setAttribute('class', trim($bodyEl->getAttribute('class').' ts-text__body'));
+                    $changed = true;
+                }
+
+                // Remove orphan siblings after the body marker that duplicate / leak rich content.
+                $toRemove = [];
+                $passedBody = false;
+                foreach (iterator_to_array($inner->childNodes) as $child) {
+                    if ($child === $bodyEl) {
+                        $passedBody = true;
+                        continue;
+                    }
+                    if (! $passedBody || ! $child instanceof \DOMElement) {
+                        continue;
+                    }
+                    if ($child->hasAttribute('data-ts-text')) {
+                        continue;
+                    }
+                    // Free-floating paragraphs/divs after body marker are almost always leaked rich HTML.
+                    $tag = strtolower($child->tagName);
+                    if (in_array($tag, ['p', 'div', 'span'], true)) {
+                        $toRemove[] = $child;
+                    }
+                }
+                foreach ($toRemove as $node) {
+                    $node->parentNode?->removeChild($node);
+                    $changed = true;
+                }
+
+                $currentInner = '';
+                foreach ($bodyEl->childNodes as $child) {
+                    $currentInner .= $dom->saveHTML($child);
+                }
+                $normalize = static fn (string $value): string => preg_replace('/\s+/u', ' ', trim(html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8'))) ?? '';
+
+                if ($normalize($currentInner) !== $normalize($bodyHtml) || $toRemove !== []) {
+                    while ($bodyEl->firstChild) {
+                        $bodyEl->removeChild($bodyEl->firstChild);
+                    }
+                    if ($bodyHtml !== '') {
+                        $tmp = new \DOMDocument('1.0', 'UTF-8');
+                        $prev = libxml_use_internal_errors(true);
+                        $tmp->loadHTML('<?xml encoding="UTF-8"><div id="ts-body-frag">'.$bodyHtml.'</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                        libxml_clear_errors();
+                        libxml_use_internal_errors($prev);
+                        $fragRoot = $tmp->getElementById('ts-body-frag');
+                        if ($fragRoot) {
+                            foreach (iterator_to_array($fragRoot->childNodes) as $child) {
+                                $bodyEl->appendChild($dom->importNode($child, true));
+                            }
+                        }
+                    }
+                    $changed = true;
+                }
+            }
+
+            if (! $changed) {
+                return $html;
+            }
+
+            $root = $dom->getElementById('ts-rich-root');
+            if (! $root) {
+                return $html;
+            }
+            $output = '';
+            foreach ($root->childNodes as $child) {
+                $output .= $dom->saveHTML($child);
+            }
+
+            return $output !== '' ? $output : $html;
+        } catch (\Throwable) {
+            return $html;
+        }
+    }
+
+    /**
      * Sérült ts-features szekciók helyreállítása (data-col attribútumok szétestek).
      */
     public static function repairFeaturesSections(string $html): string
     {
+        $html = self::repairTextSections($html);
         if ($html === '' || ! str_contains($html, 'ts-features')) {
             return $html;
         }

@@ -23,7 +23,7 @@
             "attr": "data-media-url",
             "label": "Kép",
             "type": "media",
-            "default": "/images/site/hero.jpg",
+            "default": "/images/site/hero-1.jpg",
             "group": "media",
             "groupLabel": "Média"
         },

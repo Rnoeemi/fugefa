@@ -1,0 +1,151 @@
+{
+    "id": "ts-flipcards",
+    "label": "Flipcard sor",
+    "category": "content",
+    "icon": "squares-2x2",
+    "keywords": [
+        "flip",
+        "flipcard",
+        "kartya",
+        "szolgaltatas",
+        "fordithato"
+    ],
+    "scopes": [
+        "page"
+    ],
+    "type": "static",
+    "gjsType": "ts-flipcards",
+    "interactive": true,
+    "template": "flipcards.html",
+    "params": [
+        {
+            "key": "title",
+            "attr": "data-title",
+            "label": "Szekció cím (opcionális)",
+            "type": "text",
+            "default": "",
+            "group": "content",
+            "groupLabel": "Szöveges tartalom"
+        },
+        {
+            "key": "columns",
+            "attr": "data-columns",
+            "label": "Oszlopszám",
+            "type": "select",
+            "default": "4",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                {
+                    "id": "2",
+                    "name": "2 oszlop"
+                },
+                {
+                    "id": "3",
+                    "name": "3 oszlop"
+                },
+                {
+                    "id": "4",
+                    "name": "4 oszlop"
+                }
+            ]
+        },
+        {
+            "key": "items",
+            "attr": "data-items",
+            "label": "Kártyák",
+            "type": "items",
+            "group": "items",
+            "groupLabel": "Kártyák",
+            "itemLabel": "kártya",
+            "editLabel": "Kártyák szerkesztése",
+            "addLabel": "+ Új kártya",
+            "hint": "Egy sorban tipikusan 4 kártya: az első lehet fix szöveg (flip kikapcsolva), a többi fordulós kép/szöveg. Elölre és hátulra opcionálisan kép és szöveg is adható.",
+            "itemFields": [
+                {
+                    "key": "flip",
+                    "label": "Fordítható (flip)",
+                    "type": "select",
+                    "options": [
+                        {
+                            "id": "0",
+                            "name": "Nem – fix kártya"
+                        },
+                        {
+                            "id": "1",
+                            "name": "Igen – flipcard"
+                        }
+                    ]
+                },
+                {
+                    "key": "front_image",
+                    "label": "Előlap kép (opcionális)",
+                    "type": "media"
+                },
+                {
+                    "key": "front_title",
+                    "label": "Előlap cím",
+                    "type": "text"
+                },
+                {
+                    "key": "front_text",
+                    "label": "Előlap szöveg",
+                    "type": "textarea"
+                },
+                {
+                    "key": "back_image",
+                    "label": "Hátlap kép (opcionális)",
+                    "type": "media"
+                },
+                {
+                    "key": "back_title",
+                    "label": "Hátlap cím",
+                    "type": "text"
+                },
+                {
+                    "key": "back_text",
+                    "label": "Hátlap szöveg",
+                    "type": "textarea"
+                }
+            ],
+            "default": [
+                {
+                    "flip": "0",
+                    "front_image": "",
+                    "front_title": "LAKÓÉPÜLET TERVEZŐI SZOLGÁLTATÁS",
+                    "front_text": "Lakóépület, családiház, nyaraló teljeskörű tervezése",
+                    "back_image": "",
+                    "back_title": "",
+                    "back_text": ""
+                },
+                {
+                    "flip": "1",
+                    "front_image": "",
+                    "front_title": "",
+                    "front_text": "",
+                    "back_image": "",
+                    "back_title": "Építész koncepciók készítése",
+                    "back_text": "Egyedi koncepció a telek, az igények és a költségkeret alapján."
+                },
+                {
+                    "flip": "1",
+                    "front_image": "",
+                    "front_title": "",
+                    "front_text": "",
+                    "back_image": "",
+                    "back_title": "Engedélyezési tervek készítése",
+                    "back_text": "Hatósági eljárásra alkalmas dokumentáció, egyeztetéssel."
+                },
+                {
+                    "flip": "1",
+                    "front_image": "",
+                    "front_title": "",
+                    "front_text": "",
+                    "back_image": "",
+                    "back_title": "Kiviteli tervek készítése",
+                    "back_text": "Megvalósításhoz szükséges részletes műszaki tervek."
+                }
+            ]
+        }
+    ]
+}

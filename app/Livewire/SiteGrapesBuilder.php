@@ -106,12 +106,18 @@ class SiteGrapesBuilder extends Component
             return;
         }
 
+        $footerHtml = SiteLayoutDefaults::sanitizeFooterHtml($html);
+        $footerCss = SiteBuilderCss::sanitize(SiteLayoutDefaults::sanitizeFooterCss($css));
+        $footerProject = is_array($grapesData)
+            ? SiteLayoutDefaults::sanitizeFooterProjectData(SiteBuilderCss::sanitizeProjectData($grapesData))
+            : $grapesData;
+
         $settings->update([
-            'footer_html' => $html,
-            'footer_css' => $css,
-            'footer_grapes_data' => $grapesData,
+            'footer_html' => $footerHtml,
+            'footer_css' => $footerCss,
+            'footer_grapes_data' => $footerProject,
         ]);
-        $writer->writeLayoutPart('footer', $css);
+        $writer->writeLayoutPart('footer', $footerCss);
     }
 
     /**
@@ -150,6 +156,7 @@ class SiteGrapesBuilder extends Component
             'canvasStyles' => $canvasStyles,
             'themeCssUrl' => $theme['theme_css_url'] ?? null,
             'customCssUrl' => $theme['custom_css_url'] ?? null,
+            'stylePreset' => (string) ($theme['style_preset'] ?? 'soft-ui'),
             'globalColors' => $theme['global_colors'] ?? [],
             'fontFamilies' => SiteFonts::builderOptions(),
             'mediaListUrl' => route('site-builder.media.index'),
@@ -268,15 +275,17 @@ class SiteGrapesBuilder extends Component
 
         $html = SiteLayoutDefaults::hydrateFooterContact((string) $html, $settings);
         $html = SiteLayoutDefaults::stripFooterCopyright($html);
-        $css = trim((string) $css."\n".SiteLayoutDefaults::footerCss());
+        $html = SiteLayoutDefaults::sanitizeFooterHtml($html);
+        $css = SiteLayoutDefaults::sanitizeFooterCss(trim((string) $css."\n".SiteLayoutDefaults::footerCss()));
+        $project = is_array($project) && filled($project)
+            ? SiteLayoutDefaults::sanitizeFooterProjectData(SiteBuilderCss::sanitizeProjectData($project))
+            : null;
 
         return [
             ...$shared,
             'html' => $html ?? '',
             'css' => SiteBuilderCss::sanitize((string) ($css ?? '')),
-            'projectData' => is_array($project) && filled($project)
-                ? SiteBuilderCss::sanitizeProjectData($project)
-                : null,
+            'projectData' => $project,
             'blocks' => SiteBlockCatalog::definitionsFor('footer'),
             'dynamicBlocks' => [],
             'interactiveBlocks' => SiteBlockCatalog::interactiveDefinitionsFor('footer'),

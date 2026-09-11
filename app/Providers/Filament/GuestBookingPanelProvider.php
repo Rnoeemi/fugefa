@@ -67,7 +67,7 @@ class GuestBookingPanelProvider extends PanelProvider
                     .view('filament.guest.partials.hero')->render(),
             )
             ->renderHook(
-                PanelsRenderHook::FOOTER,
+                PanelsRenderHook::LAYOUT_END,
                 fn (): string => view('filament.guest.hooks.footer')->render(),
             );
     }

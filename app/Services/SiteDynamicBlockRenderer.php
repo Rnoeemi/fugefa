@@ -196,6 +196,8 @@ class SiteDynamicBlockRenderer
         }
 
         $this->ensureGalleryItemContainers($dom, $xpath);
+        $this->ensureBaGalleryLayout($dom, $xpath);
+        $this->syncBaGallerySections($dom, $xpath);
         $this->syncItemsContainers($dom, $xpath);
     }
 
@@ -295,6 +297,303 @@ class SiteDynamicBlockRenderer
             }
 
             $inner->appendChild($grid);
+        }
+    }
+
+    /**
+     * Referencia blokk: egy munka / blokk. Régi slider / multi-work markup → egy főkép + szöveg.
+     */
+    protected function ensureBaGalleryLayout(DOMDocument $dom, DOMXPath $xpath): void
+    {
+        /** @var \DOMNodeList<int, DOMElement>|false $sections */
+        $sections = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery ")]');
+        if ($sections === false) {
+            return;
+        }
+
+        foreach ($sections as $section) {
+            if (! $section instanceof DOMElement) {
+                continue;
+            }
+
+            $this->promoteLegacyBaGalleryAttrs($section);
+
+            $inner = null;
+            foreach ($section->childNodes as $child) {
+                if ($child instanceof DOMElement && str_contains(' '.$child->getAttribute('class').' ', ' ts-ba-gallery__inner ')) {
+                    $inner = $child;
+                    break;
+                }
+            }
+            if (! $inner instanceof DOMElement) {
+                $inner = $dom->createElement('div');
+                $inner->setAttribute('class', 'ts-ba-gallery__inner');
+                $toMove = [];
+                foreach ($section->childNodes as $child) {
+                    if ($child instanceof DOMElement && strtolower($child->tagName) === 'style') {
+                        continue;
+                    }
+                    $toMove[] = $child;
+                }
+                foreach ($toMove as $child) {
+                    $inner->appendChild($child);
+                }
+                $section->insertBefore($inner, $section->firstChild);
+            }
+
+            // Remove old chrome / multi-work lists / titles.
+            $remove = [];
+            foreach ($xpath->query('.//*[@data-ts-ba-prev or @data-ts-ba-next or @data-ts-ba-dots or @data-ts-items or contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__stage ") or contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__list ") or contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__track ") or contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__title ")]', $inner) ?: [] as $node) {
+                if ($node instanceof DOMElement) {
+                    $remove[] = $node;
+                }
+            }
+            foreach ($remove as $node) {
+                $node->parentNode?->removeChild($node);
+            }
+
+            $work = null;
+            foreach ($xpath->query('.//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__work ")]', $inner) ?: [] as $node) {
+                if ($node instanceof DOMElement) {
+                    $work = $node;
+                    break;
+                }
+            }
+            if (! $work instanceof DOMElement) {
+                $work = $dom->createElement('article');
+                $work->setAttribute('class', 'ts-ba-gallery__work');
+                $work->setAttribute('data-ts-ba-slide', '');
+                $inner->appendChild($work);
+            }
+
+            $coverBtn = null;
+            foreach ($work->getElementsByTagName('button') as $btn) {
+                if ($btn instanceof DOMElement && str_contains(' '.$btn->getAttribute('class').' ', ' ts-ba-gallery__cover ')) {
+                    $coverBtn = $btn;
+                    break;
+                }
+            }
+            if (! $coverBtn instanceof DOMElement) {
+                while ($work->firstChild) {
+                    $work->removeChild($work->firstChild);
+                }
+                $coverBtn = $dom->createElement('button');
+                $coverBtn->setAttribute('type', 'button');
+                $coverBtn->setAttribute('class', 'ts-ba-gallery__cover');
+                $coverBtn->setAttribute('data-ts-ba-zoom', '');
+                $coverBtn->setAttribute('aria-label', 'Képek megnyitása');
+                $img = $dom->createElement('img');
+                $img->setAttribute('class', 'ts-ba-gallery__photo');
+                $img->setAttribute('data-ts-src-from', 'cover');
+                $img->setAttribute('loading', 'lazy');
+                $coverBtn->appendChild($img);
+                $work->appendChild($coverBtn);
+                $copy = $dom->createElement('div');
+                $copy->setAttribute('class', 'ts-ba-gallery__copy');
+                $copy->setAttribute('data-ts-ba-copy', '');
+                $work->appendChild($copy);
+            } else {
+                // Strip zoom SVGs that explode in GrapesJS.
+                foreach ($xpath->query('.//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__zoom ")]', $work) ?: [] as $zoom) {
+                    if ($zoom instanceof DOMElement) {
+                        $zoom->parentNode?->removeChild($zoom);
+                    }
+                }
+                $img = null;
+                foreach ($coverBtn->getElementsByTagName('img') as $candidate) {
+                    if ($candidate instanceof DOMElement) {
+                        $img = $candidate;
+                        break;
+                    }
+                }
+                if (! $img instanceof DOMElement) {
+                    $img = $dom->createElement('img');
+                    $coverBtn->appendChild($img);
+                }
+                $img->setAttribute('class', 'ts-ba-gallery__photo');
+                $img->setAttribute('data-ts-src-from', 'cover');
+                $img->setAttribute('loading', 'lazy');
+
+                $copy = null;
+                foreach ($xpath->query('.//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__copy ")]', $work) ?: [] as $node) {
+                    if ($node instanceof DOMElement) {
+                        $copy = $node;
+                        break;
+                    }
+                }
+                if (! $copy instanceof DOMElement) {
+                    $copy = $dom->createElement('div');
+                    $copy->setAttribute('class', 'ts-ba-gallery__copy');
+                    $copy->setAttribute('data-ts-ba-copy', '');
+                    $work->appendChild($copy);
+                }
+            }
+        }
+    }
+
+    protected function promoteLegacyBaGalleryAttrs(DOMElement $section): void
+    {
+        $cover = trim($section->getAttribute('data-cover'));
+        $raw = $section->getAttribute('data-items');
+        $items = json_decode($raw !== '' ? html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8') : '[]', true);
+        if (! is_array($items)) {
+            $items = [];
+        }
+
+        $looksLikeLegacyWorks = false;
+        foreach ($items as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+            if (
+                array_key_exists('description', $item)
+                || array_key_exists('location', $item)
+                || array_key_exists('area', $item)
+                || array_key_exists('design', $item)
+                || array_key_exists('construction', $item)
+                || array_key_exists('image_2', $item)
+            ) {
+                $looksLikeLegacyWorks = true;
+                break;
+            }
+        }
+
+        if ($cover === '' && $items !== []) {
+            $first = null;
+            foreach ($items as $item) {
+                if (is_array($item)) {
+                    $first = $item;
+                    break;
+                }
+            }
+            if (is_array($first)) {
+                $legacyCover = trim((string) ($first['image'] ?? $first['image_before'] ?? $first['media_url'] ?? ''));
+                if ($legacyCover === '') {
+                    $legacyCover = trim((string) ($first['image_after'] ?? ''));
+                }
+                if ($legacyCover !== '') {
+                    $section->setAttribute('data-cover', $legacyCover);
+                    $cover = $legacyCover;
+                }
+                foreach (['alt', 'description', 'location', 'area', 'design', 'construction'] as $key) {
+                    $attr = 'data-'.$key;
+                    if ($section->getAttribute($attr) === '' && trim((string) ($first[$key] ?? '')) !== '') {
+                        $section->setAttribute($attr, (string) $first[$key]);
+                    }
+                }
+            }
+        }
+
+        if ($looksLikeLegacyWorks) {
+            $slides = [];
+            foreach ($items as $item) {
+                if (! is_array($item)) {
+                    continue;
+                }
+                $before = trim((string) ($item['image'] ?? $item['image_before'] ?? $item['media_url'] ?? ''));
+                $after = trim((string) ($item['image_after'] ?? ''));
+                $alt = (string) ($item['alt'] ?? '');
+                if ($before !== '' || $after !== '') {
+                    $slides[] = [
+                        'image' => $before !== '' ? $before : $after,
+                        'image_after' => $before !== '' ? $after : '',
+                        'alt' => $alt,
+                    ];
+                }
+                foreach (['image_2', 'image_3', 'image_4'] as $extra) {
+                    $url = trim((string) ($item[$extra] ?? ''));
+                    if ($url === '') {
+                        continue;
+                    }
+                    $slides[] = ['image' => $url, 'image_after' => '', 'alt' => $alt];
+                }
+            }
+            $section->setAttribute(
+                'data-items',
+                json_encode($slides, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?: '[]'
+            );
+        }
+
+        if ($cover === '' && $section->getAttribute('data-media-url') !== '') {
+            $section->setAttribute('data-cover', $section->getAttribute('data-media-url'));
+        }
+    }
+
+    protected function syncBaGallerySections(DOMDocument $dom, DOMXPath $xpath): void
+    {
+        /** @var \DOMNodeList<int, DOMElement>|false $sections */
+        $sections = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery ")]');
+        if ($sections === false) {
+            return;
+        }
+
+        foreach ($sections as $section) {
+            if (! $section instanceof DOMElement) {
+                continue;
+            }
+
+            $cover = trim($section->getAttribute('data-cover'));
+            $alt = (string) $section->getAttribute('data-alt');
+            $fields = [
+                'description' => (string) $section->getAttribute('data-description'),
+                'location' => (string) $section->getAttribute('data-location'),
+                'area' => (string) $section->getAttribute('data-area'),
+                'design' => (string) $section->getAttribute('data-design'),
+                'construction' => (string) $section->getAttribute('data-construction'),
+                'alt' => $alt,
+            ];
+
+            $raw = $section->getAttribute('data-items');
+            $slides = json_decode($raw !== '' ? html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8') : '[]', true);
+            if (! is_array($slides)) {
+                $slides = [];
+            }
+
+            $payloadJson = json_encode($this->baGallerySlidesToLightbox($slides), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?: '[]';
+            $copyHtml = $this->renderBaGalleryCopy($fields);
+            $label = $alt !== '' ? 'Képek megnyitása: '.$alt : 'Képek megnyitása';
+
+            foreach ($xpath->query('.//*[contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__work ")]', $section) ?: [] as $work) {
+                if (! $work instanceof DOMElement) {
+                    continue;
+                }
+                $work->setAttribute('data-lightbox-items', $payloadJson);
+
+                foreach ($work->getElementsByTagName('img') as $img) {
+                    if (! $img instanceof DOMElement) {
+                        continue;
+                    }
+                    if ($img->getAttribute('data-ts-src-from') === 'cover' || str_contains(' '.$img->getAttribute('class').' ', ' ts-ba-gallery__photo ')) {
+                        $img->setAttribute('src', $cover);
+                        $img->setAttribute('alt', $alt);
+                    }
+                }
+                foreach ($work->getElementsByTagName('button') as $btn) {
+                    if ($btn instanceof DOMElement && $btn->hasAttribute('data-ts-ba-zoom')) {
+                        $btn->setAttribute('aria-label', $label);
+                    }
+                }
+
+                $copy = null;
+                foreach ($xpath->query('.//*[@data-ts-ba-copy or contains(concat(" ", normalize-space(@class), " "), " ts-ba-gallery__copy ")]', $work) ?: [] as $node) {
+                    if ($node instanceof DOMElement) {
+                        $copy = $node;
+                        break;
+                    }
+                }
+                if ($copy instanceof DOMElement) {
+                    while ($copy->firstChild) {
+                        $copy->removeChild($copy->firstChild);
+                    }
+                    if ($copyHtml !== '') {
+                        if (preg_match('/^<div class="ts-ba-gallery__copy">(.*)<\/div>$/s', $copyHtml, $m)) {
+                            $this->appendHtml($dom, $copy, $m[1]);
+                        } else {
+                            $this->appendHtml($dom, $copy, $copyHtml);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -602,31 +901,84 @@ class SiteDynamicBlockRenderer
         }
 
         if ($kind === 'ba-gallery') {
-            $filled = [];
+            // Egy blokk = egy munka; a tartalmat syncBaGallerySections tölti.
+            return '';
+        }
+
+        if ($kind === 'flipcards') {
+            $html = '';
             foreach ($items as $item) {
                 if (! is_array($item)) {
                     continue;
                 }
-                $before = trim((string) ($item['image'] ?? $item['image_before'] ?? $item['media_url'] ?? ''));
-                $after = trim((string) ($item['image_after'] ?? ''));
-                if ($before !== '' || $after !== '') {
-                    $filled[] = $item;
-                }
-            }
-
-            if ($filled === []) {
-                return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--empty" data-ts-ba-slide aria-hidden="true"></figure>';
-            }
-
-            $html = '';
-            foreach (array_values($filled) as $index => $item) {
-                $html .= $this->renderBaGallerySlide($item, $index === 0);
+                $html .= $this->renderFlipcardItem($item);
             }
 
             return $html;
         }
 
         return '';
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function renderFlipcardItem(array $item): string
+    {
+        $flip = $this->flipcardEnabled($item) ? '1' : '0';
+        $front = $this->renderFlipcardFace('front', $item);
+        $back = $flip === '1' ? $this->renderFlipcardFace('back', $item) : '';
+
+        return '<article class="ts-flipcard" data-flip="'.$flip.'">'
+            .'<div class="ts-flipcard__scene">'
+            .$front
+            .$back
+            .'</div></article>';
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function flipcardEnabled(array $item): bool
+    {
+        $raw = $item['flip'] ?? true;
+        if (is_bool($raw)) {
+            return $raw;
+        }
+
+        $value = strtolower(trim((string) $raw));
+
+        return ! in_array($value, ['0', 'false', 'no', 'nem', 'off'], true);
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function renderFlipcardFace(string $side, array $item): string
+    {
+        $image = trim((string) ($item[$side.'_image'] ?? ''));
+        $title = trim((string) ($item[$side.'_title'] ?? ''));
+        $text = trim((string) ($item[$side.'_text'] ?? ''));
+
+        $html = '<div class="ts-flipcard__face ts-flipcard__face--'.e($side).'">';
+        if ($image !== '') {
+            $html .= '<img class="ts-flipcard__media" src="'.e($image).'" alt="" loading="lazy">';
+        }
+
+        if ($title !== '' || $text !== '') {
+            $html .= '<div class="ts-flipcard__copy">';
+            if ($title !== '') {
+                $html .= '<h3 class="ts-flipcard__title">'.e($title).'</h3>';
+            }
+            if ($text !== '') {
+                $html .= '<p class="ts-flipcard__text">'.e($text).'</p>';
+            }
+            $html .= '</div>';
+        }
+
+        $html .= '</div>';
+
+        return $html;
     }
 
     protected function renderGalleryItemFigure(string $url, string $alt = ''): string
@@ -644,43 +996,78 @@ class SiteDynamicBlockRenderer
     /**
      * @param  array<string, mixed>  $item
      */
-    protected function renderBaGallerySlide(array $item, bool $isActive = false): string
+    protected function baGalleryUrl(array $item, string $key): string
     {
-        $before = trim((string) ($item['image'] ?? $item['image_before'] ?? $item['media_url'] ?? ''));
-        $after = trim((string) ($item['image_after'] ?? ''));
-        $alt = (string) ($item['alt'] ?? '');
-        $safeAlt = e($alt);
-        $zoomIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>';
+        return trim((string) ($item[$key] ?? ''));
+    }
 
-        if ($before !== '' && $after !== '') {
-            $label = $alt !== '' ? e('Nagyítás: '.$alt) : 'Nagyítás';
-
-            return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--compare" data-ts-ba-slide data-lightbox-type="compare" data-lightbox-before="'.e($before).'" data-lightbox-after="'.e($after).'" data-lightbox-alt="'.$safeAlt.'">'
-                .'<div class="ts-ba-gallery__compare" style="--split:50%">'
-                .'<div class="ts-ba-gallery__layer ts-ba-gallery__layer--after">'
-                .'<img src="'.e($after).'" alt="'.$safeAlt.'" loading="lazy">'
-                .'<span class="ts-ba-gallery__tag ts-ba-gallery__tag--after">Utána</span>'
-                .'</div>'
-                .'<div class="ts-ba-gallery__layer ts-ba-gallery__layer--before">'
-                .'<img src="'.e($before).'" alt="'.$safeAlt.'" loading="lazy">'
-                .'<span class="ts-ba-gallery__tag ts-ba-gallery__tag--before">Előtte</span>'
-                .'</div>'
-                .'<div class="ts-ba-gallery__handle" aria-hidden="true"><span class="ts-ba-gallery__knob">‹ ›</span></div>'
-                .'<input type="range" class="ts-ba-gallery__range" min="0" max="100" value="50" aria-label="Előtte és utána összehasonlítás">'
-                .'</div>'
-                .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="'.$label.'">'.$zoomIcon.'</button>'
-                .'</figure>';
+    /**
+     * @param  list<array<string, mixed>>  $slides
+     * @return list<array<string, string>>
+     */
+    protected function baGallerySlidesToLightbox(array $slides): array
+    {
+        $items = [];
+        foreach ($slides as $slide) {
+            if (! is_array($slide)) {
+                continue;
+            }
+            $before = trim((string) ($slide['image'] ?? $slide['image_before'] ?? $slide['media_url'] ?? ''));
+            $after = $this->baGalleryUrl($slide, 'image_after');
+            $alt = (string) ($slide['alt'] ?? '');
+            if ($before !== '' && $after !== '') {
+                $items[] = [
+                    'type' => 'compare',
+                    'before' => $before,
+                    'after' => $after,
+                    'alt' => $alt,
+                ];
+            } else {
+                $url = $before !== '' ? $before : $after;
+                if ($url === '') {
+                    continue;
+                }
+                $items[] = [
+                    'type' => 'image',
+                    'src' => $url,
+                    'alt' => $alt,
+                ];
+            }
         }
 
-        $url = $before !== '' ? $before : $after;
-        $label = $alt !== '' ? e('Kép nagyítása: '.$alt) : 'Kép nagyítása';
+        return $items;
+    }
 
-        return '<figure class="ts-ba-gallery__slide" data-ts-ba-slide data-lightbox-type="image" data-lightbox-src="'.e($url).'" data-lightbox-alt="'.$safeAlt.'">'
-            .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--fill" data-ts-ba-zoom aria-label="'.$label.'">'
-            .'<img class="ts-ba-gallery__img" src="'.e($url).'" alt="'.$safeAlt.'" loading="lazy">'
-            .'</button>'
-            .'<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="'.$label.'">'.$zoomIcon.'</button>'
-            .'</figure>';
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function renderBaGalleryCopy(array $item): string
+    {
+        $rows = [];
+        $description = trim((string) ($item['description'] ?? $item['text'] ?? $item['body'] ?? ''));
+        if ($description !== '') {
+            $rows[] = '<p class="ts-ba-gallery__lead">'.nl2br(e($description), false).'</p>';
+        }
+
+        $meta = [
+            'location' => 'Helyszín',
+            'area' => 'Hasznos alapterület összesen',
+            'design' => 'Tervezés ideje',
+            'construction' => 'Kivitelezés',
+        ];
+        foreach ($meta as $key => $label) {
+            $value = trim((string) ($item[$key] ?? ''));
+            if ($value === '') {
+                continue;
+            }
+            $rows[] = '<p class="ts-ba-gallery__meta"><span class="ts-ba-gallery__meta-label">'.e($label).':</span> '.e($value).'</p>';
+        }
+
+        if ($rows === []) {
+            return '';
+        }
+
+        return '<div class="ts-ba-gallery__copy">'.implode('', $rows).'</div>';
     }
 
     /**

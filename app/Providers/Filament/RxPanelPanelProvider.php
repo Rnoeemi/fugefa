@@ -32,7 +32,7 @@ class RxPanelPanelProvider extends PanelProvider
     {
         return $panel
             ->spa()
-            ->brandName('Tüsiszállás Adminisztráció')
+            ->brandName('Adminpanel')
             ->default()
             ->id('rx-panel')
             ->path('rx-panel')

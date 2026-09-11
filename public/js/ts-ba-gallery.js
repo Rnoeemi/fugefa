@@ -1,17 +1,10 @@
 /**
- * Előtte-utána galéria: 3-as slider asztalin, lightbox, húzható összehasonlítás.
+ * Munkáink: referenciánkénti szekció, lightbox (sima kép vagy előtte–utána).
  */
 (function (global) {
     const SELECTOR = '.ts-ba-gallery';
     let lightboxEl = null;
     let lightboxState = { items: [], index: 0, compareCleanup: null };
-
-    function slidesOf(section) {
-        const track = section.querySelector('[data-ts-ba-track], .ts-ba-gallery__track');
-        const scope = track || section;
-        return [...scope.querySelectorAll('[data-ts-ba-slide], .ts-ba-gallery__slide')]
-            .filter((el) => ! el.classList.contains('ts-ba-gallery__slide--empty'));
-    }
 
     function destroy(section) {
         if (section._tsBaGalleryCleanup) {
@@ -89,8 +82,9 @@
         };
     }
 
-    function itemFromSlide(slide) {
-        const type = slide.getAttribute('data-lightbox-type') || (slide.classList.contains('ts-ba-gallery__slide--compare') ? 'compare' : 'image');
+    function itemFromLegacySlide(slide) {
+        const type = slide.getAttribute('data-lightbox-type')
+            || (slide.classList.contains('ts-ba-gallery__slide--compare') ? 'compare' : 'image');
         const alt = slide.getAttribute('data-lightbox-alt')
             || slide.querySelector('img')?.getAttribute('alt')
             || '';
@@ -107,14 +101,33 @@
         }
 
         const src = slide.getAttribute('data-lightbox-src')
-            || slide.querySelector('.ts-ba-gallery__img')?.getAttribute('src')
+            || slide.querySelector('.ts-ba-gallery__photo, .ts-ba-gallery__img')?.getAttribute('src')
             || '';
         if (! src) return null;
         return { type: 'image', src, alt };
     }
 
-    function itemsFromSection(section) {
-        return slidesOf(section).map(itemFromSlide).filter(Boolean);
+    function itemsFromWork(work) {
+        const raw = work.getAttribute('data-lightbox-items');
+        if (raw) {
+            try {
+                let text = String(raw).trim();
+                if (text.includes('&quot;') || text.includes('&#39;') || text.includes('&amp;')) {
+                    const ta = document.createElement('textarea');
+                    ta.innerHTML = text;
+                    text = ta.value;
+                }
+                const parsed = JSON.parse(text);
+                if (Array.isArray(parsed) && parsed.length) {
+                    return parsed.filter(Boolean);
+                }
+            } catch {
+                // fall through to legacy attrs
+            }
+        }
+
+        const one = itemFromLegacySlide(work);
+        return one ? [one] : [];
     }
 
     function escapeAttr(value) {
@@ -210,12 +223,11 @@
         if (next) next.hidden = lightboxState.items.length <= 1;
     }
 
-    function openLightbox(section, index) {
-        const items = itemsFromSection(section);
+    function openLightbox(items) {
         if (! items.length) return;
 
         lightboxState.items = items;
-        lightboxState.index = Math.max(0, Math.min(index, items.length - 1));
+        lightboxState.index = 0;
 
         const box = ensureLightbox();
         renderLightbox();
@@ -253,158 +265,18 @@
             event.preventDefault();
             event.stopPropagation();
 
-            const slide = trigger.closest('[data-ts-ba-slide], .ts-ba-gallery__slide');
-            const slides = slidesOf(section);
-            const index = slide ? slides.indexOf(slide) : -1;
-            if (index >= 0) openLightbox(section, index);
+            const work = trigger.closest('[data-ts-ba-slide], .ts-ba-gallery__work, .ts-ba-gallery__slide');
+            if (! work) return;
+            openLightbox(itemsFromWork(work));
         });
-    }
-
-    function initSlide(section) {
-        const track = section.querySelector('[data-ts-ba-track], .ts-ba-gallery__track');
-        const prev = section.querySelector('[data-ts-ba-prev]');
-        const next = section.querySelector('[data-ts-ba-next]');
-        const dotsWrap = section.querySelector('[data-ts-ba-dots], .ts-ba-gallery__dots');
-        const slides = slidesOf(section);
-
-        if (! track || slides.length === 0) {
-            if (prev) prev.hidden = true;
-            if (next) next.hidden = true;
-            if (dotsWrap) {
-                dotsWrap.innerHTML = '';
-                dotsWrap.hidden = true;
-            }
-            return () => {};
-        }
-
-        let index = 0;
-        let scrolling = false;
-
-        const stepSize = () => {
-            const first = slides[0];
-            if (! first) return track.clientWidth || 1;
-            const styles = global.getComputedStyle(track);
-            const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
-            return first.offsetWidth + gap;
-        };
-
-        const visibleCount = () => {
-            const step = stepSize();
-            if (step <= 0) return 1;
-            const gap = parseFloat(global.getComputedStyle(track).gap || '0') || 0;
-            return Math.max(1, Math.round((track.clientWidth + gap) / step));
-        };
-
-        const syncNav = () => {
-            const showNav = slides.length > visibleCount();
-            if (prev) prev.hidden = ! showNav;
-            if (next) next.hidden = ! showNav;
-            if (dotsWrap) dotsWrap.hidden = ! showNav;
-        };
-
-        const syncDots = () => {
-            if (! dotsWrap) return;
-            [...dotsWrap.querySelectorAll('.ts-ba-gallery__dot')].forEach((dot, i) => {
-                dot.setAttribute('aria-current', i === index ? 'true' : 'false');
-            });
-        };
-
-        const scrollToIndex = (i, behavior) => {
-            const step = stepSize();
-            if (step <= 0) return;
-            scrolling = true;
-            track.scrollTo({ left: i * step, behavior: behavior || 'smooth' });
-            global.setTimeout(() => { scrolling = false; }, behavior === 'auto' ? 0 : 450);
-        };
-
-        const syncFromScroll = () => {
-            if (scrolling) return;
-            const step = stepSize();
-            index = Math.round(track.scrollLeft / step);
-            index = Math.max(0, Math.min(index, slides.length - 1));
-            syncDots();
-        };
-
-        const go = (delta) => {
-            const maxIndex = Math.max(0, slides.length - visibleCount());
-            index = Math.max(0, Math.min(index + delta, Math.max(maxIndex, slides.length - 1)));
-            scrollToIndex(index, 'smooth');
-            syncDots();
-        };
-
-        const goTo = (i) => {
-            index = Math.max(0, Math.min(i, slides.length - 1));
-            scrollToIndex(index, 'smooth');
-            syncDots();
-        };
-
-        if (dotsWrap) {
-            dotsWrap.innerHTML = '';
-            slides.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.type = 'button';
-                dot.className = 'ts-ba-gallery__dot';
-                dot.setAttribute('aria-label', `${i + 1}. kép`);
-                dot.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    goTo(i);
-                });
-                dotsWrap.appendChild(dot);
-            });
-        }
-
-        const onPrev = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            go(-1);
-        };
-        const onNext = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            go(1);
-        };
-
-        prev?.addEventListener('click', onPrev);
-        next?.addEventListener('click', onNext);
-
-        const onScroll = () => {
-            global.requestAnimationFrame(syncFromScroll);
-        };
-        track.addEventListener('scroll', onScroll, { passive: true });
-
-        const onResize = () => {
-            syncNav();
-            scrollToIndex(index, 'auto');
-        };
-        global.addEventListener('resize', onResize);
-
-        syncNav();
-        syncDots();
-        scrollToIndex(0, 'auto');
-
-        return () => {
-            prev?.removeEventListener('click', onPrev);
-            next?.removeEventListener('click', onNext);
-            track.removeEventListener('scroll', onScroll);
-            global.removeEventListener('resize', onResize);
-        };
     }
 
     function initOne(section) {
         if (! (section instanceof HTMLElement)) return;
         destroy(section);
-
-        const compares = [...section.querySelectorAll('.ts-ba-gallery__compare')];
-        const compareCleanups = compares.map((node) => initCompare(node));
-        const slideCleanup = initSlide(section);
         bindLightbox(section);
-
         section.setAttribute('data-ts-ba-ready', '1');
-        section._tsBaGalleryCleanup = () => {
-            slideCleanup?.();
-            compareCleanups.forEach((fn) => fn?.());
-        };
+        section._tsBaGalleryCleanup = () => {};
     }
 
     function init(root) {

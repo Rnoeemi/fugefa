@@ -141,7 +141,11 @@ final class SiteBlockCatalog
         return array_values(array_filter(
             self::definitionsFor($scope, $website),
             fn (array $block): bool => ($block['type'] ?? '') === 'static'
-                && ! empty($block['params'])
+                && (
+                    ! empty($block['params'])
+                    || ! empty($block['container'])
+                    || ! empty($block['interactive'])
+                )
         ));
     }
 

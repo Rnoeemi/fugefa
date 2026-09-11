@@ -258,7 +258,7 @@
                     <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </a>
-            <span class="tsb-logo">Tüsiszállás</span>
+            <span class="tsb-logo">Adminpanel</span>
             <span class="tsb-sep"></span>
             <span class="tsb-page" title="{{ $title }}">{{ $title }}</span>
             <span class="tsb-status" data-grapes-status>Betöltés…</span>
@@ -1204,47 +1204,157 @@
 
     const isVideoMediaUrl = (url) => /\.(mp4|webm|ogg)(\?|$)/i.test(String(url || ''));
 
-    const baGalleryZoomIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>';
+    const baGalleryItemUrl = (item, key) => String(item?.[key] || '').trim();
 
-    const renderBaGallerySlide = (item) => {
-        const before = String(item?.image || item?.image_before || item?.media_url || '').trim();
-        const after = String(item?.image_after || '').trim();
-        const alt = String(item?.alt || '');
+    const baGallerySlidesToLightbox = (slides) => {
+        const items = [];
+        (Array.isArray(slides) ? slides : []).forEach((slide) => {
+            const before = String(slide?.image || slide?.image_before || slide?.media_url || '').trim();
+            const after = baGalleryItemUrl(slide, 'image_after');
+            const alt = String(slide?.alt || '');
+            if (before && after) {
+                items.push({ type: 'compare', before, after, alt });
+            } else {
+                const url = before || after;
+                if (url) items.push({ type: 'image', src: url, alt });
+            }
+        });
+        return items;
+    };
 
-        if (! before && ! after) {
-            return '';
+    const baGalleryNl2br = (value) => escapeHtml(value).replaceAll('\n', '<br>');
+
+    const renderBaGalleryCopyInner = (fields) => {
+        const rows = [];
+        const description = String(fields?.description || '').trim();
+        if (description) {
+            rows.push(`<p class="ts-ba-gallery__lead">${baGalleryNl2br(description)}</p>`);
+        }
+        [
+            ['location', 'Helyszín'],
+            ['area', 'Hasznos alapterület összesen'],
+            ['design', 'Tervezés ideje'],
+            ['construction', 'Kivitelezés'],
+        ].forEach(([key, label]) => {
+            const value = String(fields?.[key] || '').trim();
+            if (! value) return;
+            rows.push(`<p class="ts-ba-gallery__meta"><span class="ts-ba-gallery__meta-label">${escapeHtml(label)}:</span> ${escapeHtml(value)}</p>`);
+        });
+        return rows.join('');
+    };
+
+    const promoteLegacyBaGalleryAttrs = (attrs) => {
+        const next = { ...attrs };
+        let items = parseItemsJson(next['data-items'] || '[]');
+        const looksLegacy = items.some((item) => (
+            item && (item.description != null || item.location != null || item.area != null || item.design != null || item.construction != null || item.image_2 != null)
+        ));
+        if (! String(next['data-cover'] || '').trim() && items.length) {
+            const first = items[0] || {};
+            const cover = String(first.image || first.image_before || first.media_url || first.image_after || '').trim();
+            if (cover) next['data-cover'] = cover;
+            ['alt', 'description', 'location', 'area', 'design', 'construction'].forEach((key) => {
+                if (! String(next[`data-${key}`] || '').trim() && String(first[key] || '').trim()) {
+                    next[`data-${key}`] = String(first[key]);
+                }
+            });
+        }
+        if (looksLegacy) {
+            const slides = [];
+            items.forEach((item) => {
+                const before = String(item?.image || item?.image_before || item?.media_url || '').trim();
+                const after = String(item?.image_after || '').trim();
+                const alt = String(item?.alt || '');
+                if (before || after) {
+                    slides.push({ image: before || after, image_after: before ? after : '', alt });
+                }
+                ['image_2', 'image_3', 'image_4'].forEach((key) => {
+                    const url = String(item?.[key] || '').trim();
+                    if (url) slides.push({ image: url, image_after: '', alt });
+                });
+            });
+            next['data-items'] = JSON.stringify(slides);
+        }
+        return next;
+    };
+
+    const syncBaGalleryContent = (model, el, attrs = {}) => {
+        if (! el?.classList?.contains('ts-ba-gallery')) return;
+        const promoted = promoteLegacyBaGalleryAttrs(attrs);
+        const changed = ['data-cover', 'data-alt', 'data-description', 'data-location', 'data-area', 'data-design', 'data-construction', 'data-items']
+            .some((key) => String(promoted[key] || '') !== String(attrs[key] || ''));
+        if (changed) {
+            model?.addAttributes?.(promoted);
+            Object.assign(attrs, promoted);
         }
 
-        if (before && after) {
-            const label = alt ? `Nagyítás: ${escapeHtml(alt)}` : 'Nagyítás';
-            return (
-                `<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--compare" data-ts-ba-slide data-lightbox-type="compare" data-lightbox-before="${escapeHtml(before)}" data-lightbox-after="${escapeHtml(after)}" data-lightbox-alt="${escapeHtml(alt)}">`
-                + `<div class="ts-ba-gallery__compare" style="--split:50%">`
-                + `<div class="ts-ba-gallery__layer ts-ba-gallery__layer--after">`
-                + `<img src="${escapeHtml(after)}" alt="${escapeHtml(alt)}" loading="lazy">`
-                + `<span class="ts-ba-gallery__tag ts-ba-gallery__tag--after">Utána</span>`
-                + `</div>`
-                + `<div class="ts-ba-gallery__layer ts-ba-gallery__layer--before">`
-                + `<img src="${escapeHtml(before)}" alt="${escapeHtml(alt)}" loading="lazy">`
-                + `<span class="ts-ba-gallery__tag ts-ba-gallery__tag--before">Előtte</span>`
-                + `</div>`
-                + `<div class="ts-ba-gallery__handle" aria-hidden="true"><span class="ts-ba-gallery__knob">‹ ›</span></div>`
-                + `<input type="range" class="ts-ba-gallery__range" min="0" max="100" value="50" aria-label="Előtte és utána összehasonlítás">`
-                + `</div>`
-                + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="${label}">${baGalleryZoomIcon}</button>`
-                + `</figure>`
-            );
-        }
+        const cover = String(attrs['data-cover'] || '').trim();
+        const alt = String(attrs['data-alt'] || '');
+        const slides = parseItemsJson(attrs['data-items'] || '[]');
+        const payload = JSON.stringify(baGallerySlidesToLightbox(slides));
+        const label = alt ? `Képek megnyitása: ${alt}` : 'Képek megnyitása';
+        const copyInner = renderBaGalleryCopyInner({
+            description: attrs['data-description'] || '',
+            location: attrs['data-location'] || '',
+            area: attrs['data-area'] || '',
+            design: attrs['data-design'] || '',
+            construction: attrs['data-construction'] || '',
+        });
 
-        const url = before || after;
-        const label = alt ? `Kép nagyítása: ${escapeHtml(alt)}` : 'Kép nagyítása';
+        el.querySelectorAll('.ts-ba-gallery__zoom').forEach((node) => node.remove());
+
+        const work = el.querySelector('.ts-ba-gallery__work');
+        if (work) {
+            work.setAttribute('data-lightbox-items', payload);
+        }
+        el.querySelectorAll('.ts-ba-gallery__cover').forEach((btn) => {
+            btn.setAttribute('aria-label', label);
+        });
+        el.querySelectorAll('.ts-ba-gallery__photo, img[data-ts-src-from="cover"]').forEach((img) => {
+            img.setAttribute('src', cover);
+            img.setAttribute('alt', alt);
+            img.setAttribute('data-ts-src-from', 'cover');
+        });
+        const copy = el.querySelector('[data-ts-ba-copy], .ts-ba-gallery__copy');
+        if (copy) {
+            copy.innerHTML = copyInner;
+        }
+    };
+
+    const flipcardEnabled = (item) => {
+        const raw = item?.flip;
+        if (raw === true || raw === 1) return true;
+        if (raw === false || raw === 0) return false;
+        const value = String(raw ?? '1').trim().toLowerCase();
+        return ! ['0', 'false', 'no', 'nem', 'off'].includes(value);
+    };
+
+    const renderFlipcardFaceHtml = (side, item) => {
+        const image = String(item?.[`${side}_image`] || '').trim();
+        const title = String(item?.[`${side}_title`] || '').trim();
+        const text = String(item?.[`${side}_text`] || '').trim();
+        let html = `<div class="ts-flipcard__face ts-flipcard__face--${side}">`;
+        if (image) {
+            html += `<img class="ts-flipcard__media" src="${escapeHtml(image)}" alt="" loading="lazy">`;
+        }
+        if (title || text) {
+            html += '<div class="ts-flipcard__copy">';
+            if (title) html += `<h3 class="ts-flipcard__title">${escapeHtml(title)}</h3>`;
+            if (text) html += `<p class="ts-flipcard__text">${escapeHtml(text)}</p>`;
+            html += '</div>';
+        }
+        html += '</div>';
+        return html;
+    };
+
+    const renderFlipcardItemHtml = (item) => {
+        const flip = flipcardEnabled(item) ? '1' : '0';
         return (
-            `<figure class="ts-ba-gallery__slide" data-ts-ba-slide data-lightbox-type="image" data-lightbox-src="${escapeHtml(url)}" data-lightbox-alt="${escapeHtml(alt)}">`
-            + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--fill" data-ts-ba-zoom aria-label="${label}">`
-            + `<img class="ts-ba-gallery__img" src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" loading="lazy">`
-            + `</button>`
-            + `<button type="button" class="ts-ba-gallery__zoom ts-ba-gallery__zoom--icon" data-ts-ba-zoom aria-label="${label}">${baGalleryZoomIcon}</button>`
-            + `</figure>`
+            `<article class="ts-flipcard" data-flip="${flip}">`
+            + '<div class="ts-flipcard__scene">'
+            + renderFlipcardFaceHtml('front', item || {})
+            + (flip === '1' ? renderFlipcardFaceHtml('back', item || {}) : '')
+            + '</div></article>'
         );
     };
 
@@ -1342,16 +1452,11 @@
                 );
             }).join('');
         }
+        if (kind === 'flipcards') {
+            return list.map((item) => renderFlipcardItemHtml(item)).join('');
+        }
         if (kind === 'ba-gallery') {
-            const filled = list.filter((item) => {
-                const before = String(item?.image || item?.image_before || item?.media_url || '').trim();
-                const after = String(item?.image_after || '').trim();
-                return Boolean(before || after);
-            });
-            if (! filled.length) {
-                return '<figure class="ts-ba-gallery__slide ts-ba-gallery__slide--empty" data-ts-ba-slide aria-hidden="true"></figure>';
-            }
-            return filled.map((item) => renderBaGallerySlide(item)).join('');
+            return '';
         }
         return '';
     };
@@ -1437,6 +1542,9 @@
         }
         if (el?.classList?.contains('ts-ba-gallery')) {
             setTimeout(() => window.TsBaGallery?.initOne?.(el), 0);
+        }
+        if (el?.classList?.contains('ts-flipcards')) {
+            setTimeout(() => window.TsFlipcards?.init?.(el), 0);
         }
     };
 
@@ -1736,6 +1844,27 @@
                     }
                     if (field.type === 'media') {
                         row.appendChild(renderMediaField(field, item[field.key] || ''));
+                        return;
+                    }
+                    if (field.type === 'select') {
+                        const fieldLabel = document.createElement('label');
+                        fieldLabel.className = 'tsb-items-field';
+                        const span = document.createElement('span');
+                        span.textContent = field.label || field.key;
+                        fieldLabel.appendChild(span);
+                        const select = document.createElement('select');
+                        select.className = 'tsb-media-external__input';
+                        select.dataset.field = field.key;
+                        const current = String(item[field.key] ?? field.default ?? '');
+                        (field.options || []).forEach((opt) => {
+                            const option = document.createElement('option');
+                            option.value = String(opt.id ?? opt.value ?? '');
+                            option.textContent = opt.name ?? opt.label ?? option.value;
+                            if (option.value === current) option.selected = true;
+                            select.appendChild(option);
+                        });
+                        fieldLabel.appendChild(select);
+                        row.appendChild(fieldLabel);
                         return;
                     }
                     const fieldLabel = document.createElement('label');
@@ -2340,6 +2469,14 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         const doc = editor.Canvas?.getDocument?.();
         if (! doc?.head) return;
 
+        if (doc.body) {
+            doc.body.classList.add('site-shell', 'tsb-canvas');
+            const preset = String(config.stylePreset || 'soft-ui').replace(/[^\w-]/g, '');
+            if (preset) {
+                doc.body.classList.add(`site-style-${preset}`);
+            }
+        }
+
         [config.themeCssUrl, config.customCssUrl].filter(Boolean).forEach((href) => {
             let link = Array.from(doc.querySelectorAll('link[data-ts-theme-css]'))
                 .find((node) => node.getAttribute('data-ts-theme-css') === href);
@@ -2707,6 +2844,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             if (doc) window.TsHeroSlider?.init?.(doc);
             if (doc) window.TsGallery?.init?.(doc);
             if (doc) window.TsBaGallery?.init?.(doc);
+            if (doc) window.TsFlipcards?.init?.(doc);
             if (doc) window.TsReveal?.init?.(doc, { forceVisible: true });
         }, 120);
     });
@@ -2717,6 +2855,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             if (doc) window.TsHeroSlider?.init?.(doc);
             if (doc) window.TsGallery?.init?.(doc);
             if (doc) window.TsBaGallery?.init?.(doc);
+            if (doc) window.TsFlipcards?.init?.(doc);
             if (doc) window.TsReveal?.init?.(doc, { forceVisible: true });
         }, 80);
     });
@@ -3600,9 +3739,47 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         return isRichBlockParam(param) ? decodeRichAttr(raw) : raw;
     };
 
+    const isVisuallyEmptyHtml = (value) => {
+        const text = String(value ?? '')
+            .replace(/<br\s*\/?>/gi, ' ')
+            .replace(/&nbsp;/gi, ' ')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return text === '';
+    };
+
     const setComponentText = (cmp, value) => {
         // HTML tartalom: GrapesJS komponensfává parseoljuk (<strong>, <br>, <a>, stb.)
-        cmp.components?.(String(value ?? ''));
+        const html = String(value ?? '');
+        const tag = String(cmp.get?.('tagName') || '').toLowerCase();
+        const looksBlock = /<(p|div|h[1-6]|ul|ol|blockquote)\b/i.test(html);
+        // <p> belsejébe nem lehet blokk HTML — különben orphan bekezdések keletkeznek.
+        if (tag === 'p' && looksBlock) {
+            cmp.set?.('tagName', 'div');
+            cmp.addClass?.('ts-text__body');
+        }
+        cmp.components?.(html);
+    };
+
+    const applyAmenitiesItemVisibility = (cmp, value) => {
+        if (! cmp) return;
+        const empty = isVisuallyEmptyHtml(value);
+        if (empty) {
+            cmp.addClass?.('is-empty');
+            cmp.addAttributes?.({ hidden: true });
+            if (! String(value ?? '').trim()) {
+                cmp.components?.('');
+            }
+        } else {
+            cmp.removeClass?.('is-empty');
+            cmp.removeAttributes?.(['hidden']);
+        }
+        const elNode = cmp.getEl?.();
+        if (elNode) {
+            elNode.classList.toggle('is-empty', empty);
+            elNode.toggleAttribute('hidden', empty);
+        }
     };
 
     const normalizeBtnStyle = (value, fallback = 'primary') => {
@@ -3964,6 +4141,46 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         return { title, text };
     };
 
+    /** ts-text: body marker legyen div, orphan bekezdések törlése (dupla szöveg elkerülése). */
+    const ensureTextMarkup = (model, el, attrs = {}) => {
+        if (! el?.classList?.contains('ts-text')) return;
+
+        const bodyEl = el.querySelector('[data-ts-text="body"]');
+        const inner = el.querySelector('.ts-text__inner');
+        if (bodyEl && inner) {
+            let passed = false;
+            [...inner.children].forEach((child) => {
+                if (child === bodyEl) {
+                    passed = true;
+                    return;
+                }
+                if (! passed || child.hasAttribute('data-ts-text')) return;
+                if (['P', 'DIV', 'SPAN'].includes(child.tagName)) {
+                    child.remove();
+                }
+            });
+        }
+
+        try {
+            model.find?.('[data-ts-text=body]')?.forEach((cmp) => {
+                if (String(cmp.get?.('tagName') || '').toLowerCase() === 'p') {
+                    cmp.set('tagName', 'div');
+                    cmp.addClass('ts-text__body');
+                }
+            });
+        } catch (e) {
+            // ignore
+        }
+
+        if (bodyEl && bodyEl.tagName === 'P') {
+            const div = document.createElement('div');
+            [...bodyEl.attributes].forEach((attr) => div.setAttribute(attr.name, attr.value));
+            div.classList.add('ts-text__body');
+            div.innerHTML = bodyEl.innerHTML;
+            bodyEl.replaceWith(div);
+        }
+    };
+
     const ensureFeaturesMarkup = (model, el, attrs = {}) => {
         if (! el?.classList?.contains('ts-features')) return;
 
@@ -4124,6 +4341,47 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         model?.removeAttributes?.(['data-image1', 'data-image2', 'data-image3', 'data-image4']);
     };
 
+    /** Referencia: egy blokk = egy munka (főkép + szöveg + lightbox slide-ok). */
+    const ensureBaGalleryMarkup = (model, el, attrs = {}) => {
+        if (! el?.classList?.contains('ts-ba-gallery')) return;
+
+        const hasWork = !! el.querySelector('.ts-ba-gallery__work .ts-ba-gallery__cover img');
+        const hasOldChrome = !! el.querySelector('.ts-ba-gallery__stage, .ts-ba-gallery__list, .ts-ba-gallery__track, [data-ts-ba-prev], .ts-ba-gallery__zoom, .ts-ba-gallery__title');
+        if (hasWork && ! hasOldChrome) {
+            syncBaGalleryContent(model, el, attrs);
+            return;
+        }
+
+        const cover = escapeHtml(String(attrs['data-cover'] || '').trim());
+        const alt = escapeHtml(String(attrs['data-alt'] || ''));
+        const styleCmps = [];
+        model?.components?.()?.each?.((cmp) => {
+            if (String(cmp.get?.('tagName') || '').toLowerCase() === 'style') {
+                styleCmps.push(cmp);
+            }
+        });
+
+        const inner = `
+  <div class="ts-ba-gallery__inner">
+    <article class="ts-ba-gallery__work" data-ts-ba-slide>
+      <button type="button" class="ts-ba-gallery__cover" data-ts-ba-zoom aria-label="Képek megnyitása">
+        <img class="ts-ba-gallery__photo" data-ts-src-from="cover" src="${cover}" alt="${alt}" loading="lazy">
+      </button>
+      <div class="ts-ba-gallery__copy" data-ts-ba-copy></div>
+    </article>
+  </div>`;
+
+        try {
+            model?.components?.(inner);
+            styleCmps.forEach((cmp) => model?.append?.(cmp));
+        } catch (e) {
+            // ignore canvas rebuild errors; sync still applies below
+        }
+
+        el.querySelectorAll('.ts-ba-gallery__zoom').forEach((node) => node.remove());
+        syncBaGalleryContent(model, el, model.getAttributes?.() || attrs);
+    };
+
     /** Régi Kép blokk (bare img) → linkelhető wrapper */
     const ensureImageMarkup = (model, el, attrs = {}) => {
         const isImage = el?.classList?.contains('ts-image')
@@ -4183,6 +4441,9 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         const elEarly = model.getEl?.() || model.view?.el;
         if (elEarly) {
             ensureSurfaceOverlayChrome(model, elEarly, block);
+            if (block?.id === 'ts-text' || block?.gjsType === 'ts-text') {
+                ensureTextMarkup(model, elEarly, attrs);
+            }
             if (block?.id === 'ts-contact' || block?.gjsType === 'ts-contact') {
                 ensureContactMarkup(model, elEarly, attrs);
             }
@@ -4191,6 +4452,9 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             }
             if (block?.id === 'ts-gallery' || block?.gjsType === 'ts-gallery') {
                 ensureGalleryMarkup(model, elEarly, attrs);
+            }
+            if (block?.id === 'ts-ba-gallery' || block?.gjsType === 'ts-ba-gallery') {
+                ensureBaGalleryMarkup(model, elEarly, attrs);
             }
             if (block?.id === 'ts-image' || block?.gjsType === 'ts-image') {
                 ensureImageMarkup(model, elEarly, attrs);
@@ -4231,6 +4495,11 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
 
                     if (elAttrs['data-ts-text'] === key) {
                         setComponentText(cmp, value);
+                        if (/^item\d+$/.test(String(key || '')) && (
+                            block?.id === 'ts-amenities' || block?.gjsType === 'ts-amenities'
+                        )) {
+                            applyAmenitiesItemVisibility(cmp, value);
+                        }
                     }
                     if (elAttrs['data-ts-href'] === key) {
                         const targetAttr = hrefTargetAttrName(key);
@@ -4324,6 +4593,12 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         }
 
         syncItemsContainers(model, attrs);
+        if (elEarly?.classList?.contains('ts-ba-gallery') || block?.id === 'ts-ba-gallery' || block?.gjsType === 'ts-ba-gallery') {
+            const elBa = model.getEl?.() || model.view?.el || elEarly;
+            if (elBa) {
+                syncBaGalleryContent(model, elBa, model.getAttributes?.() || attrs);
+            }
+        }
 
         // Canvas azonnali visszajelzés (élő DOM)
         const el = model.getEl?.() || model.view?.el;
@@ -4335,8 +4610,9 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         }
 
         if (attrs['data-columns'] != null || block?.id === 'ts-features' || block?.gjsType === 'ts-features'
-            || block?.id === 'ts-icon-list' || block?.gjsType === 'ts-icon-list') {
-            const columns = attrs['data-columns'] || '3';
+            || block?.id === 'ts-icon-list' || block?.gjsType === 'ts-icon-list'
+            || block?.id === 'ts-flipcards' || block?.gjsType === 'ts-flipcards') {
+            const columns = attrs['data-columns'] || (block?.id === 'ts-flipcards' || block?.gjsType === 'ts-flipcards' ? '4' : '3');
             el.setAttribute('data-columns', columns);
             if (attrs['data-columns'] == null) {
                 model.addAttributes({ 'data-columns': columns });
@@ -4488,6 +4764,14 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             const value = paramValueFromAttrs(attrs, param);
             el.querySelectorAll(`[data-ts-text="${param.key}"]`).forEach((node) => {
                 node.innerHTML = value;
+                if (/^item\d+$/.test(String(param.key || '')) && (
+                    block?.id === 'ts-amenities' || block?.gjsType === 'ts-amenities'
+                    || el.classList?.contains?.('ts-amenities')
+                )) {
+                    const empty = isVisuallyEmptyHtml(value);
+                    node.classList.toggle('is-empty', empty);
+                    node.toggleAttribute('hidden', empty);
+                }
             });
             el.querySelectorAll(`[data-ts-href="${param.key}"]`).forEach((node) => {
                 const scheme = node.getAttribute('data-ts-href-scheme') || '';
@@ -4856,6 +5140,100 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         bindTraitCategoryAccordion();
     }, 200));
 
+    // Layout oszlopok: mindig fogadjanak blokkokat (kép, szöveg, stb.)
+    // Fontos: a layout szekció droppable:false (nem selector!) — a selector azt jelentené,
+    // hogy csak .ts-layout__col típusú gyerekeket fogad, ezért a kép drop elutasítódna.
+    if (! editor.DomComponents.getType('ts-layout-col')) {
+        editor.DomComponents.addType('ts-layout-col', {
+            isComponent: (el) => el?.classList?.contains?.('ts-layout__col'),
+            model: {
+                defaults: {
+                    name: 'Oszlop',
+                    droppable: true,
+                    draggable: false,
+                    copyable: false,
+                    removable: false,
+                    highlightable: true,
+                    selectable: true,
+                    hoverable: true,
+                },
+            },
+        });
+    }
+
+    const ensureLayoutColumnsDroppable = (model) => {
+        if (! model) return;
+        const walk = (components) => {
+            eachComponent(components, (cmp) => {
+                const el = cmp.getEl?.();
+                const cls = String(cmp.getAttributes?.()?.class || el?.className || '');
+                if (/\bts-layout__col\b/.test(cls) || el?.classList?.contains?.('ts-layout__col')) {
+                    cmp.set?.({
+                        droppable: true,
+                        draggable: false,
+                        copyable: false,
+                        removable: false,
+                        selectable: true,
+                        hoverable: true,
+                        highlightable: true,
+                    });
+                    if (cmp.get?.('type') !== 'ts-layout-col') {
+                        try { cmp.set('type', 'ts-layout-col'); } catch (e) { /* ignore */ }
+                    }
+                }
+                if (/\bts-layout__inner\b/.test(cls) || el?.classList?.contains?.('ts-layout__inner')) {
+                    cmp.set?.({
+                        droppable: false,
+                        draggable: false,
+                        selectable: false,
+                        hoverable: false,
+                    });
+                }
+                if (/\bts-layout__placeholder\b/.test(cls) || el?.classList?.contains?.('ts-layout__placeholder')) {
+                    cmp.set?.({
+                        droppable: false,
+                        draggable: false,
+                        selectable: false,
+                        hoverable: false,
+                        removable: true,
+                    });
+                }
+                walk(cmp.components?.());
+            });
+        };
+        walk(model.components?.());
+    };
+
+    const stripLayoutPlaceholders = (colModel) => {
+        if (! colModel) return;
+        const toRemove = [];
+        eachComponent(colModel.components?.(), (cmp) => {
+            const el = cmp.getEl?.();
+            const cls = String(cmp.getAttributes?.()?.class || el?.className || '');
+            if (/\bts-layout__placeholder\b/.test(cls) || el?.classList?.contains?.('ts-layout__placeholder')) {
+                toRemove.push(cmp);
+            }
+        });
+        toRemove.forEach((cmp) => {
+            try { cmp.remove?.(); } catch (e) { /* ignore */ }
+        });
+        const el = colModel.getEl?.();
+        el?.querySelectorAll?.(':scope > .ts-layout__placeholder')?.forEach?.((node) => node.remove());
+    };
+
+    const findLayoutColumnParent = (model) => {
+        let current = model;
+        while (current) {
+            const el = current.getEl?.();
+            const cls = String(current.getAttributes?.()?.class || el?.className || '');
+            if (/\bts-layout__col\b/.test(cls) || el?.classList?.contains?.('ts-layout__col')) {
+                return current;
+            }
+            current = typeof current.parent === 'function' ? current.parent() : null;
+        }
+        return null;
+    };
+
     (config.interactiveBlocks || []).forEach((block) => {
         const type = block.gjsType || block.id;
         const events = changeEventsFromParams(block.params);
@@ -4865,6 +5243,8 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             const attr = param.attr || `data-${String(param.key || '').replaceAll('_', '-')}`;
             defaultAttrs[attr] = param.default ?? '';
         });
+
+        const isLayoutContainer = !! block.container || String(type).startsWith('ts-layout-');
 
         editor.DomComponents.addType(type, {
             isComponent: (el) => el?.getAttribute?.('data-gjs-type') === type
@@ -4882,7 +5262,8 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                     selectable: true,
                     hoverable: true,
                     highlightable: true,
-                    droppable: block.container ? true : false,
+                    // Layout: ne a section fogadja a dropot — az oszlopok igen (ensureLayoutColumnsDroppable)
+                    droppable: isLayoutContainer ? false : (block.container ? true : false),
                 },
                 init() {
                     if (events) {
@@ -4897,10 +5278,58 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                     if (shouldLockBlockChildren(block)) {
                         lockBlockChildren(this.model);
                     }
+                    if (isLayoutContainer) {
+                        ensureLayoutColumnsDroppable(this.model);
+                    }
                 },
             },
         });
     });
+
+    editor.on('component:add', (model) => {
+        const col = findLayoutColumnParent(model);
+        if (col && model !== col) {
+            stripLayoutPlaceholders(col);
+            ensureLayoutColumnsDroppable(col.parent?.()?.parent?.() || col);
+        }
+        const type = model?.getAttributes?.()?.['data-gjs-type'] || model?.get?.('type');
+        if (String(type || '').startsWith('ts-layout-')) {
+            setTimeout(() => ensureLayoutColumnsDroppable(model), 0);
+        }
+    });
+
+    editor.on('block:drag:stop', (component) => {
+        if (config.target === 'header') {
+            ensureHeaderMenuPlaceholder();
+        }
+        const col = findLayoutColumnParent(component);
+        if (col) {
+            stripLayoutPlaceholders(col);
+        }
+        if (component) {
+            const type = component.getAttributes?.()?.['data-gjs-type'] || component.get?.('type');
+            if (String(type || '').startsWith('ts-layout-')) {
+                ensureLayoutColumnsDroppable(component);
+            }
+        }
+    });
+
+    const refreshAllLayoutColumns = () => {
+        const walk = (components) => {
+            eachComponent(components, (cmp) => {
+                const type = cmp.getAttributes?.()?.['data-gjs-type'] || cmp.get?.('type');
+                const el = cmp.getEl?.();
+                if (String(type || '').startsWith('ts-layout-') || el?.classList?.contains?.('ts-layout')) {
+                    ensureLayoutColumnsDroppable(cmp);
+                }
+                walk(cmp.components?.());
+            });
+        };
+        walk(editor.getWrapper?.()?.components?.());
+    };
+
+    editor.on('load', () => setTimeout(refreshAllLayoutColumns, 80));
+    editor.on('storage:end:load', () => setTimeout(refreshAllLayoutColumns, 80));
 
     // Style Manager „Háttérszín” → overlay színtónus (képes/videós szekciókon)
     const findOverlayBlockRoot = (model) => {
@@ -5253,6 +5682,11 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
     if (config.projectData) {
         editor.loadProjectData(config.projectData);
         fixInvalidDesktopMediaRules();
+        // Lábléc: a mentett grapes stílusok mellett mindig jöjjön a friss footer CSS
+        // (site-shell szabályok + világos háttér), különben a canvas eltér a publikus oldaltól.
+        if (config.target === 'footer' && config.css) {
+            editor.addStyle(config.css);
+        }
     } else {
         editor.setComponents(config.html || `<section style="padding:48px;font-family:var(--font-sans),sans-serif;"><h1>Új tartalom</h1><p>${config.emptyHint || ''}</p></section>`);
         if (config.css) {
@@ -5269,6 +5703,10 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         wrap?.set?.({ droppable: true });
         editor.on('load', () => {
             editor.getWrapper?.()?.set?.({ droppable: true });
+            if (config.css) {
+                editor.addStyle(config.css);
+            }
+            appendThemeStylesToCanvas();
         });
     }
 
@@ -5337,12 +5775,6 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
 
     editor.on('load', () => setTimeout(initHeaderNavPreview, 120));
     editor.on('component:selected', () => setTimeout(initHeaderNavPreview, 0));
-
-    editor.on('block:drag:stop', () => {
-        if (config.target === 'header') {
-            ensureHeaderMenuPlaceholder();
-        }
-    });
 
     const finalizeExportedHtml = (html) => {
         if (! html || typeof DOMParser === 'undefined') return html;

@@ -1,0 +1,36 @@
+/* Filament publikus panelek: site header/footer chrome a webhely layouttal */
+.fi-body.site-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.fi-body.site-shell .fi-layout {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+}
+
+.fi-body.site-shell .fi-main-ctn,
+.fi-body.site-shell .fi-simple-main-ctn {
+    flex: 1 1 auto;
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+}
+
+.fi-body.site-shell .site-panel-footer {
+    width: 100%;
+    margin-top: auto;
+    flex: 0 0 auto;
+}
+
+.fi-body.site-shell .site-panel-footer .ts-footer,
+.fi-body.site-shell .site-panel-footer .ts-footer ~ .ts-layout,
+.fi-body.site-shell .site-panel-footer .ts-footer ~ .ts-text,
+.fi-body.site-shell .site-panel-footer .ts-footer ~ .ts-image {
+    max-width: none;
+}

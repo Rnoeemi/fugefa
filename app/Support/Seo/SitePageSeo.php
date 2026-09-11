@@ -147,6 +147,6 @@ final class SitePageSeo
 
     public static function siteName(): string
     {
-        return SiteSetting::current()->site_name ?: 'Tüsiszállás';
+        return SiteSetting::current()->site_name ?: 'Fügefa építésziroda';
     }
 }

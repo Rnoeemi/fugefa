@@ -127,6 +127,15 @@ a.ts-nav-topbar__item:hover{opacity:1;text-decoration:underline}
 .site-nav[data-desktop-menu="hidden"] .ts-nav-toggle,
 .site-nav[data-layout="minimal"] .ts-nav-toggle{display:inline-flex!important}
 .ts-nav-bar{display:contents}
+.ts-nav-links{margin-left:auto}
+.site-nav[data-menu-align="left"] .ts-nav-links{margin-left:0;order:2}
+.site-nav[data-menu-align="left"] .ts-nav-brand{order:1}
+.site-nav[data-menu-align="left"] .ts-nav-actions{order:3;margin-left:auto}
+.site-nav[data-menu-align="right"] .ts-nav-links,
+.site-nav:not([data-menu-align="left"]) .ts-nav-links{margin-left:auto}
+.site-nav[data-menu-align="right"] .ts-nav-actions,
+.site-nav:not([data-menu-align="left"]) .ts-nav-actions{margin-left:0}
+.ts-nav-actions{display:flex;align-items:center;gap:.75rem;margin-left:auto;flex-shrink:0}
 .site-nav[data-brand-align="center"] .ts-nav-inner{display:flex;flex-wrap:nowrap;justify-content:space-between}
 .site-nav[data-brand-align="center"] .ts-nav-brand{flex:1;justify-content:center;min-width:0;grid-column:unset;justify-self:unset}
 .site-nav[data-brand-align="center"] .ts-nav-links{grid-column:unset;justify-self:unset}

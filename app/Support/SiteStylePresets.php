@@ -2586,7 +2586,7 @@ textarea.field {
 }
 
 /* Publikus oldal / előnézet: soha ne jelenjen meg a „Húzza ide…” felirat */
-body.site-shell .ts-layout__placeholder {
+body.site-shell:not(.tsb-canvas) .ts-layout__placeholder {
   display: none !important;
 }
 

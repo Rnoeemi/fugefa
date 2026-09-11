@@ -15,7 +15,8 @@
     <script src="{{ asset('js/tsb-layout-wires.js') }}"></script>
     <script src="{{ asset('js/ts-hero-slider.js') }}?v=6"></script>
     <script src="{{ asset('js/ts-gallery.js') }}?v=2"></script>
-    <script src="{{ asset('js/ts-ba-gallery.js') }}?v=4"></script>
+    <script src="{{ asset('js/ts-ba-gallery.js') }}?v=7"></script>
+    <script src="{{ asset('js/ts-flipcards.js') }}?v=1"></script>
     <script src="{{ asset('js/ts-reveal.js') }}?v=1"></script>
     @livewireScripts
 </body>

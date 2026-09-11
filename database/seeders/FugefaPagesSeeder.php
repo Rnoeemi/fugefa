@@ -7,6 +7,7 @@ use App\Models\SitePage;
 use App\Models\SiteSetting;
 use App\Support\GrapesJs\SiteBlockCatalog;
 use App\Support\GrapesJs\SiteRichAttr;
+use App\Support\Seo\SitePageSeo;
 use App\Support\SiteBuilderCss;
 use Illuminate\Database\Seeder;
 use NoteBrainsLab\FilamentMenuManager\Models\Menu;
@@ -42,6 +43,7 @@ class FugefaPagesSeeder extends Seeder
             ],
             isHomepage: true,
             sortOrder: 0,
+            seo: FugefaSeoSeeder::seoBySlug()['kezdo'] ?? [],
         );
 
         $works = $this->upsertPage(
@@ -49,10 +51,12 @@ class FugefaPagesSeeder extends Seeder
             title: 'Munkáink',
             blocks: [
                 $this->droppedBlock('ts-ba-gallery', [
-                    'title' => 'Munkáink',
+                    'cover' => '',
+                    'description' => '',
                 ]),
             ],
             sortOrder: 10,
+            seo: FugefaSeoSeeder::seoBySlug()['munkaink'] ?? [],
         );
 
         $office = $this->upsertPage(
@@ -64,6 +68,7 @@ class FugefaPagesSeeder extends Seeder
                 ]),
             ],
             sortOrder: 20,
+            seo: FugefaSeoSeeder::seoBySlug()['iroda'] ?? [],
         );
 
         $contact = $this->upsertPage(
@@ -73,6 +78,7 @@ class FugefaPagesSeeder extends Seeder
                 $this->droppedBlock('ts-contact-form'),
             ],
             sortOrder: 30,
+            seo: FugefaSeoSeeder::seoBySlug()['kapcsolat'] ?? [],
         );
 
         $booking = $this->upsertPage(
@@ -82,6 +88,7 @@ class FugefaPagesSeeder extends Seeder
                 $this->droppedBlock('ts-appointment-booking'),
             ],
             sortOrder: 40,
+            seo: FugefaSeoSeeder::seoBySlug()['idopontfoglalas'] ?? [],
         );
 
         $this->syncPrimaryMenu([
@@ -126,6 +133,7 @@ class FugefaPagesSeeder extends Seeder
                 ]),
             ],
             sortOrder: 100,
+            seo: FugefaSeoSeeder::seoBySlug()['impresszum'] ?? [],
         );
 
         $this->upsertPage(
@@ -138,6 +146,7 @@ class FugefaPagesSeeder extends Seeder
                 ]),
             ],
             sortOrder: 110,
+            seo: FugefaSeoSeeder::seoBySlug()['adatkezelesi-tajekoztato'] ?? [],
         );
 
         $this->seedGrantPage();
@@ -161,6 +170,7 @@ class FugefaPagesSeeder extends Seeder
                 ]),
             ],
             sortOrder: 120,
+            seo: FugefaSeoSeeder::seoBySlug()['palyazat'] ?? [],
         );
     }
 
@@ -340,9 +350,9 @@ HTML;
   max-width: 12rem;
   object-fit: contain;
   margin: 0 0 .85rem;
-  background: #fff;
-  padding: .4rem .65rem;
-  border-radius: var(--radius-sm, .4rem);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 .ts-footer__brand-link {
   display: inline-block;
@@ -350,18 +360,18 @@ HTML;
   color: inherit;
 }
 .ts-footer__brand-link:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--color-primary, #222);
   outline-offset: 3px;
 }
 .ts-footer__brand {
   margin: 0 0 .5rem;
 }
 .ts-footer__list a:hover {
-  color: #fff;
+  color: var(--color-primary, #111);
   text-decoration: underline;
 }
 .ts-footer__list a:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--color-primary, #222);
   outline-offset: 2px;
 }
 @media (max-width: 1023px) {
@@ -397,7 +407,7 @@ body.site-shell .ts-footer ~ .ts-layout .ts-image img {
   max-height: 4.5rem !important;
 }
 body.site-shell .ts-footer ~ .ts-layout .ts-image__link:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--color-primary, #222);
   outline-offset: 3px;
 }
 CSS;
@@ -462,6 +472,7 @@ HTML;
 
     /**
      * @param  list<array{html: string, css: string}>  $blocks
+     * @param  array<string, string>  $seo
      */
     protected function upsertPage(
         string $slug,
@@ -469,21 +480,28 @@ HTML;
         array $blocks,
         int $sortOrder,
         bool $isHomepage = false,
+        array $seo = [],
     ): SitePage {
         $html = implode("\n", array_column($blocks, 'html'));
         $css = SiteBuilderCss::sanitize(implode("\n\n", array_filter(array_column($blocks, 'css'))));
 
+        $payload = [
+            'title' => $title,
+            'html' => $html,
+            'css' => $css,
+            'grapes_data' => null,
+            'is_published' => true,
+            'is_homepage' => $isHomepage,
+            'sort_order' => $sortOrder,
+        ];
+
+        if ($seo !== []) {
+            $payload['seo'] = SitePageSeo::normalize($seo);
+        }
+
         return SitePage::query()->updateOrCreate(
             ['slug' => $slug],
-            [
-                'title' => $title,
-                'html' => $html,
-                'css' => $css,
-                'grapes_data' => null,
-                'is_published' => true,
-                'is_homepage' => $isHomepage,
-                'sort_order' => $sortOrder,
-            ],
+            $payload,
         );
     }
 

@@ -1,7 +1,7 @@
 @extends('layouts.site')
 
-@section('title', 'Tüsiszállás – Vendégház és szobák')
-@section('meta_description', 'Pihenjen a Tüsiszálláson: vendégház és szoba foglalás nyugodt környezetben.')
+@section('title', 'Fügefa építésziroda – Építész Baja és környéke')
+@section('meta_description', 'Építészmérnöki tervezés Baja és környékén. A Fügefa építésziroda a koncepciótól a megvalósításig támogatja Önt.')
 
 @section('content')
     <section class="hero" style="background-image: linear-gradient(180deg, rgba(15, 41, 32, 0.28) 0%, rgba(15, 41, 32, 0.78) 70%, rgba(15, 41, 32, 0.94) 100%), url('{{ $siteSettings->heroUrl() }}'); background-size: cover; background-position: center;">

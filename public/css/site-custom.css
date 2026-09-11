@@ -4,3 +4,101 @@
   min-height:150px;
   object-fit: cover;
 }
+
+/* Foglaló / időpontfoglaló hero – lágyabb (Megjelenés → Egyedi CSS)
+   Háttér fehér, szöveg fekete, felső/alsó fekete csík. */
+.guest-booking-hero,
+.appointment-booking-hero {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border-top: 2px solid #111111;
+  border-bottom: 2px solid #111111;
+}
+
+.guest-booking-hero h1,
+.guest-booking-hero p,
+.appointment-booking-hero h1,
+.appointment-booking-hero p {
+  color: inherit !important;
+}
+
+/* Szállás részletező – hero CTA gomb legyen világos (Megjelenés → Egyedi CSS) */
+.acc-hero__actions .btn-ghost {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 2px solid #111111 !important;
+}
+
+.acc-hero__actions .btn-ghost:hover {
+  background: #f2f2f2 !important;
+  color: #111111 !important;
+}
+
+/* Fejléc menü – teljes szélesség + Jobi-szerű hover csík (Megjelenés → Egyedi CSS) */
+.site-nav .ts-nav-inner,
+.site-nav .ts-nav-topbar__inner {
+  max-width: none !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.site-nav .ts-nav-links {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+  flex: 1 1 auto;
+  gap: 1.75rem !important;
+}
+
+.site-nav .ts-nav-links a,
+.site-nav .ts-nav-links .nav-link {
+  position: relative !important;
+  display: inline-block;
+  text-decoration: none !important;
+  padding-bottom: .35rem;
+}
+
+.site-nav .ts-nav-links a::after,
+.site-nav .ts-nav-links .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .22s ease;
+  pointer-events: none;
+}
+
+.site-nav .ts-nav-links a:hover::after,
+.site-nav .ts-nav-links a:focus-visible::after,
+.site-nav .ts-nav-links .nav-link:hover::after,
+.site-nav .ts-nav-links .nav-link:focus-visible::after,
+.site-nav .ts-nav-links a[aria-current="page"]::after,
+.site-nav .ts-nav-links .nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* Címsorok – vékonyabb betűsúly (~400) (Megjelenés → Egyedi CSS) */
+:root {
+  --heading-weight: 400;
+}
+
+.font-display,
+h1, h2, h3, h4,
+.section-title,
+.ts-text h1, .ts-text h2, .ts-text h3,
+.ts-features h2, .ts-features__title,
+.ts-icon-list h2, .ts-icon-list__title,
+.ts-flipcards h2, .ts-flipcards__title,
+.ts-split h2, .ts-cta h2, .ts-faq h2,
+.ts-gallery h2, .ts-banner h2, .ts-quote h2,
+.ts-ba-gallery h2,
+.ts-dyn-featured__body h2,
+.ts-dyn-details__grid h2,
+.ts-dyn-contact-form__info h2,
+.ts-dyn-map__copy h2 {
+  font-weight: 400 !important;
+}

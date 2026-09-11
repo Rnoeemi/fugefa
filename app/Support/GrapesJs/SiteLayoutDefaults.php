@@ -866,7 +866,15 @@ a.ts-nav-topbar__item:hover{opacity:1;text-decoration:underline}
 .ts-nav-logo{display:none;height:var(--ts-logo-height,2.5rem);width:auto;max-width:var(--ts-logo-max-width,11rem);object-fit:contain}
 .site-nav.has-logo .ts-nav-logo,.ts-header-simple.has-logo .ts-nav-logo{display:block}
 .site-nav.has-logo .ts-nav-brand-text,.ts-header-simple.has-logo .ts-nav-brand-text{display:none}
-.ts-nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem}
+.ts-nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;margin-left:auto}
+.site-nav[data-menu-align="left"] .ts-nav-links{margin-left:0;order:2}
+.site-nav[data-menu-align="left"] .ts-nav-brand{order:1}
+.site-nav[data-menu-align="left"] .ts-nav-actions{order:3;margin-left:auto}
+.site-nav[data-menu-align="right"] .ts-nav-links,
+.site-nav:not([data-menu-align="left"]) .ts-nav-links{margin-left:auto}
+.site-nav[data-menu-align="right"] .ts-nav-actions,
+.site-nav:not([data-menu-align="left"]) .ts-nav-actions{margin-left:0}
+.ts-nav-actions{display:flex;align-items:center;gap:.75rem;margin-left:auto;flex-shrink:0}
 .ts-nav-links a,.ts-nav-links .nav-link{color:inherit;text-decoration:none;font-size:.9rem;opacity:.9}
 .ts-nav-links a:hover,.ts-nav-links .nav-link:hover{opacity:1}
 .ts-nav-cta{background:var(--btn-bg,var(--color-accent));color:var(--btn-fg,#fff)!important;padding:.65rem 1rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;opacity:1}
@@ -1074,7 +1082,7 @@ HTML;
     {
         return <<<'CSS'
 /* Lábléc: kompakt függőleges ritmus (felülírja a preset --section-y paddinget) */
-.ts-footer{background:var(--color-primary);color:#fff;font-family:var(--font-sans,Karla,sans-serif);margin-top:auto}
+.ts-footer{background:#f2f2f2;color:var(--color-text,#222);font-family:var(--font-sans,Karla,sans-serif);margin-top:auto}
 body.site-shell .ts-footer .ts-footer__grid,
 body.site-shell .ts-footer.ts-footer .ts-footer__grid{
   max-width:72rem;margin:0 auto;
@@ -1093,8 +1101,8 @@ body.site-shell .ts-footer.ts-footer .ts-footer__grid{
 /* Extra szekciók / oszlopok a lábléc után: kis alap padding */
 body.site-shell .ts-footer ~ .ts-layout,
 body.site-shell .ts-footer + .ts-layout{
-  background:var(--color-primary)!important;
-  color:#fff!important;
+  background:#f2f2f2!important;
+  color:var(--color-text,#222)!important;
   padding-top:.65rem!important;
   padding-bottom:.65rem!important;
   padding-left:max(var(--section-x),1.5rem)!important;
@@ -1108,8 +1116,8 @@ body.site-shell .ts-footer ~ .ts-layout .ts-layout__col{
   min-height:0!important;
 }
 body.site-shell .ts-footer ~ .ts-layout .ts-layout__placeholder{
-  color:rgba(255,255,255,.55)!important;
-  border-color:rgba(255,255,255,.25)!important;
+  color:color-mix(in srgb,var(--color-text,#222) 55%,transparent)!important;
+  border-color:color-mix(in srgb,var(--color-text,#222) 25%,transparent)!important;
   padding:.5rem!important;
   min-height:0!important;
 }
@@ -1127,8 +1135,8 @@ body.site-shell .ts-footer ~ .ts-layout .ts-layout__col > .ts-spacer{
 
 body.site-shell .ts-footer ~ .ts-text,
 body.site-shell .ts-footer ~ .ts-layout .ts-text{
-  background:var(--color-primary)!important;
-  color:#fff!important;
+  background:#f2f2f2!important;
+  color:var(--color-text,#222)!important;
   padding-top:.35rem!important;
   padding-bottom:.35rem!important;
   padding-left:0!important;
@@ -1155,7 +1163,7 @@ body.site-shell .ts-footer ~ .ts-layout .ts-text p:last-child{margin-bottom:0!im
 
 body.site-shell .ts-footer ~ .ts-image,
 body.site-shell .ts-footer ~ .ts-layout .ts-image{
-  background:var(--color-primary)!important;
+  background:#f2f2f2!important;
   padding:.25rem 0!important;
   margin:0!important;
 }
@@ -1179,5 +1187,127 @@ body.site-shell .ts-footer ~ .ts-layout .ts-spacer{
   padding:0!important;margin:0!important;min-height:0!important;height:auto!important
 }
 CSS;
+    }
+
+    /**
+     * Lábléc CSS: sötét / primary hátterek → világos szürke (szerkesztő ↔ publikus).
+     */
+    public static function sanitizeFooterCss(string $css): string
+    {
+        if ($css === '') {
+            return $css;
+        }
+
+        $css = preg_replace(
+            '/(\.ts-footer(?:\s*~\s*\.(?:ts-layout|ts-text|ts-image))?)\s*\{([^}]*?)background(?:-color)?\s*:\s*var\(--color-primary\)([^}]*)\}/i',
+            '$1{background:#f2f2f2$3}',
+            $css
+        ) ?? $css;
+
+        $css = str_replace(
+            [
+                '.ts-footer{background:var(--color-primary);color:#fff;',
+                '.ts-footer ~ .ts-layout{background:var(--color-primary);color:#fff;',
+                '.ts-footer ~ .ts-text{background:var(--color-primary);color:#fff;',
+                '.ts-footer ~ .ts-image{background:var(--color-primary);',
+                'background:var(--color-primary)!important;color:#fff!important',
+                'background:var(--color-primary)!important;',
+            ],
+            [
+                '.ts-footer{background:#f2f2f2;color:var(--color-text,#222);',
+                '.ts-footer ~ .ts-layout{background:#f2f2f2;color:var(--color-text,#222);',
+                '.ts-footer ~ .ts-text{background:#f2f2f2;color:var(--color-text,#222);',
+                '.ts-footer ~ .ts-image{background:#f2f2f2;',
+                'background:#f2f2f2!important;color:var(--color-text,#222)!important',
+                'background:#f2f2f2!important;',
+            ],
+            $css
+        );
+
+        return $css;
+    }
+
+    /**
+     * Grapes lábléc project: primary hátterű szabályok / overlay-ek tisztítása.
+     *
+     * @param  array<string, mixed>|null  $projectData
+     * @return array<string, mixed>|null
+     */
+    public static function sanitizeFooterProjectData(?array $projectData): ?array
+    {
+        if ($projectData === null) {
+            return null;
+        }
+
+        if (isset($projectData['styles']) && is_array($projectData['styles'])) {
+            foreach ($projectData['styles'] as $index => $rule) {
+                if (! is_array($rule) || ! isset($rule['style']) || ! is_array($rule['style'])) {
+                    continue;
+                }
+
+                $style = $rule['style'];
+                foreach (['background', 'background-color'] as $prop) {
+                    if (! isset($style[$prop]) || ! is_string($style[$prop])) {
+                        continue;
+                    }
+                    if (! preg_match('/color-primary|#0f2920|pine-deep/i', $style[$prop])) {
+                        continue;
+                    }
+
+                    $selectors = $rule['selectors'] ?? [];
+                    $selectorsAdd = (string) ($rule['selectorsAdd'] ?? '');
+                    $isOverlayId = is_array($selectors) && count($selectors) === 1 && is_string($selectors[0] ?? null)
+                        && str_starts_with((string) $selectors[0], '#');
+
+                    if ($isOverlayId || str_contains($selectorsAdd, 'ts-surface-overlay')) {
+                        $style[$prop] = 'transparent';
+                    } else {
+                        $style[$prop] = '#f2f2f2';
+                        if (isset($style['color']) && is_string($style['color'])
+                            && preg_match('/#fff(?:fff)?\b|white|rgb\(\s*255/i', $style['color'])) {
+                            $style['color'] = 'var(--color-text,#222)';
+                        }
+                    }
+                }
+
+                $rule['style'] = $style;
+                $projectData['styles'][$index] = $rule;
+            }
+        }
+
+        return $projectData;
+    }
+
+    /**
+     * Lábléc HTML: surface overlay primary → transparent (ne sötétítse a canvas előnézetet).
+     */
+    public static function sanitizeFooterHtml(string $html): string
+    {
+        if ($html === '') {
+            return $html;
+        }
+
+        return preg_replace_callback(
+            '/style="([^"]*)"/i',
+            static function (array $m): string {
+                $style = $m[1];
+                if (! preg_match('/ts-surface-overlay|opacity\s*:\s*0/i', $style)
+                    && ! preg_match('/pointer-events\s*:\s*none/i', $style)) {
+                    // Csak overlay-szerű inline style-oknál cseréljük a primary hátteret.
+                    if (! preg_match('/position\s*:\s*absolute/i', $style) || ! preg_match('/inset\s*:/i', $style)) {
+                        return $m[0];
+                    }
+                }
+
+                $style = preg_replace(
+                    '/background-color\s*:\s*var\(--color-primary\)/i',
+                    'background-color: transparent',
+                    $style
+                ) ?? $style;
+
+                return 'style="'.$style.'"';
+            },
+            $html
+        ) ?? $html;
     }
 }

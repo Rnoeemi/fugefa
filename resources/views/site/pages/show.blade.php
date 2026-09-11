@@ -18,7 +18,7 @@
 @section('title', $documentTitle)
 @section('meta_description', filled($rawSeo['meta_description'])
     ? $rawSeo['meta_description']
-    : (($siteSettings->site_name ?? 'Tüsiszállás').' – vendégház, szoba és pihenés nyugodt környezetben. Online foglalás.'))
+    : (($siteSettings->site_name ?? 'Fügefa építésziroda').' – építészmérnöki tervezés Baja és környékén.'))
 
 @push('head')
     @if (filled($seo['meta_keywords']))
@@ -58,10 +58,20 @@
             $schemaSettings = $siteSettings ?? \App\Models\SiteSetting::current();
             $schema = [
                 '@context' => 'https://schema.org',
-                '@type' => 'LodgingBusiness',
+                '@type' => 'ProfessionalService',
                 'name' => $siteName,
                 'url' => $canonical ?: url('/'),
                 'description' => $seo['meta_description'] ?: $documentTitle,
+                'areaServed' => [
+                    [
+                        '@type' => 'City',
+                        'name' => 'Baja',
+                    ],
+                    [
+                        '@type' => 'AdministrativeArea',
+                        'name' => 'Baja és környéke',
+                    ],
+                ],
             ];
             if (filled($schemaSettings->phone)) {
                 $schema['telephone'] = $schemaSettings->phone;
@@ -73,7 +83,7 @@
                 $schema['address'] = [
                     '@type' => 'PostalAddress',
                     'streetAddress' => $schemaSettings->address,
-                    'addressLocality' => 'Tüsifalu',
+                    'addressLocality' => 'Baja',
                     'addressCountry' => 'HU',
                 ];
             }
