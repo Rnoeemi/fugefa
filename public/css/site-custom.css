@@ -102,3 +102,9 @@ h1, h2, h3, h4,
 .ts-dyn-map__copy h2 {
   font-weight: 400 !important;
 }
+
+/* Lábléc: logó kép elrejtése (szöveges márkanév megmarad) */
+.ts-footer .ts-footer__brand-link,
+.ts-footer .ts-footer__logo {
+  display: none !important;
+}
