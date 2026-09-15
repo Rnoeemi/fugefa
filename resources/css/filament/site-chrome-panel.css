@@ -1,31 +1,39 @@
 /* Filament publikus panelek: site header/footer chrome a webhely layouttal */
 .fi-body.site-shell {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-.fi-body.site-shell .fi-layout {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: none;
+/* A lábléc ne kerülhessen a foglaló mellé (Filament .fi-layout alapból sorban flexel) */
+.fi-body.site-shell .fi-layout,
+.fi-body .fi-layout {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: none !important;
 }
 
 .fi-body.site-shell .fi-main-ctn,
-.fi-body.site-shell .fi-simple-main-ctn {
-    flex: 1 1 auto;
+.fi-body.site-shell .fi-simple-main-ctn,
+.fi-body .fi-main-ctn,
+.fi-body .fi-simple-main-ctn {
+    flex: 1 1 auto !important;
     display: flex !important;
-    flex-direction: column;
-    width: 100%;
-    max-width: none;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: none !important;
 }
 
+.fi-body .site-panel-footer,
 .fi-body.site-shell .site-panel-footer {
-    width: 100%;
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
     margin-top: auto;
-    flex: 0 0 auto;
+    flex: 0 0 auto !important;
+    clear: both;
 }
 
 .fi-body.site-shell .site-panel-footer .ts-footer,

@@ -68,7 +68,7 @@ class AppointmentBookingPanelProvider extends PanelProvider
                     .view('filament.appointment.partials.hero')->render(),
             )
             ->renderHook(
-                PanelsRenderHook::LAYOUT_END,
+                PanelsRenderHook::BODY_END,
                 fn (): string => view('filament.appointment.hooks.footer')->render(),
             );
     }
