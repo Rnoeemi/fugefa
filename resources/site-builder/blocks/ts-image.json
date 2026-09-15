@@ -7,7 +7,8 @@
         "kep",
         "image",
         "media",
-        "logo"
+        "logo",
+        "cover"
     ],
     "scopes": [
         "page",
@@ -44,6 +45,20 @@
             "default": "",
             "group": "media",
             "groupLabel": "Média"
+        },
+        {
+            "key": "fit",
+            "attr": "data-fit",
+            "label": "Illesztés",
+            "type": "select",
+            "default": "contain",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "hint": "Oszlopban teljes kitöltéshez válassza a „Kitöltés (cover)” opciót.",
+            "options": [
+                { "id": "contain", "name": "Teljes kép (contain)" },
+                { "id": "cover", "name": "Kitöltés (cover)" }
+            ]
         }
     ]
 }

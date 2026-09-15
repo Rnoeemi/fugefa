@@ -1204,6 +1204,25 @@
 
     const isVideoMediaUrl = (url) => /\.(mp4|webm|ogg)(\?|$)/i.test(String(url || ''));
 
+    const normalizeGoogleMapsEmbedUrl = (url) => {
+        const raw = String(url || '').trim();
+        if (! raw) return '';
+        if (/output=embed|\/maps\/embed/i.test(raw)) return raw;
+        // Rövid megosztó link: a szerver oldali mentés/hydratálás oldja fel
+        if (/maps\.app\.goo\.gl|goo\.gl\/maps|g\.co\/maps/i.test(raw)) return raw;
+        const at = raw.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:,(\d+(?:\.\d+)?)z)?/);
+        if (at) {
+            const zoom = at[3] ? Math.max(1, Math.min(21, Math.round(Number(at[3])))) : 15;
+            return `https://maps.google.com/maps?q=${encodeURIComponent(`${at[1]},${at[2]}`)}&z=${zoom}&output=embed`;
+        }
+        const q = raw.match(/[?&](?:q|query)=([^&]+)/i);
+        if (q) return `https://maps.google.com/maps?q=${q[1]}&output=embed`;
+        if (/google\.[^/]+\/maps|maps\.google\./i.test(raw)) {
+            return `${raw}${raw.includes('?') ? '&' : '?'}output=embed`;
+        }
+        return `https://maps.google.com/maps?q=${encodeURIComponent(raw)}&z=15&ie=UTF8&output=embed`;
+    };
+
     const baGalleryItemUrl = (item, key) => String(item?.[key] || '').trim();
 
     const baGallerySlidesToLightbox = (slides) => {
@@ -1224,13 +1243,21 @@
 
     const baGalleryNl2br = (value) => escapeHtml(value).replaceAll('\n', '<br>');
 
+    const baGalleryPlainText = (value) => {
+        const decoded = decodeRichAttr(value || '');
+        const tmp = document.createElement('div');
+        tmp.innerHTML = decoded;
+        return String(tmp.textContent || tmp.innerText || '').trim();
+    };
+
     const renderBaGalleryCopyInner = (fields) => {
         const rows = [];
-        const description = String(fields?.description || '').trim();
+        const description = baGalleryPlainText(fields?.description || '');
         if (description) {
             rows.push(`<p class="ts-ba-gallery__lead">${baGalleryNl2br(description)}</p>`);
         }
         [
+            ['designer', 'Tervező'],
             ['location', 'Helyszín'],
             ['area', 'Hasznos alapterület összesen'],
             ['design', 'Tervezés ideje'],
@@ -1247,13 +1274,13 @@
         const next = { ...attrs };
         let items = parseItemsJson(next['data-items'] || '[]');
         const looksLegacy = items.some((item) => (
-            item && (item.description != null || item.location != null || item.area != null || item.design != null || item.construction != null || item.image_2 != null)
+            item && (item.description != null || item.location != null || item.area != null || item.design != null || item.designer != null || item.construction != null || item.image_2 != null)
         ));
         if (! String(next['data-cover'] || '').trim() && items.length) {
             const first = items[0] || {};
             const cover = String(first.image || first.image_before || first.media_url || first.image_after || '').trim();
             if (cover) next['data-cover'] = cover;
-            ['alt', 'description', 'location', 'area', 'design', 'construction'].forEach((key) => {
+            ['alt', 'description', 'location', 'area', 'design', 'designer', 'construction'].forEach((key) => {
                 if (! String(next[`data-${key}`] || '').trim() && String(first[key] || '').trim()) {
                     next[`data-${key}`] = String(first[key]);
                 }
@@ -1281,7 +1308,7 @@
     const syncBaGalleryContent = (model, el, attrs = {}) => {
         if (! el?.classList?.contains('ts-ba-gallery')) return;
         const promoted = promoteLegacyBaGalleryAttrs(attrs);
-        const changed = ['data-cover', 'data-alt', 'data-description', 'data-location', 'data-area', 'data-design', 'data-construction', 'data-items']
+        const changed = ['data-cover', 'data-alt', 'data-description', 'data-location', 'data-area', 'data-design', 'data-designer', 'data-construction', 'data-items']
             .some((key) => String(promoted[key] || '') !== String(attrs[key] || ''));
         if (changed) {
             model?.addAttributes?.(promoted);
@@ -1298,6 +1325,7 @@
             location: attrs['data-location'] || '',
             area: attrs['data-area'] || '',
             design: attrs['data-design'] || '',
+            designer: attrs['data-designer'] || '',
             construction: attrs['data-construction'] || '',
         });
 
@@ -4836,8 +4864,13 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         }
 
         if (attrs['data-embed-url'] != null) {
+            const embed = normalizeGoogleMapsEmbedUrl(attrs['data-embed-url'] || '');
+            if (embed && embed !== attrs['data-embed-url']) {
+                model?.addAttributes?.({ 'data-embed-url': embed });
+                attrs['data-embed-url'] = embed;
+            }
             el.querySelectorAll('iframe').forEach((frame) => {
-                frame.setAttribute('src', attrs['data-embed-url'] || '');
+                frame.setAttribute('src', embed || '');
             });
         }
 

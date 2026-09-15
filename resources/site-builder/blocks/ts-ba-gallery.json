@@ -47,6 +47,15 @@
             "groupLabel": "Munka"
         },
         {
+            "key": "designer",
+            "attr": "data-designer",
+            "label": "Tervező",
+            "type": "text",
+            "default": "",
+            "group": "content",
+            "groupLabel": "Munka"
+        },
+        {
             "key": "location",
             "attr": "data-location",
             "label": "Helyszín",

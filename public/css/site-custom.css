@@ -34,6 +34,13 @@
   color: #111111 !important;
 }
 
+.acc-hero__shade{
+  background: linear-gradient(105deg, 
+color-mix(in srgb, var(--color-primary, #0f2920) 40%, transparent) 0%, 
+color-mix(in srgb, var(--color-primary, #0f2920) 55%, transparent) 42%, 
+color-mix(in srgb, var(--color-primary, #0f2920) 28%, transparent) 100%) !important
+}
+
 /* Fejléc menü – teljes szélesség + Jobi-szerű hover csík (Megjelenés → Egyedi CSS) */
 .site-nav .ts-nav-inner,
 .site-nav .ts-nav-topbar__inner {
@@ -107,4 +114,69 @@ h1, h2, h3, h4,
 .ts-footer .ts-footer__brand-link,
 .ts-footer .ts-footer__logo {
   display: none !important;
+}
+
+.img-cover{
+  object-fit: cover;
+}
+
+/* Kép blokk oszlopban: cover = teljes oszlopkitöltés (extra class vagy data-fit) */
+.ts-layout__col > .ts-image.img-cover,
+.ts-layout__col > .ts-image[data-fit="cover"] {
+  height: 100% !important;
+  min-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+}
+.ts-layout__col > .ts-image.img-cover .ts-image__link,
+.ts-layout__col > .ts-image[data-fit="cover"] .ts-image__link {
+  flex: 1 1 auto !important;
+  display: block !important;
+  height: 100% !important;
+  min-height: 14rem !important;
+}
+.ts-image.img-cover img,
+.ts-image[data-fit="cover"] img,
+.ts-layout__col > .ts-image.img-cover img,
+.ts-layout__col > .ts-image[data-fit="cover"] img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 0 !important;
+}
+.ts-layout__inner--2col,
+.ts-layout__inner--3col {
+  align-items: stretch !important;
+}
+.ts-layout__col:has(> .ts-image.img-cover),
+.ts-layout__col:has(> .ts-image[data-fit="cover"]) {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.p-0{
+  padding:0!important
+}
+
+.p-y{
+  padding-top:0!important;
+  padding-bottom:0!important
+}
+
+.p-x{
+  padding-left:0!important;
+  padding-right:0!important
+}
+
+.p-1{
+  padding:10px !important
+}
+
+.kapcs-section .ts-layout__col > section{
+  padding-left:max(0, 1.5rem) !important
 }

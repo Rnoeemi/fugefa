@@ -186,7 +186,10 @@ class SiteDynamicBlockRenderer
                 if (! $section instanceof DOMElement) {
                     continue;
                 }
-                $embed = $section->getAttribute('data-embed-url');
+                $embed = \App\Support\GoogleMapsEmbed::normalize($section->getAttribute('data-embed-url'));
+                if ($embed !== '' && $embed !== $section->getAttribute('data-embed-url')) {
+                    $section->setAttribute('data-embed-url', $embed);
+                }
                 foreach ($section->getElementsByTagName('iframe') as $frame) {
                     if ($frame instanceof DOMElement) {
                         $frame->setAttribute('src', $embed);
@@ -539,6 +542,7 @@ class SiteDynamicBlockRenderer
                 'location' => (string) $section->getAttribute('data-location'),
                 'area' => (string) $section->getAttribute('data-area'),
                 'design' => (string) $section->getAttribute('data-design'),
+                'designer' => (string) $section->getAttribute('data-designer'),
                 'construction' => (string) $section->getAttribute('data-construction'),
                 'alt' => $alt,
             ];
@@ -1044,12 +1048,18 @@ class SiteDynamicBlockRenderer
     protected function renderBaGalleryCopy(array $item): string
     {
         $rows = [];
-        $description = trim((string) ($item['description'] ?? $item['text'] ?? $item['body'] ?? ''));
+        $descriptionRaw = html_entity_decode(
+            (string) ($item['description'] ?? $item['text'] ?? $item['body'] ?? ''),
+            ENT_QUOTES | ENT_HTML5,
+            'UTF-8'
+        );
+        $description = trim(strip_tags(SiteRichAttr::decode($descriptionRaw)));
         if ($description !== '') {
             $rows[] = '<p class="ts-ba-gallery__lead">'.nl2br(e($description), false).'</p>';
         }
 
         $meta = [
+            'designer' => 'Tervező',
             'location' => 'Helyszín',
             'area' => 'Hasznos alapterület összesen',
             'design' => 'Tervezés ideje',
@@ -1236,7 +1246,7 @@ class SiteDynamicBlockRenderer
             'site-map' => view('site.dynamic.site-map', [
                 'title' => (string) ($attrs['title'] ?? 'Helyszín'),
                 'text' => (string) ($attrs['text'] ?? ''),
-                'embedUrl' => (string) ($attrs['embed_url'] ?? 'https://maps.google.com/maps?q=Budapest&t=&z=13&ie=UTF8&iwloc=&output=embed'),
+                'embedUrl' => \App\Support\GoogleMapsEmbed::normalize((string) ($attrs['embed_url'] ?? 'https://maps.google.com/maps?q=Budapest&t=&z=13&ie=UTF8&iwloc=&output=embed')),
                 'settings' => $settings,
                 ...$visibility,
             ])->render(),

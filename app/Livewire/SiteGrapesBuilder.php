@@ -15,6 +15,7 @@ use App\Support\GrapesJs\SiteBuilderPublicLinks;
 use App\Support\GrapesJs\SiteContentIcons;
 use App\Support\GrapesJs\SiteDynamicBlockStyles;
 use App\Support\GrapesJs\SiteLayoutDefaults;
+use App\Support\GoogleMapsEmbed;
 use App\Support\GrapesJs\SiteRichAttr;
 use App\Support\Seo\SitePageSeo;
 use App\Support\SiteBuilderCss;
@@ -72,7 +73,7 @@ class SiteGrapesBuilder extends Component
             abort_unless(SitePageResource::canEdit($page), 403);
 
             $page->update([
-                'html' => SiteRichAttr::repairFeaturesSections($html),
+                'html' => GoogleMapsEmbed::normalizeInHtml(SiteRichAttr::repairFeaturesSections($html)),
                 'css' => $css,
                 'grapes_data' => $grapesData,
             ]);
@@ -179,7 +180,7 @@ class SiteGrapesBuilder extends Component
             $page = SitePage::query()->findOrFail($this->pageId);
 
             $rawHtml = $page->html ?? '';
-            $html = SiteRichAttr::repairFeaturesSections($rawHtml);
+            $html = GoogleMapsEmbed::normalizeInHtml(SiteRichAttr::repairFeaturesSections($rawHtml));
             $projectData = is_array($page->grapes_data) && filled($page->grapes_data) ? $page->grapes_data : null;
             if (is_array($projectData)) {
                 $projectData = SiteBuilderCss::sanitizeProjectData($projectData);

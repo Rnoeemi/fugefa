@@ -25,6 +25,37 @@
             "label": "Szöveg",
             "type": "textarea",
             "default": "Írja ide a szálláshely történetét, a környék élményeit vagy a házirendet."
+        },
+        {
+            "key": "pad_y",
+            "attr": "data-pad-y",
+            "label": "Függőleges térköz",
+            "type": "select",
+            "default": "normal",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "hint": "Csak címhez válassza a „Szűk” vagy „Nincs” opciót.",
+            "options": [
+                { "id": "none", "name": "Nincs" },
+                { "id": "tight", "name": "Szűk" },
+                { "id": "normal", "name": "Normál" },
+                { "id": "wide", "name": "Tágas" }
+            ]
+        },
+        {
+            "key": "pad_x",
+            "attr": "data-pad-x",
+            "label": "Oldalsó térköz",
+            "type": "select",
+            "default": "normal",
+            "group": "layout",
+            "groupLabel": "Elrendezés",
+            "options": [
+                { "id": "none", "name": "Nincs" },
+                { "id": "tight", "name": "Szűk" },
+                { "id": "normal", "name": "Normál" },
+                { "id": "wide", "name": "Tágas" }
+            ]
         }
     ]
 }

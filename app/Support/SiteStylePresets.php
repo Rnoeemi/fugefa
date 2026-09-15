@@ -1910,7 +1910,6 @@ CSS;
 .ts-social,
 .ts-checkin,
 .ts-buttons,
-.ts-text,
 .ts-split,
 .ts-stats,
 .ts-quote,
@@ -1940,6 +1939,26 @@ CSS;
   padding-right: max(var(--section-x), 1.5rem) !important;
   box-sizing: border-box !important;
 }
+
+/*
+ * Szöveges szekció: nincs !important, így a Stílus → Belső margó és a
+ * Tulajdonságok → Függőleges térköz is érvényesül (pl. csak címhez szűkíthető).
+ */
+.ts-text {
+  padding-top: var(--ts-text-pad-y, var(--section-y, 4rem));
+  padding-bottom: var(--ts-text-pad-y, var(--section-y, 4rem));
+  padding-left: var(--ts-text-pad-x, max(var(--section-x), 1.5rem));
+  padding-right: var(--ts-text-pad-x, max(var(--section-x), 1.5rem));
+  box-sizing: border-box;
+}
+.ts-text[data-pad-y="none"] { --ts-text-pad-y: 0; }
+.ts-text[data-pad-y="tight"] { --ts-text-pad-y: 1rem; }
+.ts-text[data-pad-y="normal"] { --ts-text-pad-y: var(--section-y, 4rem); }
+.ts-text[data-pad-y="wide"] { --ts-text-pad-y: calc(var(--section-y, 4rem) * 1.35); }
+.ts-text[data-pad-x="none"] { --ts-text-pad-x: 0; }
+.ts-text[data-pad-x="tight"] { --ts-text-pad-x: 1rem; }
+.ts-text[data-pad-x="normal"] { --ts-text-pad-x: max(var(--section-x), 1.5rem); }
+.ts-text[data-pad-x="wide"] { --ts-text-pad-x: max(var(--section-x), 2.25rem); }
 
 /*
  * Layout szekciók (1/2/3 oszlop): kisebb alap függőleges padding, mint a tartalom-szekciók.

@@ -1,13 +1,22 @@
-<section class="ts-text" data-gjs-type="ts-text" data-gjs-name="Szöveg" data-layout="{{layout}}" data-title="{{title}}" data-body="{{body}}">
+<section class="ts-text" data-gjs-type="ts-text" data-gjs-name="Szöveg" data-layout="{{layout}}" data-pad-y="{{pad_y}}" data-pad-x="{{pad_x}}" data-title="{{title}}" data-body="{{body}}">
   <div class="ts-text__inner">
     <h2 data-ts-text="title">{{title}}</h2>
     <div class="ts-text__body" data-ts-text="body">{{body}}</div>
   </div>
 </section>
 <style>
-.ts-text{padding:4rem 1.5rem;background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif)}
+.ts-text{padding:var(--ts-text-pad-y,4rem) var(--ts-text-pad-x,1.5rem);background:#fff;color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif);box-sizing:border-box}
+.ts-text[data-pad-y="none"]{--ts-text-pad-y:0}
+.ts-text[data-pad-y="tight"]{--ts-text-pad-y:1rem}
+.ts-text[data-pad-y="normal"]{--ts-text-pad-y:4rem}
+.ts-text[data-pad-y="wide"]{--ts-text-pad-y:5.5rem}
+.ts-text[data-pad-x="none"]{--ts-text-pad-x:0}
+.ts-text[data-pad-x="tight"]{--ts-text-pad-x:1rem}
+.ts-text[data-pad-x="normal"]{--ts-text-pad-x:1.5rem}
+.ts-text[data-pad-x="wide"]{--ts-text-pad-x:2.25rem}
 .ts-text__inner{max-width:42rem;margin:0 auto}
 .ts-text h2,.ts-text__title{font-family:var(--font-display,Literata,serif);font-size:var(--type-section-title-size, clamp(1.75rem,3vw,2.4rem));margin:0 0 1rem}
+.ts-text[data-show-body="0"] h2,.ts-text[data-show-body="0"] .ts-text__title{margin-bottom:0}
 .ts-text p,.ts-text__body{margin:0;line-height:1.7;opacity:.85}
 .ts-text__body > *:first-child{margin-top:0}
 .ts-text__body > *:last-child{margin-bottom:0}

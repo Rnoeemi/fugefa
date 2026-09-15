@@ -46,9 +46,10 @@
         {
             "key": "embed_url",
             "attr": "data-embed-url",
-            "label": "Google Maps embed URL",
-            "type": "media",
+            "label": "Google Maps link / embed URL",
+            "type": "text",
             "default": "https://maps.google.com/maps?q=Budapest&t=&z=13&ie=UTF8&iwloc=&output=embed",
+            "hint": "Beilleszthető a megosztó link (maps.app.goo.gl) vagy az Embed map URL is.",
             "group": "background",
             "groupLabel": "Térkép"
         }
