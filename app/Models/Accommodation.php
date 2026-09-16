@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
     'name',
     'slug',
     'cover_image',
+    'hero_image',
     'type',
     'description',
     'capacity',
@@ -24,6 +25,8 @@ use Illuminate\Support\Str;
     'min_nights',
     'price_from',
     'amenities',
+    'address',
+    'map_embed_url',
     'is_active',
     'sort_order',
 ])]
@@ -139,15 +142,32 @@ class Accommodation extends Model
 
     public function coverUrl(): string
     {
-        if (blank($this->cover_image)) {
+        return $this->resolveImageUrl($this->cover_image);
+    }
+
+    /**
+     * Egyedi oldal fejléc / hero. Üresen a kártyaképre esik vissza.
+     */
+    public function heroUrl(): string
+    {
+        if (filled($this->hero_image)) {
+            return $this->resolveImageUrl($this->hero_image);
+        }
+
+        return $this->coverUrl();
+    }
+
+    protected function resolveImageUrl(?string $path): string
+    {
+        if (blank($path)) {
             return asset('images/site/hero.jpg');
         }
 
-        if (str_starts_with($this->cover_image, 'images/')) {
-            return asset($this->cover_image);
+        if (str_starts_with($path, 'images/')) {
+            return asset($path);
         }
 
-        return Storage::disk('public')->url($this->cover_image);
+        return Storage::disk('public')->url($path);
     }
 
     public function displayPriceFrom(): ?float

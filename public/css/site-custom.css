@@ -36,9 +36,9 @@
 
 .acc-hero__shade{
   background: linear-gradient(105deg, 
-color-mix(in srgb, var(--color-primary, #0f2920) 40%, transparent) 0%, 
-color-mix(in srgb, var(--color-primary, #0f2920) 55%, transparent) 42%, 
-color-mix(in srgb, var(--color-primary, #0f2920) 28%, transparent) 100%) !important
+color-mix(in srgb, transparent, transparent) 0%, 
+color-mix(in srgb, transparent, transparent) 42%, 
+color-mix(in srgb, transparent, transparent) 100%) !important
 }
 
 /* Fejléc menü – teljes szélesség + Jobi-szerű hover csík (Megjelenés → Egyedi CSS) */
@@ -178,5 +178,143 @@ h1, h2, h3, h4,
 }
 
 .kapcs-section .ts-layout__col > section{
-  padding-left:max(0, 1.5rem) !important
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Kapcsolat: oszlopok közelebb + űrlap tömörebb */
+.kapcs-section .ts-layout__inner,
+.kapcs-section .ts-layout__inner--2col,
+.kapcs-section .ts-layout__inner--3col {
+  gap: .65rem !important;
+  column-gap: .65rem !important;
+  row-gap: .85rem !important;
+}
+
+.kapcs-section .ts-layout__col {
+  min-width: 0;
+}
+
+.kapcs-section .ts-dyn-contact-form,
+.kapcs-section .ts-dyn-map,
+.kapcs-section .ts-features,
+.kapcs-section .ts-icon-list,
+.kapcs-section .ts-contact {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.kapcs-section .ts-dyn-contact-form__inner,
+.kapcs-section .ts-dyn-map__inner {
+  max-width: none !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+.kapcs-section .ts-features__grid,
+.kapcs-section .ts-icon-list__grid {
+  gap: .55rem !important;
+}
+
+/* Kapcsolati űrlap – fekete körvonalas, tömör (Megjelenés → Egyedi CSS) */
+.ts-dyn-contact-form__form {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  gap: .45rem !important;
+  box-shadow: none !important;
+}
+
+.ts-dyn-contact-form__form > div:not(.ts-dyn-contact-form__consent):not(.ts-dyn-contact-form__actions):not(.ts-dyn-contact-form__status):not(.ts-dyn-contact-form__errors) {
+  gap: .15rem !important;
+}
+
+.ts-dyn-contact-form__form label:not(.ts-dyn-contact-form__consent-label) {
+  font-size: .82rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  color: #111 !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+}
+
+.ts-dyn-contact-form__form label[for="ts-contact-name"]::after,
+.ts-dyn-contact-form__form label[for="ts-contact-email"]::after,
+.ts-dyn-contact-form__form label[for="ts-contact-message"]::after {
+  content: " *";
+  color: #e11d48;
+  font-weight: 600;
+}
+
+.ts-dyn-contact-form__form input:not([type="checkbox"]):not([type="hidden"]):not([type="radio"]),
+.ts-dyn-contact-form__form textarea {
+  width: 100% !important;
+  border: 1px solid #111 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: .4rem .55rem !important;
+  font-size: .875rem !important;
+  line-height: 1.3 !important;
+  color: #111 !important;
+}
+
+.ts-dyn-contact-form__form textarea {
+  min-height: 5rem !important;
+  resize: vertical;
+}
+
+.ts-dyn-contact-form__form input:focus,
+.ts-dyn-contact-form__form textarea:focus {
+  outline: 2px solid #111 !important;
+  outline-offset: 1px;
+}
+
+.ts-dyn-contact-form__consent {
+  margin: .05rem 0 0 !important;
+}
+
+.ts-dyn-contact-form__consent-label {
+  font-size: .75rem !important;
+  color: #444 !important;
+  gap: .45rem !important;
+  line-height: 1.3 !important;
+}
+
+.ts-dyn-contact-form__actions {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem;
+  margin-top: .15rem;
+  width: 100%;
+}
+
+.ts-dyn-contact-form__actions > button[type="submit"],
+.ts-dyn-contact-form__form > button[type="submit"] {
+  flex: 0 0 auto;
+  justify-self: end;
+  margin: 0 !important;
+  appearance: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #111 !important;
+  color: #fff !important;
+  padding: .45rem 1rem !important;
+  font-size: .8rem !important;
+  font-weight: 500 !important;
+  letter-spacing: .02em !important;
+  text-transform: lowercase !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.ts-dyn-contact-form__actions > button[type="submit"]:hover,
+.ts-dyn-contact-form__form > button[type="submit"]:hover {
+  background: #000 !important;
+  opacity: 1 !important;
 }

@@ -939,7 +939,8 @@ body.tsb-body {
 .tsb-rich-modal {
     position: fixed;
     inset: 0;
-    z-index: 20000;
+    /* Kártyák / items modal (20000) és média (30000) fölött */
+    z-index: 35000 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1098,7 +1099,7 @@ body.tsb-body {
 .tsb-link-modal {
     position: fixed;
     inset: 0;
-    z-index: 20000;
+    z-index: 36000 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1409,6 +1410,13 @@ body.tsb-body {
 
 .tsb-items-field textarea {
     min-height: 72px;
+}
+
+.tsb-items-field--htmlable .tsb-items-field__html-btn {
+    align-self: flex-start;
+    margin-top: 2px;
+    font-size: 12px;
+    padding: 5px 10px;
 }
 
 .tsb-items-field--media .tsb-items-media-row {

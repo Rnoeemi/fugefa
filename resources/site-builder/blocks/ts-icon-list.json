@@ -69,7 +69,7 @@
             "itemLabel": "kártya",
             "editLabel": "Kártyák szerkesztése",
             "addLabel": "+ Új kártya",
-            "hint": "Itt adhat hozzá kártyákat, és kártyánként állíthatja az ikont / képet, a címet és a szöveget.",
+            "hint": "A címben telefonszám vagy e-mail megadása automatikusan kattintható link lesz. Összetettebb formázáshoz: Szerkesztés.",
             "itemFields": [
                 {
                     "key": "icon",
@@ -79,12 +79,14 @@
                 {
                     "key": "title",
                     "label": "Cím",
-                    "type": "text"
+                    "type": "text",
+                    "allowHtml": true
                 },
                 {
                     "key": "text",
                     "label": "Szöveg",
-                    "type": "textarea"
+                    "type": "textarea",
+                    "allowHtml": true
                 }
             ],
             "default": [

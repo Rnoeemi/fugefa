@@ -61,12 +61,16 @@
                         <input id="name" name="name" type="text" class="field" value="{{ old('name') }}" required autocomplete="name">
                     </div>
                     <div>
-                        <label class="field-label" for="email">E-mail</label>
+                        <label class="field-label" for="email">Email</label>
                         <input id="email" name="email" type="email" class="field" value="{{ old('email') }}" required autocomplete="email">
                     </div>
                     <div>
+                        <label class="field-label" for="phone">Telefon</label>
+                        <input id="phone" name="phone" type="tel" class="field" value="{{ old('phone') }}" autocomplete="tel">
+                    </div>
+                    <div>
                         <label class="field-label" for="message">Üzenet</label>
-                        <textarea id="message" name="message" rows="5" class="field" required>{{ old('message') }}</textarea>
+                        <textarea id="message" name="message" rows="6" class="field" required>{{ old('message') }}</textarea>
                     </div>
                     <div class="ts-dyn-contact-form__consent">
                         <label class="ts-dyn-contact-form__consent-label" for="contact-privacy">

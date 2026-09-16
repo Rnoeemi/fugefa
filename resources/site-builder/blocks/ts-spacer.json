@@ -16,9 +16,13 @@
     "params": [
         {
             "key": "height",
+            "attr": "data-height",
             "label": "Magasság (px)",
             "type": "number",
-            "default": "64"
+            "default": "64",
+            "min": 0,
+            "max": 1200,
+            "step": 4
         }
     ]
 }

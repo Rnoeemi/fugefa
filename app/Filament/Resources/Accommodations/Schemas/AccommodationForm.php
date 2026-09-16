@@ -72,7 +72,16 @@ class AccommodationForm
                             ->default(true)
                             ->columnSpan(2),
                         FileUpload::make('cover_image')
-                            ->label('Borítókép')
+                            ->label('Kártyakép')
+                            ->helperText('A szálláslisták / élő kártyák képe.')
+                            ->image()
+                            ->disk('public')
+                            ->directory('accommodations')
+                            ->visibility('public')
+                            ->columnSpanFull(),
+                        FileUpload::make('hero_image')
+                            ->label('Egyedi oldal fejléc')
+                            ->helperText('Az apartman oldal nagy háttérképe. Üresen a kártyakép jelenik meg.')
                             ->image()
                             ->disk('public')
                             ->directory('accommodations')
@@ -113,6 +122,17 @@ class AccommodationForm
                         TagsField::make('amenities')
                             ->label('Jellemzők')
                             ->helperText('Pl. Wifi, Klíma, Parkoló – a nyilvános oldalon jelennek meg.')
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Térkép')
+                    ->schema([
+                        FlexTextInput::make('address')
+                            ->label('Pontos cím')
+                            ->helperText('Pl. 7625 Pécs, Kálvária utca 12 – megjelenik a térképnél, és ebből készül a térkép, ha nincs külön Maps link.')
+                            ->columnSpanFull(),
+                        FlexTextInput::make('map_embed_url')
+                            ->label('Google Maps link / embed (opcionális)')
+                            ->helperText('Ha megadod, ezt használjuk a térképhez. Üresen hagyva a pontos cím alapján jelenik meg.')
                             ->columnSpanFull(),
                     ]),
             ]);

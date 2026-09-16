@@ -735,6 +735,9 @@ class SiteDynamicBlockRenderer
             if ($raw === '' && $section->hasAttribute('data-items')) {
                 $raw = $section->getAttribute('data-items');
             }
+            if ($raw !== '') {
+                $raw = html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
             $items = json_decode($raw !== '' ? $raw : '[]', true);
             if (! is_array($items)) {
                 $items = [];
@@ -827,11 +830,11 @@ class SiteDynamicBlockRenderer
                     continue;
                 }
                 $visual = $this->renderItemVisual($item, 'ts-icon-item__icon');
-                $title = e((string) ($item['title'] ?? ''));
-                $text = e((string) ($item['text'] ?? ''));
+                $title = $this->itemFieldHtml((string) ($item['title'] ?? ''));
+                $text = $this->itemFieldHtml((string) ($item['text'] ?? ''));
                 $html .= '<article class="ts-icon-item">'.$visual
                     .'<h3 class="ts-icon-item__title">'.$title.'</h3>'
-                    .'<p class="ts-icon-item__text">'.$text.'</p></article>';
+                    .'<div class="ts-icon-item__text">'.$text.'</div></article>';
             }
 
             return $html;
@@ -1353,6 +1356,46 @@ class SiteDynamicBlockRenderer
             'show_text' => $element->hasAttribute('data-show-text') ? $element->getAttribute('data-show-text') : '1',
             'show_button' => $element->hasAttribute('data-show-button') ? $element->getAttribute('data-show-button') : '1',
         ];
+    }
+
+    /**
+     * Ikonlista / kártya mező: sima telefon/e-mail → link; engedélyezett HTML megtartása.
+     */
+    protected function itemFieldHtml(string $value): string
+    {
+        $raw = trim($value);
+        if ($raw === '') {
+            return '';
+        }
+
+        if (preg_match('/&lt;\/?[a-z]/i', $raw) === 1) {
+            $raw = trim(html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        }
+
+        if (preg_match('/<\/?[a-z][\s\S]*>/i', $raw) === 1) {
+            return $this->sanitizeItemRichHtml($raw);
+        }
+
+        $compact = preg_replace('/\s+/', '', $raw) ?? $raw;
+        $digits = preg_replace('/\D+/', '', $compact) ?? '';
+        if (preg_match('/^[+]?[\d\s().\/-]{6,}$/u', $raw) === 1 && strlen($digits) >= 8) {
+            return '<a href="tel:'.e($compact).'">'.e($raw).'</a>';
+        }
+
+        if (filter_var($raw, FILTER_VALIDATE_EMAIL)) {
+            return '<a href="mailto:'.e($raw).'">'.e($raw).'</a>';
+        }
+
+        return e($raw);
+    }
+
+    protected function sanitizeItemRichHtml(string $html): string
+    {
+        $allowed = strip_tags($html, '<a><strong><b><em><i><u><br><span><p><div>');
+        $allowed = preg_replace('/\s+on\w+\s*=\s*("|\')(.*?)\1/iu', '', $allowed) ?? $allowed;
+        $allowed = preg_replace('/\s+href\s*=\s*("|\')\s*javascript:[^"\']*\1/iu', '', $allowed) ?? $allowed;
+
+        return $allowed;
     }
 
     protected function appendHtml(DOMDocument $dom, DOMElement $parent, string $html): void

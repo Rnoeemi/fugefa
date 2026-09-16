@@ -1,4 +1,5 @@
-<div class="ts-dyn-contact-form__inner">
+<div class="ts-dyn-contact-form__inner" @class(['ts-dyn-contact-form__inner--form-only' => ! ($showInfo ?? true)])>
+    @if ($showInfo ?? true)
     <div class="ts-dyn-contact-form__info">
         @if (($showTitle ?? true) && filled($title))
             <h2 data-ts-text="title">{!! $title !!}</h2>
@@ -18,8 +19,16 @@
             @endif
         </ul>
     </div>
+    @endif
     <form class="ts-dyn-contact-form__form" method="post" action="{{ route('contact.store') }}">
         @csrf
+
+        @if (! ($showInfo ?? true) && ($showTitle ?? true) && filled($title))
+            <h2 class="ts-dyn-contact-form__form-title">{!! $title !!}</h2>
+        @endif
+        @if (! ($showInfo ?? true) && ($showText ?? true) && filled($text))
+            <p class="ts-dyn-contact-form__form-lead">{!! $text !!}</p>
+        @endif
 
         @if (session('status'))
             <div class="ts-dyn-contact-form__status" role="status">{{ session('status') }}</div>
@@ -40,12 +49,16 @@
             <input id="ts-contact-name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name">
         </div>
         <div>
-            <label for="ts-contact-email">E-mail</label>
+            <label for="ts-contact-email">Email</label>
             <input id="ts-contact-email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email">
         </div>
         <div>
+            <label for="ts-contact-phone">Telefon</label>
+            <input id="ts-contact-phone" name="phone" type="tel" value="{{ old('phone') }}" autocomplete="tel">
+        </div>
+        <div>
             <label for="ts-contact-message">Üzenet</label>
-            <textarea id="ts-contact-message" name="message" rows="5" required>{{ old('message') }}</textarea>
+            <textarea id="ts-contact-message" name="message" rows="6" required>{{ old('message') }}</textarea>
         </div>
 
         @php
@@ -71,8 +84,10 @@
             </label>
         </div>
 
-        @if ($showButton ?? true)
-            <button type="submit" data-ts-text="button">{!! $button !!}</button>
-        @endif
+        <div class="ts-dyn-contact-form__actions">
+            @if ($showButton ?? true)
+                <button type="submit" data-ts-text="button">{!! $button !!}</button>
+            @endif
+        </div>
     </form>
 </div>

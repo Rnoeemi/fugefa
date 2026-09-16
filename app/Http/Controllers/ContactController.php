@@ -20,6 +20,7 @@ class ContactController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:40'],
             'message' => ['required', 'string', 'max:5000'],
             'privacy_accepted' => ['accepted'],
         ], [

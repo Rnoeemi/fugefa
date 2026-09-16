@@ -894,6 +894,31 @@
 
     createSeoEditor();
 
+    const portalModalToBody = (modal) => {
+        if (! modal || ! document.body) return;
+        if (modal.dataset.tsbPortaled === '1') return;
+        modal._tsbPortalParent = modal.parentNode;
+        modal._tsbPortalNext = modal.nextSibling;
+        document.body.appendChild(modal);
+        modal.dataset.tsbPortaled = '1';
+    };
+
+    const restoreModalPortal = (modal) => {
+        if (! modal || modal.dataset.tsbPortaled !== '1') return;
+        const parent = modal._tsbPortalParent;
+        const next = modal._tsbPortalNext;
+        if (parent && parent.isConnected) {
+            if (next && next.parentNode === parent) {
+                parent.insertBefore(modal, next);
+            } else {
+                parent.appendChild(modal);
+            }
+        }
+        delete modal._tsbPortalParent;
+        delete modal._tsbPortalNext;
+        delete modal.dataset.tsbPortaled;
+    };
+
     const createRichEditor = () => {
         const modal = root?.querySelector('[data-tsb-rich-modal]');
         if (! modal) {
@@ -905,25 +930,6 @@
         const sourceEl = modal.querySelector('[data-tsb-rich-source]');
         let onApply = null;
         let syncingTabs = false;
-
-        const sanitizeRichHtml = (html) => {
-            try {
-                const doc = new DOMParser().parseFromString(`<div id="tsb-rich-root">${String(html ?? '')}</div>`, 'text/html');
-                const wrap = doc.getElementById('tsb-rich-root');
-                if (! wrap) return String(html ?? '');
-                wrap.querySelectorAll('script, object, embed').forEach((el) => el.remove());
-                wrap.querySelectorAll('*').forEach((el) => {
-                    [...el.attributes].forEach((attr) => {
-                        if (/^on/i.test(attr.name)) {
-                            el.removeAttribute(attr.name);
-                        }
-                    });
-                });
-                return wrap.innerHTML;
-            } catch (e) {
-                return String(html ?? '');
-            }
-        };
 
         const setTab = (tab) => {
             if (syncingTabs) return;
@@ -952,6 +958,7 @@
             modal.hidden = true;
             onApply = null;
             document.removeEventListener('keydown', onKeydown);
+            restoreModalPortal(modal);
         };
 
         const onKeydown = (event) => {
@@ -1023,16 +1030,20 @@
         });
 
         return {
-            open({ title = 'Szöveg szerkesztése', html = '', onSave } = {}) {
+            open({ title = 'Szöveg szerkesztése', html = '', onSave, preferSource = false } = {}) {
                 onApply = onSave;
+                portalModalToBody(modal);
                 if (headingEl) headingEl.textContent = title;
                 const safe = sanitizeRichHtml(html);
                 if (visualEl) visualEl.innerHTML = safe;
                 if (sourceEl) sourceEl.value = safe;
-                setTab('visual');
+                setTab(preferSource ? 'source' : 'visual');
                 modal.hidden = false;
                 document.addEventListener('keydown', onKeydown);
-                setTimeout(() => visualEl?.focus(), 50);
+                setTimeout(() => {
+                    if (preferSource) sourceEl?.focus?.();
+                    else visualEl?.focus?.();
+                }, 50);
             },
         };
     };
@@ -1058,6 +1069,7 @@
             modal.hidden = true;
             onApply = null;
             document.removeEventListener('keydown', onKeydown);
+            restoreModalPortal(modal);
         };
 
         const onKeydown = (event) => {
@@ -1136,6 +1148,7 @@
         return {
             open({ title = 'Link kiválasztása', url = '', newTab = false, onSave } = {}) {
                 onApply = onSave;
+                portalModalToBody(modal);
                 selectedUrl = String(url || '');
                 if (headingEl) headingEl.textContent = title;
                 if (externalEl) externalEl.value = selectedUrl;
@@ -1157,6 +1170,52 @@
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#39;');
+
+    const sanitizeRichHtml = (html) => {
+        try {
+            const doc = new DOMParser().parseFromString(`<div id="tsb-rich-root">${String(html ?? '')}</div>`, 'text/html');
+            const wrap = doc.getElementById('tsb-rich-root');
+            if (! wrap) return String(html ?? '');
+            wrap.querySelectorAll('script, object, embed, iframe, form').forEach((el) => el.remove());
+            wrap.querySelectorAll('*').forEach((el) => {
+                [...el.attributes].forEach((attr) => {
+                    if (/^on/i.test(attr.name) || (attr.name === 'href' && /^\s*javascript:/i.test(attr.value))) {
+                        el.removeAttribute(attr.name);
+                    }
+                });
+            });
+            return wrap.innerHTML;
+        } catch (e) {
+            return String(html ?? '');
+        }
+    };
+
+    const itemFieldHtml = (value) => {
+        let raw = String(value ?? '').trim();
+        if (! raw) return '';
+
+        // Ha a HTML entitásként került a mezőbe (&lt;a…&gt;), dekódoljuk.
+        if (/&lt;\/?[a-z]/i.test(raw)) {
+            const ta = document.createElement('textarea');
+            ta.innerHTML = raw;
+            raw = String(ta.value || '').trim();
+        }
+
+        if (/<\/?[a-z][\s\S]*>/i.test(raw)) {
+            return sanitizeRichHtml(raw);
+        }
+
+        // Egyszerű telefon / e-mail → kattintható link (HTML nélkül is).
+        const compact = raw.replace(/\s+/g, '');
+        if (/^[+]?[\d\s()./-]{6,}$/.test(raw) && compact.replace(/\D/g, '').length >= 8) {
+            return `<a href="tel:${escapeHtml(compact)}">${escapeHtml(raw)}</a>`;
+        }
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
+            return `<a href="mailto:${escapeHtml(raw)}">${escapeHtml(raw)}</a>`;
+        }
+
+        return escapeHtml(raw);
+    };
 
     const parseItemsJson = (raw) => {
         if (Array.isArray(raw)) return raw;
@@ -1422,13 +1481,17 @@
             )).join('');
         }
         if (kind === 'icon-list') {
-            return list.map((item) => (
-                `<article class="ts-icon-item">`
-                + contentItemVisual(item, 'ts-icon-item__icon')
-                + `<h3 class="ts-icon-item__title">${escapeHtml(item.title || '')}</h3>`
-                + `<p class="ts-icon-item__text">${escapeHtml(item.text || '')}</p>`
-                + `</article>`
-            )).join('');
+            return list.map((item) => {
+                const titleHtml = itemFieldHtml(item.title);
+                const textHtml = itemFieldHtml(item.text);
+                return (
+                    `<article class="ts-icon-item">`
+                    + contentItemVisual(item, 'ts-icon-item__icon')
+                    + `<h3 class="ts-icon-item__title">${titleHtml}</h3>`
+                    + (textHtml ? `<div class="ts-icon-item__text">${textHtml}</div>` : `<div class="ts-icon-item__text"></div>`)
+                    + `</article>`
+                );
+            }).join('');
         }
         if (kind === 'hero-slides') {
             return list.map((item) => {
@@ -1520,7 +1583,12 @@
                     const items = kind === 'gallery'
                         ? galleryItemsFromAttrs(attrs)
                         : parseItemsJson(attrs[attrName] || attrs['data-items'] || '[]');
-                    cmp.components?.(renderItemsHtml(kind, items, { layout }));
+                    const html = renderItemsHtml(kind, items, { layout });
+                    cmp.components?.(html);
+                    const viewEl = cmp.getEl?.() || cmp.view?.el;
+                    if (viewEl) {
+                        viewEl.innerHTML = html;
+                    }
                 });
             } catch (e) {
                 // ignore
@@ -1595,7 +1663,11 @@
         };
 
         const onKeydown = (event) => {
-            if (event.key === 'Escape') close();
+            if (event.key !== 'Escape') return;
+            // A HTML / link modal a kártyák ablaka fölött van – ne zárjuk mindkettőt egyszerre.
+            if (root?.querySelector?.('[data-tsb-rich-modal]:not([hidden])')) return;
+            if (root?.querySelector?.('[data-tsb-link-modal]:not([hidden])')) return;
+            close();
         };
 
         const readItemsFromDom = () => {
@@ -1801,6 +1873,47 @@
             return label;
         };
 
+        const appendHtmlEditButton = (wrap, input, field) => {
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'tsb-btn tsb-items-field__html-btn';
+            editBtn.textContent = 'Szerkesztés';
+            editBtn.title = 'Formázott szöveg / HTML szerkesztése';
+            editBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                let current = String(input.value || '');
+                if (/&lt;\/?[a-z]/i.test(current)) {
+                    const ta = document.createElement('textarea');
+                    ta.innerHTML = current;
+                    current = ta.value;
+                }
+                richEditor.open({
+                    title: (field.label || field.key || 'Szöveg') + ' szerkesztése',
+                    html: current,
+                    preferSource: false,
+                    onSave: (html) => {
+                        // Egyszerű telefont/e-mailt sima szövegként tartjuk a mezőben;
+                        // a megjelenítés auto-linkeli. Összetett HTML marad HTML.
+                        const cleaned = String(html || '').trim();
+                        const tmp = document.createElement('div');
+                        tmp.innerHTML = cleaned;
+                        const onlyLink = tmp.childNodes.length === 1 && tmp.firstElementChild?.tagName === 'A'
+                            && ! tmp.firstElementChild.getAttribute('class');
+                        const linkText = onlyLink ? String(tmp.firstElementChild.textContent || '').trim() : '';
+                        const href = onlyLink ? String(tmp.firstElementChild.getAttribute('href') || '') : '';
+                        const isSimpleTel = onlyLink && /^tel:/i.test(href)
+                            && linkText.replace(/\s+/g, '') === href.replace(/^tel:/i, '');
+                        const isSimpleMail = onlyLink && /^mailto:/i.test(href)
+                            && linkText === href.replace(/^mailto:/i, '');
+                        input.value = (isSimpleTel || isSimpleMail) ? linkText : cleaned;
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                    },
+                });
+            });
+            wrap.appendChild(editBtn);
+        };
+
         const render = () => {
             if (! listEl) return;
             listEl.innerHTML = '';
@@ -1896,22 +2009,27 @@
                         return;
                     }
                     const fieldLabel = document.createElement('label');
-                    fieldLabel.className = 'tsb-items-field';
+                    fieldLabel.className = 'tsb-items-field' + (field.allowHtml ? ' tsb-items-field--htmlable' : '');
                     const span = document.createElement('span');
                     span.textContent = field.label || field.key;
                     fieldLabel.appendChild(span);
                     let input;
-                    if (field.type === 'textarea') {
+                    if (field.type === 'textarea' || field.type === 'rich') {
                         input = document.createElement('textarea');
                         input.rows = 3;
                     } else {
                         input = document.createElement('input');
                         input.type = 'text';
                     }
-                    input.className = field.type === 'textarea' ? 'tsb-rich-source' : 'tsb-media-external__input';
+                    input.className = field.type === 'textarea' || field.type === 'rich'
+                        ? 'tsb-rich-source'
+                        : 'tsb-media-external__input';
                     input.dataset.field = field.key;
                     input.value = item[field.key] || '';
                     fieldLabel.appendChild(input);
+                    if (field.allowHtml || field.type === 'rich') {
+                        appendHtmlEditButton(fieldLabel, input, field);
+                    }
                     row.appendChild(fieldLabel);
                 });
 
@@ -4455,6 +4573,35 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         el.classList?.add?.('ts-image');
     };
 
+    const applySpacerHeight = (model, block) => {
+        if (! model) return;
+        const attrs = model.getAttributes?.() || {};
+        const el = model.getEl?.() || model.view?.el;
+        const isSpacer = block?.id === 'ts-spacer'
+            || block?.gjsType === 'ts-spacer'
+            || attrs['data-gjs-type'] === 'ts-spacer'
+            || el?.classList?.contains?.('ts-spacer');
+        if (! isSpacer) return;
+
+        let raw = String(attrs['data-height'] ?? '').trim();
+        if (! raw) {
+            const styleH = String(model.getStyle?.()?.height || el?.style?.height || '').trim();
+            raw = styleH.replace(/[^\d.]/g, '');
+        }
+        const h = String(raw).replace(/[^\d.]/g, '') || '64';
+        const px = `${h}px`;
+
+        if (String(attrs['data-height'] ?? '') !== h) {
+            model.addAttributes?.({ 'data-height': h });
+        }
+        model.addStyle?.({ height: px, 'min-height': px });
+        if (el) {
+            el.style.height = px;
+            el.style.minHeight = px;
+            el.setAttribute('data-height', h);
+        }
+    };
+
     const syncInteractiveBlock = (model, block) => {
         if (! model || model._tsSyncing) return;
         model._tsSyncing = true;
@@ -4487,6 +4634,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
             if (block?.id === 'ts-image' || block?.gjsType === 'ts-image') {
                 ensureImageMarkup(model, elEarly, attrs);
             }
+            applySpacerHeight(model, block);
         }
 
         // Migráció után friss attrs (pl. features col → items)
@@ -5281,6 +5429,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
 
         editor.DomComponents.addType(type, {
             isComponent: (el) => el?.getAttribute?.('data-gjs-type') === type
+                || (type === 'ts-spacer' && el?.classList?.contains?.('ts-spacer'))
                 || (type === 'ts-header-bar' && el?.classList?.contains?.('site-nav') && ! el?.classList?.contains?.('ts-header-simple'))
                 || (type === 'ts-header-simple' && el?.classList?.contains?.('ts-header-simple'))
                 || (type === 'ts-contact' && el?.classList?.contains?.('ts-contact'))

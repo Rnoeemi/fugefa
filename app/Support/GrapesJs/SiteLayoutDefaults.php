@@ -1184,7 +1184,7 @@ body.site-shell .ts-footer ~ .ts-layout .ts-image img{
 
 body.site-shell .ts-footer ~ .ts-spacer,
 body.site-shell .ts-footer ~ .ts-layout .ts-spacer{
-  padding:0!important;margin:0!important;min-height:0!important;height:auto!important
+  padding:0!important;margin:0!important
 }
 CSS;
     }
