@@ -5,10 +5,10 @@
   data-cover="{{cover}}"
   data-alt="{{alt}}"
   data-description="{{description}}"
+  data-architects="{{architects}}"
   data-location="{{location}}"
   data-area="{{area}}"
   data-design="{{design}}"
-  data-designer="{{designer}}"
   data-construction="{{construction}}"
 >
   <div class="ts-ba-gallery__inner">
@@ -24,14 +24,16 @@
 .ts-ba-gallery{padding:var(--section-y,3.5rem) max(var(--section-x),1.5rem);background:var(--color-surface);color:var(--color-text);font-family:var(--font-sans,Karla,sans-serif);box-sizing:border-box}
 .ts-ba-gallery__inner{max-width:min(52rem,var(--content-max,72rem));margin:0 auto;width:100%;box-sizing:border-box}
 .ts-ba-gallery__work{display:block;margin:0;padding:0;background:transparent}
-.ts-ba-gallery__cover{position:relative;display:block;width:100%;padding:0;border:0;background:color-mix(in srgb,var(--color-muted) 28%,transparent);cursor:zoom-in}
+.ts-ba-gallery__cover{position:relative;display:block;width:100%;padding:0;border:0;background:transparent;cursor:zoom-in}
 .ts-ba-gallery__cover:focus-visible{outline:2px solid var(--color-accent,var(--color-primary));outline-offset:2px}
-.ts-ba-gallery__cover img,.ts-ba-gallery__photo{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+.ts-ba-gallery__cover img,.ts-ba-gallery__photo{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:auto;object-fit:contain;object-position:center;background:transparent}
 .ts-ba-gallery__copy{margin:1.1rem 0 0;color:color-mix(in srgb,var(--color-text) 72%,transparent);font-size:.95rem;line-height:1.55;text-align:left}
 .ts-ba-gallery__copy:empty{display:none}
 .ts-ba-gallery__copy p{margin:0 0 .15rem}
 .ts-ba-gallery__lead{margin-bottom:.55rem!important;color:color-mix(in srgb,var(--color-text) 78%,transparent)}
 .ts-ba-gallery__meta-label{font-weight:600;color:var(--color-text)}
+.ts-ba-gallery__architect-link{color:inherit;text-decoration:underline;text-underline-offset:.12em}
+.ts-ba-gallery__architect-link:hover{opacity:.82}
 .ts-ba-gallery__compare{--split:50%;position:relative;overflow:hidden;aspect-ratio:16/10;user-select:none;touch-action:none;cursor:ew-resize}
 .ts-ba-gallery__compare.is-dragging{cursor:grabbing}
 .ts-ba-gallery__layer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -70,6 +72,5 @@ body.ts-ba-gallery-lightbox-open{overflow:hidden}
   .ts-ba-gallery{padding:2.25rem max(var(--section-x),1rem)}
   .ts-ba-gallery__copy{font-size:.9rem;margin-top:1rem}
   .ts-ba-gallery__knob{width:2.25rem;height:2.25rem;font-size:.95rem}
-  .ts-ba-gallery__cover img,.ts-ba-gallery__photo{aspect-ratio:4/3}
 }
 </style>

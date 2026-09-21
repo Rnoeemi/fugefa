@@ -75,8 +75,6 @@ class GuestBookingPage extends Page
      */
     public ?array $data = [];
 
-    public ?int $lockedAccommodationId = null;
-
     public function getHeading(): string|Htmlable|null
     {
         return null;
@@ -91,8 +89,6 @@ class GuestBookingPage extends Page
                 ->first();
         }
 
-        $this->lockedAccommodationId = $accommodation?->id;
-
         $guestsCount = max(1, (int) ($request->query('guests', $request->query('guests_count', 2)) ?: 2));
         $travelers = [];
 
@@ -105,7 +101,7 @@ class GuestBookingPage extends Page
             : PaymentProvider::Cash->value;
 
         $this->form->fill([
-            'accommodation_id' => $this->lockedAccommodationId,
+            'accommodation_id' => $accommodation?->id,
             'check_in' => $request->query('check_in'),
             'check_out' => $request->query('check_out'),
             'guests_count' => $guestsCount,
@@ -133,7 +129,6 @@ class GuestBookingPage extends Page
                             ->label('Szállás')
                             ->options(fn () => Accommodation::query()->bookableOnline()->orderBy('sort_order')->pluck('name', 'id'))
                             ->required()
-                            ->disabled(fn (): bool => filled($this->lockedAccommodationId))
                             ->dehydrated()
                             ->live()
                             ->afterStateUpdated(function (): void {

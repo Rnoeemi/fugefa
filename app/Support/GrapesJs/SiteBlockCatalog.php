@@ -66,6 +66,7 @@ final class SiteBlockCatalog
             $params = SiteBlockVisibility::appendShowParams($params);
             $params = self::appendRevealChildrenParam($params);
             $params = self::appendExtraClassParam($params);
+            $params = self::appendAnchorIdParam($params);
             $defaults = self::paramDefaults($params);
 
             $type = $block['type'] ?? 'static';
@@ -696,6 +697,34 @@ final class SiteBlockCatalog
             'default' => '',
             'group' => 'advanced',
             'groupLabel' => 'Haladó',
+        ];
+
+        return $params;
+    }
+
+    /**
+     * Minden blokk root elemére: egyedi HTML id (horgony / #scroll cél).
+     *
+     * @param  list<array<string, mixed>>  $params
+     * @return list<array<string, mixed>>
+     */
+    protected static function appendAnchorIdParam(array $params): array
+    {
+        foreach ($params as $param) {
+            if (($param['key'] ?? '') === 'anchor_id') {
+                return $params;
+            }
+        }
+
+        $params[] = [
+            'key' => 'anchor_id',
+            'attr' => 'data-anchor-id',
+            'label' => 'HTML ID (horgony)',
+            'type' => 'text',
+            'default' => '',
+            'group' => 'advanced',
+            'groupLabel' => 'Haladó',
+            'hint' => 'Pl. pecs – linknél használd: #pecs. Betűvel kezdődjön, szóköz nélkül.',
         ];
 
         return $params;

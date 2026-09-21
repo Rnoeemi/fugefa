@@ -13,6 +13,15 @@
             <span class="guest-booking-calendar__selection-label">Távozás</span>
             <strong class="guest-booking-calendar__selection-value" x-text="formatDisplay(checkOut)">–</strong>
         </div>
+        <button
+            type="button"
+            class="guest-booking-calendar__clear"
+            x-show="checkIn || checkOut"
+            x-cloak
+            x-on:click="clearDates()"
+        >
+            Dátumok törlése
+        </button>
     </div>
 
     <div class="guest-booking-calendar__legend">

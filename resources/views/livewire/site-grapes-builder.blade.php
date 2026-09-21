@@ -1309,14 +1309,66 @@
         return String(tmp.textContent || tmp.innerText || '').trim();
     };
 
+    const sanitizeBaGalleryArchitectUrl = (raw) => {
+        const url = String(raw || '').trim();
+        if (! url || url === '#') return '';
+        if (/^(https?:)?\/\//i.test(url) || url.startsWith('/')) return url;
+        if (/^(mailto:|tel:)/i.test(url)) return url;
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(url)) return `mailto:${url}`;
+        if (/^[a-z0-9.-]+\.[a-z]{2,}(\/.*)?$/i.test(url)) return `https://${url}`;
+        return '';
+    };
+
+    const normalizeBaGalleryArchitects = (fields = {}) => {
+        let list = [];
+        const raw = fields.architects;
+        if (typeof raw === 'string' && raw.trim()) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) list = parsed;
+            } catch (e) { /* ignore */ }
+        } else if (Array.isArray(raw)) {
+            list = raw;
+        }
+
+        const people = [];
+        list.forEach((entry) => {
+            const name = String(entry?.name || entry?.text || '').trim();
+            if (! name) return;
+            people.push({
+                name,
+                url: sanitizeBaGalleryArchitectUrl(entry?.url || entry?.href || ''),
+            });
+        });
+        if (people.length) return people;
+
+        const legacy = String(fields.designer || '').trim();
+        if (! legacy) return [];
+        return legacy.split(/\s*,\s*/).map((name) => name.trim()).filter(Boolean).map((name) => ({ name, url: '' }));
+    };
+
+    const renderBaGalleryArchitectsHtml = (fields) => {
+        const people = normalizeBaGalleryArchitects(fields);
+        if (! people.length) return '';
+        return people.map((person) => {
+            if (person.url) {
+                return `<a class="ts-ba-gallery__architect-link" href="${escapeHtml(person.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(person.name)}</a>`;
+            }
+            return escapeHtml(person.name);
+        }).join(', ');
+    };
+
     const renderBaGalleryCopyInner = (fields) => {
         const rows = [];
         const description = baGalleryPlainText(fields?.description || '');
         if (description) {
             rows.push(`<p class="ts-ba-gallery__lead">${baGalleryNl2br(description)}</p>`);
         }
+        const architectsHtml = renderBaGalleryArchitectsHtml(fields);
+        if (architectsHtml) {
+            rows.push(`<p class="ts-ba-gallery__meta"><span class="ts-ba-gallery__meta-label">Építész:</span> ${architectsHtml}</p>`);
+        }
         [
-            ['designer', 'Tervező'],
             ['location', 'Helyszín'],
             ['area', 'Hasznos alapterület összesen'],
             ['design', 'Tervezés ideje'],
@@ -1361,13 +1413,25 @@
             });
             next['data-items'] = JSON.stringify(slides);
         }
+
+        const architects = parseItemsJson(next['data-architects'] || '[]')
+            .filter((entry) => String(entry?.name || entry?.text || '').trim());
+        if (! architects.length) {
+            const legacyDesigner = String(next['data-designer'] || '').trim();
+            if (legacyDesigner) {
+                next['data-architects'] = JSON.stringify(
+                    legacyDesigner.split(/\s*,\s*/).map((name) => name.trim()).filter(Boolean).map((name) => ({ name, url: '' }))
+                );
+            }
+        }
+
         return next;
     };
 
     const syncBaGalleryContent = (model, el, attrs = {}) => {
         if (! el?.classList?.contains('ts-ba-gallery')) return;
         const promoted = promoteLegacyBaGalleryAttrs(attrs);
-        const changed = ['data-cover', 'data-alt', 'data-description', 'data-location', 'data-area', 'data-design', 'data-designer', 'data-construction', 'data-items']
+        const changed = ['data-cover', 'data-alt', 'data-description', 'data-location', 'data-area', 'data-design', 'data-designer', 'data-architects', 'data-construction', 'data-items']
             .some((key) => String(promoted[key] || '') !== String(attrs[key] || ''));
         if (changed) {
             model?.addAttributes?.(promoted);
@@ -1385,6 +1449,7 @@
             area: attrs['data-area'] || '',
             design: attrs['data-design'] || '',
             designer: attrs['data-designer'] || '',
+            architects: attrs['data-architects'] || '[]',
             construction: attrs['data-construction'] || '',
         });
 
@@ -3487,7 +3552,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         const key = String(param.key || '');
         if (/^show_/i.test(key)) return false;
         if (/^(phone|email|address)$/i.test(key)) return false;
-        if (/(_href|_url|href|url)$/i.test(key) || /overlay|slug|limit|guests|^type$|check_in|check_out|extra_class|css_class/i.test(key)) {
+        if (/(_href|_url|href|url)$/i.test(key) || /overlay|slug|limit|guests|^type$|check_in|check_out|extra_class|css_class|anchor_id/i.test(key)) {
             return false;
         }
         // Szöveges tartalom (felirat, cím, szöveg, gomb, stb.)
@@ -3549,7 +3614,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         if (key === 'items' || param.type === 'items') {
             return { id: 'items', label: 'Lista elemek' };
         }
-        if (key === 'extra_class') {
+        if (key === 'extra_class' || key === 'anchor_id') {
             return { id: 'advanced', label: 'Haladó' };
         }
         if (key === 'reveal_children') {
@@ -3644,6 +3709,23 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
         .map((token) => token.trim())
         .filter((token) => /^[A-Za-z_][A-Za-z0-9_-]*$/.test(token));
 
+    const sanitizeAnchorId = (raw) => {
+        const value = String(raw ?? '').trim();
+        if (! value) return '';
+        // Szóköz → kötőjel, érvénytelen karakterek ki, betűvel kezdődjön
+        let cleaned = value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/[^A-Za-z0-9_-]/g, '')
+            .replace(/^-+/, '');
+        if (! cleaned) return '';
+        if (! /^[A-Za-z]/.test(cleaned)) {
+            cleaned = `s-${cleaned}`;
+        }
+        return cleaned.slice(0, 80);
+    };
+
     const applyExtraClassesToModel = (model) => {
         if (! model) return;
         const el = model.getEl?.() || model.view?.el;
@@ -3677,6 +3759,44 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                 model.removeAttributes?.(['data-extra-class']);
             }
         }
+    };
+
+    const applyAnchorIdToModel = (model) => {
+        if (! model) return;
+        const el = model.getEl?.() || model.view?.el;
+        if (! el) return;
+
+        const attrs = model.getAttributes?.() || {};
+        const raw = attrs['data-anchor-id'] ?? el.getAttribute?.('data-anchor-id') ?? '';
+        const nextId = sanitizeAnchorId(raw);
+        const prevAnchor = String(model._tsAppliedAnchorId || '').trim();
+
+        if (nextId) {
+            if (String(attrs['data-anchor-id'] || '') !== nextId) {
+                model.addAttributes?.({ 'data-anchor-id': nextId });
+            }
+            el.setAttribute('data-anchor-id', nextId);
+            el.setAttribute('id', nextId);
+            model.addAttributes?.({ id: nextId });
+            if (typeof model.setId === 'function') {
+                try { model.setId(nextId); } catch (e) { /* ignore */ }
+            }
+            model._tsAppliedAnchorId = nextId;
+            return;
+        }
+
+        el.removeAttribute('data-anchor-id');
+        if (attrs['data-anchor-id']) {
+            model.removeAttributes?.(['data-anchor-id']);
+        }
+        // Csak a korábban horgonyként beállított id-t töröljük, a Grapes auto-id-t nem bántjuk
+        if (prevAnchor && (el.id === prevAnchor || attrs.id === prevAnchor)) {
+            el.removeAttribute('id');
+            if (attrs.id === prevAnchor) {
+                model.removeAttributes?.(['id']);
+            }
+        }
+        model._tsAppliedAnchorId = '';
     };
 
     const applyRevealChildrenToModel = (model, { forceVisible = true } = {}) => {
@@ -3747,7 +3867,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                 attrs[attr] = param.default ?? '';
             });
 
-            const refreshParams = (block.params || []).filter((param) => param.key !== 'extra_class' && param.key !== 'section_width');
+            const refreshParams = (block.params || []).filter((param) => param.key !== 'extra_class' && param.key !== 'anchor_id' && param.key !== 'section_width');
             const events = changeEventsFromParams(refreshParams, { excludeSectionWidth: true });
 
             editor.DomComponents.addType(block.gjsType || block.id, {
@@ -3767,6 +3887,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                             this.on(events, () => refreshDynamicComponent(this));
                         }
                         this.on('change:attributes:data-extra-class', () => applyExtraClassesToModel(this));
+                        this.on('change:attributes:data-anchor-id', () => applyAnchorIdToModel(this));
                         this.on('change:attributes:data-reveal-children', () => applyRevealChildrenToModel(this));
                     },
                 },
@@ -3776,6 +3897,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                     },
                     onRender() {
                         applyExtraClassesToModel(this.model);
+                        applyAnchorIdToModel(this.model);
                         applyRevealChildrenToModel(this.model);
                     },
                 },
@@ -4830,6 +4952,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
 
         // Egyedi CSS class-ok a root szekción (alap ts-* classok megmaradnak)
         applyExtraClassesToModel(model);
+        applyAnchorIdToModel(model);
         applyRevealChildrenToModel(model);
         applyFooterSiteContact(model, block);
 
@@ -5452,6 +5575,7 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                         this.on(events, () => syncInteractiveBlock(this, block));
                     }
                     this.on('change:attributes:data-reveal-children', () => applyRevealChildrenToModel(this));
+                    this.on('change:attributes:data-anchor-id', () => applyAnchorIdToModel(this));
                 },
             },
             view: {
@@ -6096,6 +6220,30 @@ header.site-nav[data-site-nav] .ts-nav-social--needs-url {
                 if (tokens.length) {
                     section.setAttribute('data-extra-class', tokens.join(' '));
                 }
+            });
+
+            root.querySelectorAll('[data-anchor-id]').forEach((section) => {
+                const raw = String(section.getAttribute('data-anchor-id') || '').trim();
+                if (! raw) {
+                    section.removeAttribute('data-anchor-id');
+                    return;
+                }
+                let cleaned = raw
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/[^A-Za-z0-9_-]/g, '')
+                    .replace(/^-+/, '');
+                if (! cleaned) {
+                    section.removeAttribute('data-anchor-id');
+                    return;
+                }
+                if (! /^[A-Za-z]/.test(cleaned)) {
+                    cleaned = `s-${cleaned}`;
+                }
+                cleaned = cleaned.slice(0, 80);
+                section.setAttribute('data-anchor-id', cleaned);
+                section.setAttribute('id', cleaned);
             });
 
             root.querySelectorAll('[data-ts-src-from]').forEach((node) => {

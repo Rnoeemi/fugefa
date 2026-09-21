@@ -88,6 +88,10 @@ class ManageSiteSettings extends Page
                         ->label('Értesítési e-mail (foglalások)')
                         ->email()
                         ->helperText('Ide érkeznek az új foglalások admin értesítői.'),
+                    FlexTextInput::make('contact_notification_email')
+                        ->label('Értesítési e-mail (kapcsolat)')
+                        ->email()
+                        ->helperText('Ide érkeznek a kapcsolati űrlap üzenetei. Üresen a nyilvános e-mail címre megy.'),
                     FlexTextInput::make('address')
                         ->label('Cím')
                         ->columnSpanFull(),

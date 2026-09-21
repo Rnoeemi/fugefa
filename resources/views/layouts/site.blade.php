@@ -11,6 +11,7 @@
     @include('site.partials.theme-fonts')
     {{-- Téma előbb: a Grapes oldal-CSS (@stack head) felülírhatja a szekció hátterét/színét --}}
     @include('site.partials.theme-css')
+    <link rel="stylesheet" href="{{ asset('css/site-back-to-top.css') }}?v=2">
     @stack('head')
 </head>
 <body class="site-shell site-style-{{ $siteTheme['style_preset'] ?? 'soft-ui' }}">
@@ -21,12 +22,27 @@
     </main>
 
     @include('site.partials.footer')
+
+    <button
+        type="button"
+        class="ts-back-to-top"
+        data-back-to-top
+        aria-label="Vissza az oldal tetejére"
+        title="Vissza az oldal tetejére"
+    >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5"/>
+            <path d="m5 12 7-7 7 7"/>
+        </svg>
+    </button>
+
     <script src="{{ asset('js/ts-nav.js') }}?v=3"></script>
     <script src="{{ asset('js/ts-hero-slider.js') }}?v=6"></script>
     <script src="{{ asset('js/ts-gallery.js') }}?v=2"></script>
     <script src="{{ asset('js/ts-ba-gallery.js') }}?v=7"></script>
     <script src="{{ asset('js/ts-flipcards.js') }}?v=1"></script>
     <script src="{{ asset('js/ts-reveal.js') }}?v=1"></script>
+    <script src="{{ asset('js/ts-back-to-top.js') }}?v=1"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             window.TsNav?.init?.(document);
@@ -35,6 +51,7 @@
             window.TsBaGallery?.init?.(document);
             window.TsFlipcards?.init?.(document);
             window.TsReveal?.init?.(document);
+            window.TsBackToTop?.init?.(document);
         });
         window.addEventListener('load', () => {
             window.TsNav?.init?.(document);
@@ -43,6 +60,7 @@
             window.TsBaGallery?.init?.(document);
             window.TsFlipcards?.init?.(document);
             window.TsReveal?.init?.(document);
+            window.TsBackToTop?.init?.(document);
         });
     </script>
     @stack('scripts')

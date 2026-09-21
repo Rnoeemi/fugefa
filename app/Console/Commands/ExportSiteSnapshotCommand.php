@@ -29,6 +29,7 @@ class ExportSiteSnapshotCommand extends Command
             'phone',
             'email',
             'notification_email',
+            'contact_notification_email',
             'address',
             'hero_image',
             'footer_text',

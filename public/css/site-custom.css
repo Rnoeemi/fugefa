@@ -34,11 +34,18 @@
   color: #111111 !important;
 }
 
-.acc-hero__shade{
-  background: linear-gradient(105deg, 
-color-mix(in srgb, transparent, transparent) 0%, 
-color-mix(in srgb, transparent, transparent) 42%, 
-color-mix(in srgb, transparent, transparent) 100%) !important
+/* Szállás hero – „Vendégház” / típus felirat elrejtése */
+.acc-hero__eyebrow {
+  display: none !important;
+}
+
+.acc-hero__shade {
+  background: transparent !important;
+}
+
+/* Szállás jobb oldali ÁRAK panel – háttérszín (Megjelenés → Egyedi CSS; állítható) */
+.acc-aside__block--price {
+  background: #334155 !important;
 }
 
 /* Fejléc menü – teljes szélesség + Jobi-szerű hover csík (Megjelenés → Egyedi CSS) */

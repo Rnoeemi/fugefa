@@ -45,7 +45,7 @@
             </dl>
 
             <div class="mt-8 flex flex-wrap gap-3">
-                <a href="{{ route('home') }}" class="btn-dark">Vissza a főoldalra</a>
+                <a href="{{ route('accommodations.index') }}" class="btn-dark">Vissza az apartmanokhoz</a>
                 <a href="{{ route('contact') }}" class="btn-primary">Kapcsolat</a>
             </div>
         </div>

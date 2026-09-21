@@ -47,13 +47,29 @@
             "groupLabel": "Munka"
         },
         {
-            "key": "designer",
-            "attr": "data-designer",
-            "label": "Tervező",
-            "type": "text",
-            "default": "",
+            "key": "architects",
+            "attr": "data-architects",
+            "label": "Építészek",
+            "type": "items",
             "group": "content",
-            "groupLabel": "Munka"
+            "groupLabel": "Munka",
+            "itemLabel": "építész",
+            "editLabel": "Építészek",
+            "addLabel": "+ Új építész",
+            "hint": "Több építész is megadható. A link opcionális – ha kitöltöd, a név kattintható lesz.",
+            "itemFields": [
+                {
+                    "key": "name",
+                    "label": "Név",
+                    "type": "text"
+                },
+                {
+                    "key": "url",
+                    "label": "Link (opcionális)",
+                    "type": "text"
+                }
+            ],
+            "default": []
         },
         {
             "key": "location",

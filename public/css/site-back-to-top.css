@@ -1,0 +1,73 @@
+/* Vissza az oldal tetejére */
+.ts-back-to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #111;
+  border-radius: 0;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease, background .15s ease;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ts-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.ts-back-to-top:hover,
+.ts-back-to-top:focus-visible {
+  background: #000;
+  color: #fff;
+}
+
+.ts-back-to-top:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.ts-back-to-top svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .ts-back-to-top {
+    right: 1rem;
+    bottom: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-back-to-top {
+    transition: none;
+  }
+}
+
+/* Horgony linkek: sticky fejléc ne takarja a célszekciót */
+.site-shell [data-gjs-type][id],
+.site-shell [data-anchor-id][id],
+.site-shell section[id],
+.site-shell .ts-layout[id] {
+  scroll-margin-top: 5.5rem;
+}
+

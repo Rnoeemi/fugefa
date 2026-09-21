@@ -66,8 +66,13 @@ const canSelectDay = (iso, state, mode, checkIn, dayStates) => {
         return state === 'free' || state === 'turnover-in';
     }
 
-    if (! checkIn || compareIso(iso, checkIn) <= 0) {
-        return false;
+    // Érkezés után: korábbi / ugyanaz a nap újraérkezésként választható (hiba javításához).
+    if (checkIn && compareIso(iso, checkIn) <= 0) {
+        if (state === 'turnover-out') {
+            return false;
+        }
+
+        return state === 'free' || state === 'turnover-in';
     }
 
     if (state === 'turnover-in') {
@@ -124,12 +129,17 @@ document.addEventListener('alpine:init', () => {
         },
 
         onAccommodationChanged() {
+            this.clearDates();
+            this.loadDayStates();
+        },
+
+        clearDates() {
             this.checkIn = null;
             this.checkOut = null;
             this.selecting = 'in';
             this.$wire.set('data.check_in', null);
             this.$wire.set('data.check_out', null);
-            this.loadDayStates();
+            this.render();
         },
 
         async loadDayStates() {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ContactMailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,9 +16,9 @@ class ContactController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ContactMailService $mailer): RedirectResponse
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:40'],
@@ -30,7 +31,19 @@ class ContactController extends Controller
             'privacy_accepted.accepted' => 'Az adatkezelési tájékoztató elfogadása kötelező.',
         ]);
 
-        // Később: notification / mail. Egyelőre session visszajelzés.
+        $sent = $mailer->send([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
+            'message' => $data['message'],
+        ]);
+
+        if (! $sent) {
+            return back()
+                ->withInput()
+                ->withErrors(['email' => 'Az üzenet küldése jelenleg nem sikerült. Kérjük, próbálja újra később, vagy írjon nekünk közvetlenül e-mailben.']);
+        }
+
         return back()->with('status', 'Üzenetét megkaptuk, hamarosan válaszolunk.');
     }
 }

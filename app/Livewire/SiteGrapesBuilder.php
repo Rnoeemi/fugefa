@@ -16,6 +16,7 @@ use App\Support\GrapesJs\SiteContentIcons;
 use App\Support\GrapesJs\SiteDynamicBlockStyles;
 use App\Support\GrapesJs\SiteLayoutDefaults;
 use App\Support\GoogleMapsEmbed;
+use App\Support\GrapesJs\SiteAnchorId;
 use App\Support\GrapesJs\SiteRichAttr;
 use App\Support\Seo\SitePageSeo;
 use App\Support\SiteBuilderCss;
@@ -73,7 +74,7 @@ class SiteGrapesBuilder extends Component
             abort_unless(SitePageResource::canEdit($page), 403);
 
             $page->update([
-                'html' => GoogleMapsEmbed::normalizeInHtml(SiteRichAttr::repairFeaturesSections($html)),
+                'html' => SiteAnchorId::syncInHtml(GoogleMapsEmbed::normalizeInHtml(SiteRichAttr::repairFeaturesSections($html))),
                 'css' => $css,
                 'grapes_data' => $grapesData,
             ]);

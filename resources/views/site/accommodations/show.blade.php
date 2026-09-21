@@ -3,7 +3,7 @@
 @section('title', $accommodation->name.' – '.$siteSettings->site_name)
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('css/site-accommodation-show.css') }}?v=6">
+    <link rel="stylesheet" href="{{ asset('css/site-accommodation-show.css') }}?v=7">
     <style>{!! \App\Support\GrapesJs\SiteDynamicBlockStyles::css() !!}</style>
 @endpush
 
@@ -46,11 +46,12 @@
                 @endif
             </ul>
             <div class="acc-hero__actions">
-                <a href="{{ $bookingUrl }}" class="btn-ghost">Foglalás erre a szállásra</a>
+                <a href="{{ $bookingUrl }}" class="btn-ghost">Foglalás</a>
                 @if (count($roomGroups))
                     <a href="#galeria" class="btn-ghost btn-ghost--outline">Galéria</a>
                 @endif
                 <a href="#terkep" class="btn-ghost btn-ghost--outline">Térkép</a>
+                <a href="#kapcsolat" class="btn-ghost btn-ghost--outline">Kapcsolat</a>
             </div>
         </div>
     </section>
@@ -227,7 +228,7 @@
                     @endif
                 </aside>
 
-                <div class="acc-contact__form ts-dyn-contact-form">
+                <div id="kapcsolat" class="acc-contact__form ts-dyn-contact-form">
                     @include('site.dynamic.contact-form', [
                         'title' => '',
                         'text' => '',

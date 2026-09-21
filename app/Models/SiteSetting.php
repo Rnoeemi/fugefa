@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
     'phone',
     'email',
     'notification_email',
+    'contact_notification_email',
     'address',
     'hero_image',
     'footer_text',

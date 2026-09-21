@@ -6,6 +6,7 @@ use App\Enums\AccommodationType;
 use App\Models\Accommodation;
 use App\Models\SiteSetting;
 use App\Models\Worker;
+use App\Support\GrapesJs\SiteAnchorId;
 use App\Support\GrapesJs\SiteContentIcons;
 use App\Support\GrapesJs\SiteRichAttr;
 use DOMDocument;
@@ -25,6 +26,8 @@ class SiteDynamicBlockRenderer
         if ($html === '') {
             return $html;
         }
+
+        $html = SiteAnchorId::syncInHtml($html);
 
         $needsDynamic = str_contains($html, 'data-ts-dynamic');
         $needsMedia = str_contains($html, 'data-media-url')
@@ -543,6 +546,7 @@ class SiteDynamicBlockRenderer
                 'area' => (string) $section->getAttribute('data-area'),
                 'design' => (string) $section->getAttribute('data-design'),
                 'designer' => (string) $section->getAttribute('data-designer'),
+                'architects' => (string) $section->getAttribute('data-architects'),
                 'construction' => (string) $section->getAttribute('data-construction'),
                 'alt' => $alt,
             ];
@@ -1061,8 +1065,12 @@ class SiteDynamicBlockRenderer
             $rows[] = '<p class="ts-ba-gallery__lead">'.nl2br(e($description), false).'</p>';
         }
 
+        $architectsHtml = $this->renderBaGalleryArchitects($item);
+        if ($architectsHtml !== '') {
+            $rows[] = '<p class="ts-ba-gallery__meta"><span class="ts-ba-gallery__meta-label">Építész:</span> '.$architectsHtml.'</p>';
+        }
+
         $meta = [
-            'designer' => 'Tervező',
             'location' => 'Helyszín',
             'area' => 'Hasznos alapterület összesen',
             'design' => 'Tervezés ideje',
@@ -1081,6 +1089,110 @@ class SiteDynamicBlockRenderer
         }
 
         return '<div class="ts-ba-gallery__copy">'.implode('', $rows).'</div>';
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    protected function renderBaGalleryArchitects(array $item): string
+    {
+        $people = $this->normalizeBaGalleryArchitects($item);
+        if ($people === []) {
+            return '';
+        }
+
+        $parts = [];
+        foreach ($people as $person) {
+            $name = $person['name'];
+            $url = $person['url'];
+            if ($url !== '') {
+                $parts[] = '<a class="ts-ba-gallery__architect-link" href="'.e($url).'" target="_blank" rel="noopener noreferrer">'.e($name).'</a>';
+            } else {
+                $parts[] = e($name);
+            }
+        }
+
+        return implode(', ', $parts);
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return list<array{name: string, url: string}>
+     */
+    protected function normalizeBaGalleryArchitects(array $item): array
+    {
+        $raw = $item['architects'] ?? null;
+        $list = [];
+
+        if (is_string($raw) && trim($raw) !== '') {
+            $decoded = json_decode(html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8'), true);
+            if (is_array($decoded)) {
+                $list = $decoded;
+            }
+        } elseif (is_array($raw)) {
+            $list = $raw;
+        }
+
+        $people = [];
+        foreach ($list as $entry) {
+            if (! is_array($entry)) {
+                continue;
+            }
+            $name = trim((string) ($entry['name'] ?? $entry['text'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+            $people[] = [
+                'name' => $name,
+                'url' => $this->sanitizeBaGalleryArchitectUrl((string) ($entry['url'] ?? $entry['href'] ?? '')),
+            ];
+        }
+
+        if ($people !== []) {
+            return $people;
+        }
+
+        // Régi data-designer: "Név1, Név2"
+        $legacy = trim((string) ($item['designer'] ?? ''));
+        if ($legacy === '') {
+            return [];
+        }
+
+        foreach (preg_split('/\s*,\s*/u', $legacy) ?: [] as $name) {
+            $name = trim((string) $name);
+            if ($name === '') {
+                continue;
+            }
+            $people[] = ['name' => $name, 'url' => ''];
+        }
+
+        return $people;
+    }
+
+    protected function sanitizeBaGalleryArchitectUrl(string $url): string
+    {
+        $url = trim(html_entity_decode($url, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        if ($url === '' || str_starts_with($url, '#')) {
+            return $url === '#' ? '' : $url;
+        }
+
+        if (preg_match('#^(https?:)?//#i', $url) || str_starts_with($url, '/')) {
+            return $url;
+        }
+
+        if (preg_match('#^(mailto:|tel:)#i', $url)) {
+            return $url;
+        }
+
+        if (preg_match('#^[^\s@]+@[^\s@]+\.[^\s@]+$#', $url)) {
+            return 'mailto:'.$url;
+        }
+
+        if (preg_match('#^[a-z0-9.-]+\.[a-z]{2,}(/.*)?$#i', $url)) {
+            return 'https://'.$url;
+        }
+
+        return '';
     }
 
     /**
