@@ -169,3 +169,111 @@
         @apply bg-pine text-white;
     }
 }
+
+/* Süti banner (GDPR) + reCAPTCHA */
+.cookie-consent {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 10040;
+    padding: 1rem;
+    background: color-mix(in srgb, var(--color-primary, #0f2920) 96%, black);
+    color: #fff;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.cookie-consent[hidden] {
+    display: none !important;
+}
+
+.cookie-consent__inner {
+    max-width: var(--content-max, 70rem);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cookie-consent__title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.cookie-consent__text {
+    margin: 0;
+    max-width: 44rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.cookie-consent__text a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.cookie-consent__text a:focus-visible,
+.cookie-consent__btn:focus-visible,
+.cookie-consent-reopen:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.cookie-consent__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.cookie-consent__btn {
+    min-height: 2.75rem;
+    min-width: 8.5rem;
+    padding: 0.65rem 1.2rem;
+    border-radius: var(--radius-control, 999px);
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cookie-consent__btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.cookie-consent-reopen-wrap {
+    margin: 0;
+    padding: 0.75rem 1rem 1.25rem;
+    text-align: center;
+}
+
+.cookie-consent-reopen {
+    background: none;
+    border: 0;
+    padding: 0.25rem;
+    color: color-mix(in srgb, var(--color-text, #1c241f) 70%, transparent);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+.cookie-consent-reopen:hover {
+    color: var(--color-text, #1c241f);
+}
+
+.recaptcha-field {
+    margin: 0.75rem 0 1rem;
+}
+
+.recaptcha-field__error {
+    margin: 0.5rem 0 0;
+    color: #b42318;
+    font-size: 0.9rem;
+}

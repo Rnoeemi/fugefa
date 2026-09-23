@@ -85,10 +85,11 @@
                             >
                             <span class="ts-dyn-contact-form__consent-text">
                                 Elolvastam és elfogadom az
-                                <a href="{{ $privacyHref ?? '/oldal/adatkezelesi-tajekoztato' }}" target="_blank" rel="noopener noreferrer">adatkezelési tájékoztatót</a>.
+                                <a href="{{ $privacyHref ?? config('seo.privacy_url', '/oldal/adatkezelesi-tajekoztato') }}" target="_blank" rel="noopener noreferrer">adatkezelési tájékoztatót</a>.
                             </span>
                         </label>
                     </div>
+                    @include('components.recaptcha')
                     <button type="submit" class="btn-primary">Küldés</button>
                 </form>
             </div>

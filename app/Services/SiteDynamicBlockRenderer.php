@@ -96,7 +96,9 @@ class SiteDynamicBlockRenderer
             }
 
             return $output;
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            report($e);
+
             return $html;
         }
     }
@@ -1350,14 +1352,7 @@ class SiteDynamicBlockRenderer
                     : [],
                 ...$visibility,
             ])->render(),
-            'contact-form' => view('site.dynamic.contact-form', [
-                'title' => (string) ($attrs['title'] ?? 'Írjon nekünk'),
-                'text' => (string) ($attrs['text'] ?? 'Kérdés esetén keressen bizalommal.'),
-                'button' => (string) ($attrs['button'] ?? 'Küldés'),
-                'privacyHref' => (string) ($attrs['privacy_href'] ?? '/oldal/adatkezelesi-tajekoztato'),
-                'settings' => $settings,
-                ...$visibility,
-            ])->render(),
+            'contact-form' => $this->renderContactForm($attrs, $settings, $visibility),
             'site-map' => view('site.dynamic.site-map', [
                 'title' => (string) ($attrs['title'] ?? 'Helyszín'),
                 'text' => (string) ($attrs['text'] ?? ''),
@@ -1510,11 +1505,40 @@ class SiteDynamicBlockRenderer
         return $allowed;
     }
 
+    /**
+     * @param  array<string, mixed>  $attrs
+     * @param  array<string, mixed>  $visibility
+     */
+    protected function renderContactForm(array $attrs, SiteSetting $settings, array $visibility): string
+    {
+        $errors = session()->get('errors');
+        if (! $errors instanceof \Illuminate\Support\ViewErrorBag) {
+            $errors = new \Illuminate\Support\ViewErrorBag;
+        }
+
+        return view('site.dynamic.contact-form', [
+            'title' => (string) ($attrs['title'] ?? 'Írjon nekünk'),
+            'text' => (string) ($attrs['text'] ?? 'Kérdés esetén keressen bizalommal.'),
+            'button' => (string) ($attrs['button'] ?? 'Küldés'),
+            'privacyHref' => (string) ($attrs['privacy_href'] ?? config('seo.privacy_url', '/oldal/adatkezelesi-tajekoztato')),
+            'settings' => $settings,
+            'errors' => $errors,
+            ...$visibility,
+        ])->render();
+    }
+
     protected function appendHtml(DOMDocument $dom, DOMElement $parent, string $html): void
     {
         if ($html === '') {
             return;
         }
+
+        // Üres div-eket (pl. .g-recaptcha) libxml ne nyelje el.
+        $html = preg_replace(
+            '/<div(\s[^>]*\bg-recaptcha\b[^>]*)><\/div>/i',
+            '<div$1><!--recaptcha--></div>',
+            $html
+        ) ?? $html;
 
         $tmp = new DOMDocument('1.0', 'UTF-8');
         $previous = libxml_use_internal_errors(true);

@@ -12,16 +12,18 @@
     {{-- Téma előbb: a Grapes oldal-CSS (@stack head) felülírhatja a szekció hátterét/színét --}}
     @include('site.partials.theme-css')
     <link rel="stylesheet" href="{{ asset('css/site-back-to-top.css') }}?v=2">
+    @include('site.partials.analytics')
     @stack('head')
 </head>
 <body class="site-shell site-style-{{ $siteTheme['style_preset'] ?? 'soft-ui' }}">
     @include('site.partials.header')
 
-    <main class="flex-1">
+    <main id="main" class="flex-1">
         @yield('content')
     </main>
 
     @include('site.partials.footer')
+    <x-cookie-consent />
 
     <button
         type="button"
@@ -43,6 +45,26 @@
     <script src="{{ asset('js/ts-flipcards.js') }}?v=1"></script>
     <script src="{{ asset('js/ts-reveal.js') }}?v=1"></script>
     <script src="{{ asset('js/ts-back-to-top.js') }}?v=1"></script>
+    @if (app(\App\Services\RecaptchaVerifier::class)->isEnabled())
+        <script src="https://www.google.com/recaptcha/api.js?onload=__onRecaptchaLoad&render=explicit" async defer></script>
+        <script>
+            window.__onRecaptchaLoad = function () {
+                document.querySelectorAll('.g-recaptcha').forEach(function (el) {
+                    if (el.getAttribute('data-recaptcha-rendered') === '1') {
+                        return;
+                    }
+                    var sitekey = el.getAttribute('data-sitekey');
+                    if (! sitekey || typeof grecaptcha === 'undefined') {
+                        return;
+                    }
+                    try {
+                        grecaptcha.render(el, { sitekey: sitekey });
+                        el.setAttribute('data-recaptcha-rendered', '1');
+                    } catch (e) {}
+                });
+            };
+        </script>
+    @endif
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             window.TsNav?.init?.(document);

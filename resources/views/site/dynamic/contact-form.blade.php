@@ -34,10 +34,13 @@
             <div class="ts-dyn-contact-form__status" role="status">{{ session('status') }}</div>
         @endif
 
-        @if ($errors->any())
+        @php
+            $formErrors = $errors ?? null;
+        @endphp
+        @if ($formErrors instanceof \Illuminate\Support\ViewErrorBag && $formErrors->any())
             <div class="ts-dyn-contact-form__errors" role="alert">
                 <ul>
-                    @foreach ($errors->all() as $error)
+                    @foreach ($formErrors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -64,7 +67,7 @@
         @php
             $privacyUrl = filled($privacyHref ?? null)
                 ? (string) $privacyHref
-                : '/oldal/adatkezelesi-tajekoztato';
+                : (string) config('seo.privacy_url', '/oldal/adatkezelesi-tajekoztato');
         @endphp
         <div class="ts-dyn-contact-form__consent">
             <label class="ts-dyn-contact-form__consent-label" for="ts-contact-privacy">
@@ -83,6 +86,8 @@
                 </span>
             </label>
         </div>
+
+        @include('components.recaptcha')
 
         <div class="ts-dyn-contact-form__actions">
             @if ($showButton ?? true)

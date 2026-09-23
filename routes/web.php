@@ -39,4 +39,6 @@ Route::middleware('module:appointment')->group(function (): void {
 });
 
 Route::get('/kapcsolat', ContactController::class)->name('contact');
-Route::post('/kapcsolat', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/kapcsolat', [ContactController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contact.store');
